@@ -1,118 +1,145 @@
 ---
-import '../styles/global.css';
+import '../styles/home.css';
 const work = [
-  { id: 'elixir', name: 'elixir.al', kind: 'Shop', state: 'Live', live: true },
-  { id: 'martiri', name: 'Bar Martiri', kind: 'Website', state: 'Live', live: true },
-  { id: 'greta', name: 'Dresses by Greta', kind: 'Shop', state: 'Preview' },
-  { id: 'beed', name: 'BeeD Energy', kind: 'Marketplace', state: 'Prototype' },
-  { id: 'divjaka', name: 'Divjaka, Hotel Pelikan', kind: 'Platform', state: 'Prototype' },
-  { id: 'barber', name: 'Barber Bros', kind: 'Brand + website', state: 'Ready' },
-  { id: 'kater', name: 'Katër Burgers', kind: 'Website', state: 'Live', live: true },
+  { id: 'elixir', name: 'elixir.al', what: 'Dyqan parfumesh', state: 'Online', live: true, img: '/work/work-elixir.jpg' },
+  { id: 'martiri', name: 'Bar Martiri', what: 'Bar në plazh, Spille', state: 'Online', live: true, img: '/work/work-martiri.jpg' },
+  { id: 'kater', name: 'Katër Burgers', what: 'Restorant, Tiranë', state: 'Online', live: true, img: '/work/work-kater.jpg' },
+  { id: 'greta', name: 'Dresses by Greta', what: 'Dyqan veshjesh, Tiranë', state: 'Online', live: true, img: '/work/work-greta.jpg' },
+  { id: 'beed', name: 'BeeD Energy', what: 'Treg për energji diellore', state: 'Prototip', img: '/work/work-beed.jpg' },
+  { id: 'divjaka', name: 'Divjaka · Hotel Pelikan', what: 'Rezervime dhe dyqan', state: 'Prototip', img: '/work/work-divjaka.png' },
 ];
-const lab = [
-  { id: 'shah', name: 'Shah', kind: 'Chess coach', state: 'Live', live: true },
-  { id: 'hold', name: 'Hold Please', kind: 'Party game', state: 'Live', live: true },
-  { id: 'lindja', name: 'LINDJA', kind: 'World film', state: 'Prototype' },
-  { id: null, name: 'KAYO', kind: 'Redesign', state: 'Concept' },
-];
+const wa = (text) => `#wa:${encodeURIComponent(text)}`;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="sq">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SD Design · Design studio in Albania</title>
-  <meta name="description" content="SD Design designs and builds websites, online shops, platforms and brands in Albania, in Albanian, English and Italian." />
-  <meta name="theme-color" content="#0b0c0f" />
+  <title>SD Design · Faqe interneti dhe dyqane online për biznese në Shqipëri</title>
+  <meta name="description" content="SD Design ndërton faqe interneti, dyqane online dhe sisteme rezervimi për restorante, hotele, dyqane dhe klinika në Shqipëri. Në shqip, anglisht dhe italisht." />
+  <meta name="theme-color" content="#f5f4f1" />
   <link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 </head>
 <body>
-  <a class="skip" href="#content">Skip to content</a>
-  <div class="loader" id="loader" aria-live="polite">
-    <div class="count" id="count">0</div>
-    <div class="row"><span>SD Design · switching the lights on</span><button type="button" id="skip">Skip intro</button></div>
-    <div class="bar-line" id="barline"></div>
-  </div>
-  <div id="gl" aria-hidden="true"></div>
-  <div class="cursor" id="cursor" aria-hidden="true"><span id="cursor-t"></span></div>
-
-  <header class="bar">
-    <a class="logo" href="#top" aria-label="SD Design, home">
-      <svg viewBox="0 0 707 488" aria-hidden="true"><path fill="#f1ece4" d="M160.2 405.8Q112.2 405.8 76.6 391.1Q41 376.3 21.1 347.4Q1.3 318.4 0 275.9H79.7Q81.3 296.1 91.8 309.7Q102.3 323.2 119.8 329.9Q137.2 336.7 159.3 336.7Q181.2 336.7 197.5 330.3Q213.8 323.9 222.9 312.4Q232 300.8 232 285.7Q232 271.9 223.8 262.6Q215.7 253.4 200.3 246.8Q185 240.1 163.1 234.9L119.1 224Q68.3 211.6 39.5 185.2Q10.7 158.7 10.7 115.1Q10.7 78.9 30.3 51.8Q49.8 24.7 83.8 9.7Q117.8 -5.4 161.2 -5.4Q205.6 -5.4 238.6 9.8Q271.6 25 290.1 51.9Q308.5 78.9 309.2 114H229.9Q227.6 89.9 209.4 76.7Q191.1 63.5 160.5 63.5Q139.6 63.5 124.9 69.5Q110.1 75.5 102.4 86Q94.7 96.5 94.7 109.9Q94.7 124.6 103.7 134.3Q112.6 144 127.3 150.1Q142 156.2 158.8 160.3L194.9 169.1Q220.1 174.8 241.9 184.5Q263.7 194.2 280 208.3Q296.4 222.4 305.4 241.6Q314.5 260.9 314.5 286.1Q314.5 322.5 296.2 349.4Q277.8 376.4 243.3 391.1Q208.8 405.8 160.2 405.8Z"/><path fill="#e83a2c" d="M362.5 0H506.5A200 200 0 0 1 506.5 400H482.5L322.5 488L362.5 360Z"/></svg>
-      SD Design
-    </a>
-    <div class="bar-r">
-      <a class="pill" href="#work" data-go="2">Work <span aria-hidden="true">11</span></a>
-      <a class="pill red" href="#say" data-go="4"><i aria-hidden="true"></i>Let's talk</a>
+  <a class="skip" href="#main">Kalo te përmbajtja</a>
+  <header class="top">
+    <div class="wrap">
+      <a class="logo" href="#main" aria-label="SD Design, faqja kryesore">
+        <svg viewBox="0 0 707 488" aria-hidden="true"><path fill="#111214" d="M160.2 405.8Q112.2 405.8 76.6 391.1Q41 376.3 21.1 347.4Q1.3 318.4 0 275.9H79.7Q81.3 296.1 91.8 309.7Q102.3 323.2 119.8 329.9Q137.2 336.7 159.3 336.7Q181.2 336.7 197.5 330.3Q213.8 323.9 222.9 312.4Q232 300.8 232 285.7Q232 271.9 223.8 262.6Q215.7 253.4 200.3 246.8Q185 240.1 163.1 234.9L119.1 224Q68.3 211.6 39.5 185.2Q10.7 158.7 10.7 115.1Q10.7 78.9 30.3 51.8Q49.8 24.7 83.8 9.7Q117.8 -5.4 161.2 -5.4Q205.6 -5.4 238.6 9.8Q271.6 25 290.1 51.9Q308.5 78.9 309.2 114H229.9Q227.6 89.9 209.4 76.7Q191.1 63.5 160.5 63.5Q139.6 63.5 124.9 69.5Q110.1 75.5 102.4 86Q94.7 96.5 94.7 109.9Q94.7 124.6 103.7 134.3Q112.6 144 127.3 150.1Q142 156.2 158.8 160.3L194.9 169.1Q220.1 174.8 241.9 184.5Q263.7 194.2 280 208.3Q296.4 222.4 305.4 241.6Q314.5 260.9 314.5 286.1Q314.5 322.5 296.2 349.4Q277.8 376.4 243.3 391.1Q208.8 405.8 160.2 405.8Z"/><path fill="#e2382a" d="M362.5 0H506.5A200 200 0 0 1 506.5 400H482.5L322.5 488L362.5 360Z"/></svg>
+        SD Design
+      </a>
+      <nav class="nav" aria-label="Kryesore"><a href="#pune">Punët</a><a href="#sherbime">Për kë punojmë</a><a href="#pyetje">Pyetje</a><a href="#kontakt">Kontakt</a></nav>
+      <div class="top-r">
+        <div class="lang" role="group" aria-label="Gjuha"><a href="#" aria-current="true">SQ</a><a href="#" data-soon>EN</a><a href="#" data-soon>IT</a></div>
+        <a class="btn wa" href={wa('Përshëndetje SD Design, dua një ofertë për një faqe interneti.')} data-wa>WhatsApp</a>
+      </div>
     </div>
   </header>
 
-  <section class="hero" id="top" aria-labelledby="h1">
-    <p class="eyebrow"><b>SD Design</b> Design studio · Albania · <span id="clock">--:--</span></p>
-    <h1 id="h1"><span class="w"><span>We make the</span></span> <span class="w"><span>websites</span></span> <span class="w"><span>businesses</span></span> <span class="w"><span>are <em>proud of.</em></span></span></h1>
-    <p>Websites, online shops, booking platforms and brands, designed and built in this room. In Albanian, English and Italian.</p>
-  </section>
-  <p class="scrollhint" aria-hidden="true">Scroll to look around<span>or click anything that glows</span></p>
+  <main id="main">
+    <section class="hero" aria-labelledby="h1">
+      <div class="wrap">
+        <div>
+          <p class="kicker rv"><i aria-hidden="true"></i>Studio dizajni · Shqipëri</p>
+          <h1 id="h1" class="rv">Biznesi juaj, në telefonin e <em>çdo klienti.</em></h1>
+          <p class="lead rv">Ndërtojmë faqe interneti, dyqane online dhe sisteme rezervimi për restorante, hotele, dyqane dhe klinika. Në shqip, anglisht dhe italisht.</p>
+          <div class="ctas rv">
+            <a class="btn wa" href={wa('Përshëndetje SD Design, dua një ofertë për një faqe interneti.')} data-wa><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-2-1.2 7.4 7.4 0 0 1-1.4-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4 5 5 0 0 0 3.1.6 2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .1-1.2c0-.1-.2-.2-.4-.3Z"/></svg>Kërko ofertë në WhatsApp</a>
+            <a class="btn ghost" href="#pune">Shiko punët</a>
+          </div>
+          <div class="tabs rv" role="tablist" aria-label="Lloji i biznesit">
+            <button role="tab" aria-selected="true" data-tab="food">Restorante & bare</button>
+            <button role="tab" aria-selected="false" data-tab="hotel">Hotele & bujtina</button>
+            <button role="tab" aria-selected="false" data-tab="shop">Dyqane online</button>
+            <button role="tab" aria-selected="false" data-tab="clinic">Klinika & agjenci</button>
+          </div>
+          <p class="tabnote" id="tabnote" aria-live="polite">Bar Martiri në Spille dhe Katër Burgers në Tiranë: menu, orar dhe porosi, gjithçka nga telefoni.</p>
+        </div>
+        <div class="stage" id="stage" aria-label="Faqet e klientëve tanë, ashtu siç duken në telefon">
+          <div class="phone l" data-slot="l"><div class="scr"><span class="notch"></span></div></div>
+          <div class="phone r" data-slot="r"><div class="scr"><span class="notch"></span></div></div>
+          <div class="phone c" data-slot="c"><div class="scr"><span class="notch"></span></div></div>
+          <div class="cap" id="cap"><b>Bar Martiri</b><small class="live">Online</small></div>
+        </div>
+      </div>
+    </section>
 
-  <button class="tag" type="button" data-tag="1" data-go="1"><span class="dot"></span><span class="txt"><b>01</b>What we do</span></button>
-  <button class="tag" type="button" data-tag="2" data-go="2"><span class="dot"></span><span class="txt"><b>02</b>The work</span></button>
-  <button class="tag" type="button" data-tag="3" data-go="3"><span class="dot"></span><span class="txt"><b>03</b>The lab</span></button>
-  <button class="tag" type="button" data-tag="4" data-go="4"><span class="dot"></span><span class="txt"><b>04</b>Say hi</span></button>
+    <div class="strip" aria-hidden="true"><div class="row"><span>elixir.al</span><span>Bar Martiri</span><span>Katër Burgers</span><span>Dresses by Greta</span><span>BeeD Energy</span><span>Divjaka · Hotel Pelikan</span><span>Barber Bros</span><span>elixir.al</span><span>Bar Martiri</span><span>Katër Burgers</span><span>Dresses by Greta</span><span>BeeD Energy</span><span>Divjaka · Hotel Pelikan</span><span>Barber Bros</span></div></div>
 
-  <main id="content">
-    <div class="chapter" data-stop="0"></div>
-    <div class="chapter" data-stop="1"></div>
-    <div class="chapter" id="work" data-stop="2"></div>
-    <div class="chapter" data-stop="3"></div>
-    <div class="chapter" id="say" data-stop="4"></div>
+    <section class="block" id="sherbime" aria-labelledby="h-s">
+      <div class="wrap">
+        <h2 class="h2 rv" id="h-s">Për kë punojmë.</h2>
+        <p class="sub rv">Katër lloje biznesesh, katër gjëra që u duhen nga faqja. Na tregoni tuajin në WhatsApp.</p>
+        <div class="cards">
+          <article class="card rv"><span class="ic" aria-hidden="true">🍽</span><h3>Restorante, bare, kafene</h3><ul><li>Menu në telefon, në disa gjuhë</li><li>Orari, harta, telefoni</li><li>Rezervime ose porosi</li></ul><a href={wa('Përshëndetje, dua një faqe për restorantin / barin tim.')} data-wa>Pyet për restorantin tënd →</a></article>
+          <article class="card rv"><span class="ic" aria-hidden="true">🛏</span><h3>Hotele dhe bujtina</h3><ul><li>Rezervime direkte nga faqja juaj</li><li>Dhoma, foto, çmime sezonale</li><li>Shqip, anglisht, italisht</li></ul><a href={wa('Përshëndetje, dua një faqe me rezervime për hotelin / bujtinën time.')} data-wa>Pyet për hotelin tënd →</a></article>
+          <article class="card rv"><span class="ic" aria-hidden="true">🛍</span><h3>Dyqane online</h3><ul><li>Katalog dhe shportë</li><li>Pagesë në dorëzim</li><li>Panel ku stafi shton produkte</li></ul><a href={wa('Përshëndetje, dua një dyqan online.')} data-wa>Pyet për dyqanin tënd →</a></article>
+          <article class="card rv"><span class="ic" aria-hidden="true">🩺</span><h3>Klinika dhe agjenci</h3><ul><li>Faqe në italisht për klientë italianë</li><li>Kërkesa direkte në WhatsApp</li><li>Profil i plotë në Google</li></ul><a href={wa('Përshëndetje, kemi klientë italianë dhe na duhet një faqe në italisht.')} data-wa>Pyet për klinikën tënde →</a></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="h-p" style="padding-top:0">
+      <div class="wrap">
+        <h2 class="h2 rv" id="h-p">Si punojmë.</h2>
+        <p class="sub rv">Pa fjalë të vështira: ju na tregoni biznesin, ne ndërtojmë faqen.</p>
+        <div class="steps">
+          <div class="step rv"><h3>Na shkruani</h3><p>Në WhatsApp, me telefon ose në Instagram. Na tregoni çfarë bëni.</p></div>
+          <div class="step rv"><h3>Flasim</h3><p>Shohim bashkë çfarë ju duhet dhe ju dërgojmë një ofertë të qartë.</p></div>
+          <div class="step rv"><h3>Dizajni</h3><p>E shihni faqen në telefonin tuaj para se të dalë online.</p></div>
+          <div class="step rv"><h3>Online</h3><p>E publikojmë dhe ju tregojmë si ta ndryshoni vetë.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="pune" aria-labelledby="h-w" style="padding-top:0">
+      <div class="wrap">
+        <h2 class="h2 rv" id="h-w">Punët tona.</h2>
+        <p class="sub rv">Biznese shqiptare që punojnë me faqet tona çdo ditë. Hapini në telefonin tuaj.</p>
+        <div class="work">
+          {work.map((w) => <article class="wcard rv"><div class="shot"><img src={w.img} alt={`${w.name}, faqja kryesore`} loading="lazy" width="1440" height="900" /></div><div class="meta"><b>{w.name}</b><small class={w.live ? 'live' : ''}>{w.what}<br />{w.state}</small></div></article>)}
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="pyetje" aria-labelledby="h-q" style="padding-top:0">
+      <div class="wrap">
+        <h2 class="h2 rv" id="h-q">Pyetje që na bëhen shpesh.</h2>
+        <div class="faq">
+          <details><summary>Sa kushton një faqe interneti?</summary><p>Varet nga ajo që ju duhet: një faqe prezantuese, një dyqan online apo rezervime. Na shkruani në WhatsApp dhe ju dërgojmë një ofertë të qartë.</p></details>
+          <details><summary>Sa kohë duhet?</summary><p>E caktojmë bashkë që në fillim, sipas faqeve dhe gjuhëve që ju duhen.</p></details>
+          <details><summary>Në cilat gjuhë mund të jetë faqja?</summary><p>Në shqip, anglisht dhe italisht. Bar Martiri, për shembull, flet të tria.</p></details>
+          <details><summary>A mund ta ndryshoj vetë?</summary><p>Po. Dyqanet që kemi ndërtuar kanë një panel ku stafi shton produkte, foto dhe çmime pa na thirrur.</p></details>
+          <details><summary>A do të dalë në Google?</summary><p>Faqet i ndërtojmë që Google t'i lexojë mirë: tekste të qarta, shpejtësi në telefon, adresa dhe orari i biznesit.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" id="kontakt" aria-labelledby="h-c" style="padding-top:0">
+      <div class="wrap">
+        <div class="contact">
+          <div>
+            <h2 class="h2" id="h-c">Na tregoni biznesin tuaj.</h2>
+            <p class="sub">Përgjigjemi në shqip, anglisht ose italisht.</p>
+            <div class="ways">
+              <a class="way wa" href={wa('Përshëndetje SD Design, dua një ofertë për një faqe interneti.')} data-wa><b>WhatsApp</b><small>Mënyra më e shpejtë</small></a>
+              <a class="way" href="#tel" data-tel><b>Telefononi</b><small id="tel-t">Numri shtohet së shpejti</small></a>
+              <a class="way" href="#ig" data-ig target="_blank" rel="noopener"><b>Instagram</b><small id="ig-t">Profili shtohet së shpejti</small></a>
+            </div>
+          </div>
+          <form class="msg" id="msg">
+            <label class="sr" for="m-name">Emri dhe biznesi</label><input id="m-name" autocomplete="name" placeholder="Emri dhe biznesi" />
+            <label class="sr" for="m-phone">Telefoni</label><input id="m-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="Telefoni (për t'ju marrë në telefon)" />
+            <label class="sr" for="m-text">Çfarë ju duhet?</label><textarea id="m-text" placeholder="P.sh. një faqe me menu për barin tim në Durrës"></textarea>
+            <button class="btn wa" type="submit">Dërgo mesazhin</button>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
-
-  <section class="panel right" data-panel="1" aria-labelledby="p1">
-    <span class="k"><b>01</b> What we do</span>
-    <h2 id="p1">Four things, done here.</h2>
-    <ul class="list">
-      <li>Websites<small>Design · front end · back end</small></li>
-      <li>Online shops<small>Basket · checkout · admin</small></li>
-      <li>Platforms<small>Bookings · marketplaces</small></li>
-      <li>Brands<small>Mark · colour · type</small></li>
-    </ul>
-  </section>
-  <section class="panel left" data-panel="2" aria-labelledby="p2">
-    <span class="k"><b>02</b> The work · on the screen</span>
-    <h2 id="p2">Eleven projects.</h2>
-    <ul class="list">
-      {work.map((w) => <li data-shot={w.id}>{w.name}<small class={w.live ? 'live' : ''}>{w.kind} · {w.state}</small></li>)}
-    </ul>
-    <p class="note" style="margin-top:14px">Point at a name to put it on the screen.</p>
-  </section>
-  <section class="panel left" data-panel="3" aria-labelledby="p3">
-    <span class="k"><b>03</b> The lab · on the TV</span>
-    <h2 id="p3">What we build for fun.</h2>
-    <ul class="list">
-      {lab.map((w) => <li data-shot={w.id ?? undefined}>{w.name}<small class={w.live ? 'live' : ''}>{w.kind} · {w.state}</small></li>)}
-    </ul>
-  </section>
-  <section class="panel right" data-panel="4" aria-labelledby="p4">
-    <span class="k"><b>04</b> Say hi · leave a note</span>
-    <h2 id="p4">Tell us what you need.</h2>
-    <p>We answer in Albanian, English or Italian.</p>
-    <form class="say" id="say-form">
-      <label class="sr" for="say-name">Your name and business</label><input id="say-name" autocomplete="name" placeholder="Your name and business" />
-      <label class="sr" for="say-msg">What do you need?</label><textarea id="say-msg" placeholder="A website for my restaurant in Durrës…"></textarea>
-      <button class="pill red" type="submit">Send the note</button>
-    </form>
-  </section>
-
-  <section class="after" aria-labelledby="all">
-    <h2 id="all">Everything, as a list.</h2>
-    <ul class="index">
-      {[...work, ...lab].map((w) => <li>{w.name}<small>{w.kind} · {w.state}</small></li>)}
-    </ul>
-    <div class="foot"><span>SD Design · Albania</span><span>Models: Poly Haven (CC0)</span><span>Draft, not live</span></div>
-  </section>
-
-  <div class="toggles"><button class="pill" type="button" id="snd" aria-pressed="false">Sound off</button><button class="pill" type="button" id="mot" aria-pressed="true">Motion on</button></div>
+  <footer><div class="wrap"><span>SD Design · Studio dizajni · Shqipëri</span><span>Draft, jo ende online</span></div></footer>
+  <div class="dock"><a class="btn wa" href={wa('Përshëndetje SD Design, dua një ofertë për një faqe interneti.')} data-wa>WhatsApp</a><a class="btn ink" href="#tel" data-tel>Telefono</a></div>
   <div class="toast" id="toast" role="status"></div>
-  <script>import '../scripts/studio.js';</script>
+  <script>import '../scripts/home.js';</script>
 </body>
 </html>
