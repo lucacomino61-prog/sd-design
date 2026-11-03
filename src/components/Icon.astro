@@ -1,0 +1,9 @@
+---
+// Inline Phosphor icon from src/icons (see tools/icons.mjs). Decorative: the text next to it carries the meaning.
+const files = import.meta.glob('../icons/*.svg', { query: '?raw', import: 'default', eager: true });
+const { name, size = 20, class: cls = '' } = Astro.props;
+const raw = files[`../icons/${name}.svg`];
+if (!raw) throw new Error(`Unknown icon: ${name}`);
+const svg = raw.replace('<svg ', `<svg class="ic ${cls}" width="${size}" height="${size}" aria-hidden="true" focusable="false" `);
+---
+<Fragment set:html={svg} />

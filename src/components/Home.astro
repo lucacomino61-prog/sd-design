@@ -1,0 +1,277 @@
+---
+// The home page, rendered from one dictionary (src/i18n/{sq,en,it}.js). Every word is in the HTML; the script adds the
+// phone videos, the motion and the easter eggs, and the page still reads and links without it.
+import '../styles/home.css';
+import Icon from './Icon.astro';
+import { CONTACT } from '../data/contact.js';
+import { SITES, TABS, WORK, LIVE } from '../data/sites.js';
+
+const { t } = Astro.props;
+const LANGS = [['sq', '/', 'SQ'], ['en', '/en/', 'EN'], ['it', '/it/', 'IT']];
+const ICON = { phone: 'device-mobile', lang: 'translate', chat: 'chat-circle-dots', edit: 'pencil-simple-line' };
+const abs = (p) => (Astro.site ? new URL(p, Astro.site).href : p);
+const named = (s, name) => s.replace('{name}', name);
+
+// Contact links come from src/data/contact.js. While a detail is missing the link points at the contact block and the
+// script shows a "draft" note, so no number is ever guessed.
+const wa = (text) => (CONTACT.whatsapp
+  ? { href: `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(text)}`, target: '_blank', rel: 'noopener' }
+  : { href: '#contact', 'data-draft': 'wa' });
+const tel = CONTACT.phone ? { href: `tel:${CONTACT.phone.replace(/\s+/g, '')}` } : { href: '#contact', 'data-draft': 'tel' };
+const ig = CONTACT.instagram ? { href: `https://instagram.com/${CONTACT.instagram}`, target: '_blank', rel: 'noopener' } : { href: '#contact', 'data-draft': 'ig' };
+const draft = !CONTACT.whatsapp || !CONTACT.phone || !CONTACT.instagram;
+
+const nav = [['who', t.nav.who], ['work', t.nav.work], ['why', t.nav.why], ['faq', t.nav.faq], ['contact', t.nav.contact]];
+const headA = t.h1a.split(' '), headB = t.h1b.split(' ');
+const start = TABS.food;
+const year = new Date().getFullYear();
+
+const client = { notes: t.notes, chip: t.chip, states: t.states, onPhone: t.onPhone, clinicName: t.clinicName, toast: t.toast, eggs: t.eggs };
+const ld = { '@context': 'https://schema.org', '@type': 'Organization', name: 'SD Design', description: t.desc, areaServed: { '@type': 'Country', name: 'Albania' }, knowsLanguage: ['sq', 'en', 'it'] };
+if (Astro.site) ld.url = abs(t.path);
+if (CONTACT.instagram) ld.sameAs = [`https://instagram.com/${CONTACT.instagram}`];
+if (CONTACT.phone || CONTACT.email) ld.contactPoint = { '@type': 'ContactPoint', contactType: 'customer service', availableLanguage: ['sq', 'en', 'it'], ...(CONTACT.phone && { telephone: CONTACT.phone }), ...(CONTACT.email && { email: CONTACT.email }) };
+const safe = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
+const S_PATH = 'M160.2 405.8Q112.2 405.8 76.6 391.1Q41 376.3 21.1 347.4Q1.3 318.4 0 275.9H79.7Q81.3 296.1 91.8 309.7Q102.3 323.2 119.8 329.9Q137.2 336.7 159.3 336.7Q181.2 336.7 197.5 330.3Q213.8 323.9 222.9 312.4Q232 300.8 232 285.7Q232 271.9 223.8 262.6Q215.7 253.4 200.3 246.8Q185 240.1 163.1 234.9L119.1 224Q68.3 211.6 39.5 185.2Q10.7 158.7 10.7 115.1Q10.7 78.9 30.3 51.8Q49.8 24.7 83.8 9.7Q117.8 -5.4 161.2 -5.4Q205.6 -5.4 238.6 9.8Q271.6 25 290.1 51.9Q308.5 78.9 309.2 114H229.9Q227.6 89.9 209.4 76.7Q191.1 63.5 160.5 63.5Q139.6 63.5 124.9 69.5Q110.1 75.5 102.4 86Q94.7 96.5 94.7 109.9Q94.7 124.6 103.7 134.3Q112.6 144 127.3 150.1Q142 156.2 158.8 160.3L194.9 169.1Q220.1 174.8 241.9 184.5Q263.7 194.2 280 208.3Q296.4 222.4 305.4 241.6Q314.5 260.9 314.5 286.1Q314.5 322.5 296.2 349.4Q277.8 376.4 243.3 391.1Q208.8 405.8 160.2 405.8Z';
+const BUBBLE = 'M362.5 0H506.5A200 200 0 0 1 506.5 400H482.5L322.5 488L362.5 360Z';
+---
+<!doctype html>
+<html lang={t.lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{t.title}</title>
+  <meta name="description" content={t.desc} />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f5f4f1" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0e0f11" media="(prefers-color-scheme: dark)" />
+  {LANGS.map(([l, p]) => <link rel="alternate" hreflang={l} href={abs(p)} />)}
+  <link rel="alternate" hreflang="x-default" href={abs('/')} />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SD Design" />
+  <meta property="og:title" content={t.title} />
+  <meta property="og:description" content={t.desc} />
+  <meta property="og:locale" content={t.locale} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <script is:inline>document.documentElement.classList.add('js');</script>
+  <script type="application/ld+json" set:html={safe(ld)} />
+</head>
+<body>
+  <a class="skip" href="#main">{t.skip}</a>
+  <header class="top">
+    <div class="wrap">
+      <div class="brand">
+        <a class="logo" id="logo" href={t.path} aria-label={t.home}>
+          <svg viewBox="0 0 707 488" aria-hidden="true"><path fill="currentColor" d={S_PATH} /><path class="bub" fill="#e2382a" d={BUBBLE} /></svg>
+          <span>SD Design</span>
+        </a>
+        <p class="say" id="say" role="status" aria-live="polite"></p>
+      </div>
+      <nav class="nav" aria-label={t.navLabel}>{nav.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}</nav>
+      <div class="top-r">
+        <nav class="lang" aria-label={t.langLabel}>{LANGS.map(([l, p, label]) => <a href={p} hreflang={l} lang={l} aria-current={l === t.lang ? 'page' : undefined}>{label}</a>)}</nav>
+        <a class="btn wa sm mag" {...wa(t.waMsg)}><Icon name="whatsapp-logo" size={18} />WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="h1">
+      <div class="wrap">
+        <div class="copy">
+          <h1 id="h1">
+            {headA.map((w, i) => <Fragment><span class="w" style={`--i:${i}`}>{w}</span>{' '}</Fragment>)}
+            <em>{headB.map((w, j) => <Fragment><span class="w" style={`--i:${headA.length + j}`}>{w}</span>{j < headB.length - 1 ? ' ' : ''}</Fragment>)}</em>
+          </h1>
+          <p class="lead fade" style="--t:380ms">{t.lead}</p>
+          <div class="ctas fade" style="--t:500ms">
+            <a class="btn wa mag" {...wa(t.waMsg)}><Icon name="whatsapp-logo" size={20} />{t.cta}</a>
+            <a class="btn ghost" href="#work">{t.cta2}</a>
+          </div>
+        </div>
+
+        <div class="stage" role="group" aria-label={t.stageLabel}>
+          <div class="tabs fade" style="--t:300ms" role="tablist" aria-label={t.tabsLabel}>
+            {Object.keys(TABS).map((k, i) => <button type="button" role="tab" id={`tab-${k}`} aria-controls="phones" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? '0' : '-1'} data-tab={k}>{t.tabs[k]}</button>)}
+          </div>
+          <div class="phones" id="phones" role="tabpanel" aria-labelledby="tab-food">
+            {['l', 'r', 'c'].map((k) => {
+              const key = start[k];
+              const s = key && SITES[key];
+              return (
+                <div class={`slot ${k}${key ? '' : ' off'}`} data-slot={k} data-site={key ?? ''}>
+                  <div class="phone"><div class="scr">
+                    <span class="notch" aria-hidden="true"></span>
+                    {s && <img class="media" src={s.poster} alt={named(t.onPhone, s.name)} width="390" height="844" fetchpriority={k === 'c' ? 'high' : 'low'} decoding="async" />}
+                  </div></div>
+                </div>
+              );
+            })}
+            <div class="chip" id="chip" aria-hidden="true">
+              <span class="chip-ic"><Icon name="whatsapp-logo" size={16} /></span>
+              <span class="chip-b"><small>{t.chip.who}</small><span class="dots"><i></i><i></i><i></i></span><span class="msg" id="chip-text">{t.chip.food}</span></span>
+            </div>
+            <div class="cap">
+              <span class="cap-t" id="cap-t"><b id="cap-name">{SITES[start.c].name}</b><small id="cap-state" class={`st ${SITES[start.c].state}`}>{t.states[SITES[start.c].state]}</small></span>
+              <button type="button" class="vbtn" id="vbtn" aria-pressed="false" aria-label={t.video} title={t.video}><Icon name="pause" size={16} class="i-pause" /><Icon name="play" size={16} class="i-play" /></button>
+            </div>
+          </div>
+          <p class="tabnote" id="tabnote" aria-live="polite">{t.notes.food}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="clients" aria-labelledby="clients-h">
+      <div class="wrap">
+        <h2 class="clients-h" id="clients-h">{t.clientsLabel}</h2>
+        <ul>{LIVE.map((id) => <li>{SITES[id].name}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="sec who" id="who" aria-labelledby="who-h">
+      <div class="wrap">
+        <h2 class="h2 rv" id="who-h">{t.who.t}</h2>
+        <p class="sub rv" style="--d:1">{t.who.sub}</p>
+        <div class="who-grid">
+          {t.who.cards.map(([k, title, items, cta, msg], i) => {
+            const site = SITES[TABS[k].c];
+            return (
+              <article class="who-card rv" style={`--d:${i}`}>
+                <a class="who-see" href="#phones" data-see={k}>
+                  <span class="tphone" data-site={TABS[k].c} aria-hidden="true"><span class="tscr">
+                    {site
+                      ? <img src={site.poster} alt="" width="390" height="844" loading="lazy" decoding="async" />
+                      : <span class="demo" lang="it"><small>Esempio · Clinica</small><b>Il tuo sorriso, a Tirana.</b><span>Visite, preventivi e viaggio: tutto in italiano.</span><i>Scrivici su WhatsApp</i></span>}
+                  </span></span>
+                  <span class="who-see-t">{t.who.see}<span class="sr">: {title}</span></span>
+                </a>
+                <div class="who-body">
+                  <h3>{title}</h3>
+                  <ul>{items.map((x) => <li><Icon name="check" size={16} />{x}</li>)}</ul>
+                  <a class="ask" {...wa(msg)}><Icon name="whatsapp-logo" size={18} />{cta}</a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec work" id="work" aria-labelledby="work-h">
+      <div class="wrap">
+        <h2 class="h2 rv" id="work-h">{t.work.t}</h2>
+        <div class="work-grid">
+          {WORK.map((id, i) => {
+            const s = SITES[id];
+            return (
+              <article class="wcard rv" style={`--d:${i % 2}`} data-video={s.video} data-poster={s.poster}>
+                <div class="shot"><img src={s.shot} alt={named(t.work.shotAlt, s.name)} width="1440" height="900" loading="lazy" decoding="async" /></div>
+                {s.video && <div class="mini" aria-hidden="true"><div class="mscr"></div></div>}
+                <div class="meta">
+                  <div>
+                    <h3>{s.url ? <a class="stretch" href={s.url} target="_blank" rel="noopener">{s.name}<span class="sr">, {t.work.visit}</span></a> : s.name}</h3>
+                    <p>{t.work.what[id]}<span class={`st ${s.state}`}>{t.states[s.state]}</span></p>
+                  </div>
+                  {s.url && <span class="go" aria-hidden="true"><Icon name="arrow-up-right" size={18} /></span>}
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec why" id="why" aria-labelledby="why-h">
+      <div class="wrap why-grid">
+        <h2 class="h2 rv" id="why-h">{t.why.t}</h2>
+        <ul class="why-list">
+          {t.why.items.map(([k, title, text], i) => <li class="rv" style={`--d:${i}`}><span class="tile"><Icon name={ICON[k]} size={28} /></span><div><h3>{title}</h3><p>{text}</p></div></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec steps" id="steps" aria-labelledby="steps-h">
+      <div class="wrap">
+        <h2 class="h2 rv" id="steps-h">{t.steps.t}</h2>
+        <ol class="step-list">
+          {t.steps.items.map(([title, text], i) => <li class="rv" style={`--d:${i}`}><h3>{title}</h3><p>{text}</p></li>)}
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec faq" id="faq" aria-labelledby="faq-h">
+      <div class="wrap">
+        <h2 class="h2 rv" id="faq-h">{t.faq.t}</h2>
+        <div class="faq-list">
+          {t.faq.items.map(([q, a], i) => <details name="faq" class="rv" style={`--d:${i}`}><summary>{q}<span class="pm" aria-hidden="true"><Icon name="plus" size={18} /></span></summary><p>{a}</p></details>)}
+        </div>
+        <p class="faq-more rv">{t.faq.more} <a class="lnk" {...wa(t.faq.msg)}>{t.faq.ask}</a></p>
+      </div>
+    </section>
+
+    <section class="sec contact" id="contact" aria-labelledby="contact-h">
+      <div class="wrap">
+        <div class="contact-box rv">
+          <div>
+            <h2 class="h2" id="contact-h">{t.contact.t}</h2>
+            <p class="sub">{t.contact.sub}</p>
+            <div class="ways">
+              <a class="way wa" {...wa(t.waMsg)}><span class="way-ic"><Icon name="whatsapp-logo" size={22} /></span><span><b>{t.contact.wa}</b><small>{t.contact.waNote}</small></span></a>
+              <a class="way" {...tel}><span class="way-ic"><Icon name="phone" size={22} /></span><span><b>{t.contact.tel}</b><small>{CONTACT.phone ?? t.contact.telNote}</small></span></a>
+              <a class="way" {...ig}><span class="way-ic"><Icon name="instagram-logo" size={22} /></span><span><b>{t.contact.ig}</b><small>{CONTACT.instagram ? `@${CONTACT.instagram}` : t.contact.igNote}</small></span></a>
+            </div>
+          </div>
+          <form class="msg" id="msg" novalidate>
+            <div class="field"><label for="m-name">{t.contact.name}</label><input id="m-name" name="name" autocomplete="name" /></div>
+            <div class="field"><label for="m-phone">{t.contact.phone}</label><input id="m-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" /></div>
+            <div class="field"><label for="m-text">{t.contact.need}</label><textarea id="m-text" name="message" rows="4" placeholder={t.contact.text}></textarea><p class="err" id="m-err" hidden>{t.toast.empty}</p></div>
+            <button class="btn light" type="submit">{t.contact.send}</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="f-grid">
+        <div class="f-brand">
+          <a class="logo" href={t.path} aria-label={t.home}><svg viewBox="0 0 707 488" aria-hidden="true"><path fill="currentColor" d={S_PATH} /><path fill="#e2382a" d={BUBBLE} /></svg><span>SD Design</span></a>
+          <p>{t.foot.line}</p>
+        </div>
+        <nav aria-label={t.foot.links}><p class="f-h">{t.foot.links}</p><ul>{nav.map(([id, label]) => <li><a href={`#${id}`}>{label}</a></li>)}</ul></nav>
+        <div><p class="f-h">{t.foot.services}</p><ul>{t.foot.s.map((x) => <li>{x}</li>)}</ul></div>
+        <div><p class="f-h">{t.nav.contact}</p><ul><li><a {...wa(t.waMsg)}>WhatsApp</a></li><li><a {...tel}>{CONTACT.phone ?? t.contact.tel}</a></li><li><a {...ig}>Instagram</a></li></ul></div>
+      </div>
+      <div class="f-bot">
+        <span>© {year} SD Design</span>
+        {draft && <span>{t.foot.draft}</span>}
+        <nav class="lang" aria-label={t.langLabel}>{LANGS.map(([l, p, label]) => <a href={p} hreflang={l} lang={l} aria-current={l === t.lang ? 'page' : undefined}>{label}</a>)}</nav>
+      </div>
+    </div>
+  </footer>
+
+  <div class="dock" id="dock">
+    <a class="btn wa" {...wa(t.waMsg)}><Icon name="whatsapp-logo" size={20} />WhatsApp</a>
+    <a class="btn ink" {...tel}><Icon name="phone" size={20} />{t.contact.call}</a>
+  </div>
+
+  <div class="kafe" id="kafe" role="dialog" aria-labelledby="kafe-t" hidden>
+    <div class="cup" aria-hidden="true"><Icon name="coffee" size={56} class="cup-b" /><Icon name="coffee" size={56} class="cup-s" /></div>
+    <div>
+      <p class="kafe-t" id="kafe-t"><span lang="sq">{t.eggs.kafe.t}</span>{t.eggs.kafe.tr && <small>{t.eggs.kafe.tr}</small>}</p>
+      <p class="kafe-s">{t.eggs.kafe.s}</p>
+      <a class="btn wa sm" {...wa(t.eggs.kafe.msg)}><Icon name="whatsapp-logo" size={18} />{t.eggs.kafe.cta}</a>
+    </div>
+    <button type="button" class="kafe-x" id="kafe-x" aria-label={t.eggs.kafe.close}><Icon name="x" size={18} /></button>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <template id="tpl-clinic">
+    <div class="media demo" lang="it"><small>Esempio · Clinica</small><b>Il tuo sorriso, a Tirana.</b><span>Visite, preventivi e viaggio: tutto in italiano.</span><i>Scrivici su WhatsApp</i></div>
+  </template>
+  <script type="application/json" id="i18n" set:html={safe(client)} />
+  <script>import '../scripts/home.js';</script>
+</body>
+</html>

@@ -5,3 +5,4 @@ dist/
 assets-src/
 *.log
 .DS_Store
+.impeccable/
