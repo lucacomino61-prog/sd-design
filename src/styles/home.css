@@ -5,7 +5,13 @@
    Motion is minimal. The headline and first screen come in with CSS at first paint; sections rise once on scroll
    (an IntersectionObserver adds .in); GSAP moves the phones, the tilt and the magnetic buttons.
    prefers-reduced-motion keeps the fades and drops every movement. */
-@font-face { font-family: "Geist"; src: url("/fonts/geist-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+/* Archivo (OFL, public/fonts/archivo-OFL.txt): one variable family, wide and heavy for headlines, normal width for text */
+@font-face { font-family: "Archivo"; src: url("/fonts/archivo-latin-wdth-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+/* Archivo's ampersand is the "Et" form and reads as a 6 or an 8 at text sizes ("B&B"), so "&" alone comes from a
+   1 KB cut of Geist (tools: fontTools subset --unicodes=U+0026). Declared after the main face, so it wins for U+0026. */
+@font-face { font-family: "Archivo"; src: url("/fonts/geist-amp.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; unicode-range: U+0026; }
+/* Arial tuned to Archivo's width and line box, so text barely moves when Archivo arrives */
+@font-face { font-family: "Archivo Fallback"; src: local("Arial"), local("ArialMT"), local("Roboto"); size-adjust: 98.5%; ascent-override: 89.1%; descent-override: 21.3%; line-gap-override: 0%; }
 @font-face { font-family: "Geist Mono"; src: url("/fonts/geist-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 :root {
@@ -25,7 +31,7 @@
   --block: #111214;
   --block-soft: #b9bcc4;
   --shadow: 0 1px 2px rgb(17 18 20 / 0.05), 0 18px 40px -24px rgb(17 18 20 / 0.35);
-  --sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --sans: "Archivo", "Archivo Fallback", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: "Geist Mono", ui-monospace, "Cascadia Mono", Menlo, monospace;
   --gutter: max(20px, env(safe-area-inset-left, 0px));
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -59,7 +65,7 @@
 html { background: var(--bg); scroll-behavior: smooth; scroll-padding-top: calc(var(--head) + 16px); -webkit-text-size-adjust: 100%; }
 body { margin: 0; overflow-x: clip; background: var(--bg); color: var(--ink); font: 400 17px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
 h1, h2, h3, p { overflow-wrap: anywhere; }
-h3 { font-weight: 600; }
+h3 { font-weight: 700; font-stretch: 108%; }
 a { color: inherit; text-underline-offset: 0.18em; }
 img, video, svg { display: block; max-width: 100%; }
 ::selection { background: color-mix(in srgb, var(--red) 26%, transparent); }
@@ -91,7 +97,7 @@ button { font: inherit; }
 .top { position: sticky; top: 0; z-index: 40; background: color-mix(in srgb, var(--bg) 86%, transparent); -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px); border-bottom: 1px solid var(--line); }
 .top .wrap { display: flex; align-items: center; gap: 16px; height: var(--head); }
 .brand { position: relative; }
-.logo { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 17px; font-weight: 600; letter-spacing: -0.02em; text-decoration: none; }
+.logo { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 17px; font-weight: 800; font-stretch: 118%; letter-spacing: -0.02em; text-decoration: none; }
 .logo svg { width: 38px; height: auto; overflow: visible; }
 .logo .bub { transform-box: fill-box; transform-origin: 12% 96%; }
 .say { position: absolute; z-index: 45; left: 12px; top: calc(100% + 14px); margin: 0; padding: 10px 14px 11px; border-radius: 4px 18px 18px 18px; background: #e2382a; color: #fff; font: 600 15px/1.25 var(--sans); white-space: nowrap; box-shadow: var(--shadow); pointer-events: none; opacity: 0; visibility: hidden; translate: 0 -4px; scale: 0.96; transform-origin: 0 0; transition: opacity 0.18s var(--ease-out), translate 0.18s var(--ease-out), scale 0.18s var(--ease-out), visibility 0s linear 0.18s; }
@@ -109,7 +115,7 @@ button { font: inherit; }
 /* ---------- hero ---------- */
 .hero { overflow-x: clip; padding: clamp(24px, 4.5vw, 64px) 0 clamp(56px, 6vw, 96px); }
 .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: clamp(28px, 4vw, 64px); }
-.hero h1 { margin: 0 0 22px; font-size: clamp(42px, 5vw, 76px); font-weight: 600; line-height: 0.98; letter-spacing: -0.048em; text-wrap: balance; }
+.hero h1 { margin: 0 0 22px; font-size: clamp(36px, 4.3vw, 64px); font-weight: 800; font-stretch: 125%; line-height: 0.96; letter-spacing: -0.025em; text-wrap: balance; }
 .hero h1 .w { display: inline-block; }
 .hero h1 em { font-style: normal; color: var(--red); }
 .lead { margin: 0 0 30px; max-width: 46ch; color: var(--soft); font-size: clamp(17px, 1.3vw, 19px); text-wrap: pretty; }
@@ -177,11 +183,11 @@ button { font: inherit; }
 .clients { border-block: 1px solid var(--line); }
 .clients .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; padding-block: 26px; }
 .clients-h { margin: 0; color: var(--soft); font-size: 14px; font-weight: 500; line-height: 1.3; }
-.clients ul { display: flex; flex-wrap: wrap; gap: 12px clamp(28px, 4vw, 56px); margin: 0; padding: 0; list-style: none; color: var(--ink); font-size: clamp(18px, 1.6vw, 22px); font-weight: 600; letter-spacing: -0.025em; opacity: 0.8; }
+.clients ul { display: flex; flex-wrap: wrap; gap: 12px clamp(28px, 4vw, 56px); margin: 0; padding: 0; list-style: none; color: var(--ink); font-size: clamp(18px, 1.6vw, 22px); font-weight: 700; font-stretch: 110%; letter-spacing: -0.01em; opacity: 0.8; }
 
 /* ---------- sections ---------- */
 .sec { padding-top: var(--sec); }
-.h2 { max-width: 22ch; margin: 0; font-size: clamp(32px, 3.6vw, 52px); font-weight: 600; line-height: 1.02; letter-spacing: -0.04em; text-wrap: balance; }
+.h2 { max-width: 22ch; margin: 0; font-size: clamp(30px, 3.5vw, 50px); font-weight: 800; font-stretch: 120%; line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
 .sub { max-width: 54ch; margin: 16px 0 0; color: var(--soft); font-size: 18px; text-wrap: pretty; }
 .tile { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 14px; background: var(--surface-2); color: var(--ink); }
 
@@ -222,7 +228,7 @@ button { font: inherit; }
 .meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 20px 20px; }
 .meta h3 { margin: 0; font-size: 19px; letter-spacing: -0.02em; }
 .meta p { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 4px 0 0; color: var(--soft); font-size: 15px; }
-.stretch { color: inherit; text-decoration: none; }
+.stretch { display: inline-block; padding-block: 2px; color: inherit; text-decoration: none; }
 .stretch::after { content: ""; position: absolute; inset: 0; z-index: 3; border-radius: 20px; }
 .stretch:focus-visible { outline: none; }
 .wcard:has(.stretch:focus-visible) { outline: 2px solid var(--red); outline-offset: 3px; }
@@ -314,7 +320,8 @@ button { font: inherit; }
 .cup-b { clip-path: inset(30% 0 0 0); }
 .cup-s { clip-path: inset(0 0 72% 0); animation: steam 2.4s ease-in-out infinite; }
 @keyframes steam { 0%, 100% { opacity: 0.35; translate: 0 2px; } 50% { opacity: 1; translate: 0 -3px; } }
-.kafe-t { margin: 2px 40px 0 0; font-size: 20px; font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+.kafe-t { margin: 2px 40px 0 0; font-size: 20px; font-weight: 800; font-stretch: 112%; line-height: 1.2; letter-spacing: -0.01em; }
+.kafe-t small { font-stretch: 100%; }
 .kafe-t small { display: block; margin-top: 2px; color: var(--soft); font-size: 14px; font-weight: 400; letter-spacing: 0; }
 .kafe-s { margin: 8px 0 14px; color: var(--soft); font-size: 15px; }
 .kafe-x { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: transparent; color: var(--soft); cursor: pointer; transition: background-color 0.2s ease, color 0.2s ease; }
@@ -384,7 +391,8 @@ button { font: inherit; }
   .foot ul { gap: 0; }
   .foot ul li { padding-block: 0; }
   .foot ul a { min-width: 44px; padding-block: 11px; margin-block: 0; }
-  .hero h1 { font-size: clamp(36px, 10.6vw, 46px); }
+  .hero h1 { font-size: clamp(32px, 9.4vw, 40px); font-stretch: 112%; }
+  .h2 { font-stretch: 110%; }
   .lead { font-size: 17px; }
   .ctas .btn { flex: 1 1 auto; }
   .tabs { display: grid; grid-template-columns: 1fr 1fr; width: 100%; }
