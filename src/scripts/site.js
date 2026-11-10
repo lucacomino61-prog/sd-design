@@ -121,9 +121,15 @@ function step(it, now, dt) {
     if (!it.t0) { if (tone.sample(mark(), { reset: true })) it.t0 = now; }
     else if (now - it.t0 > 1050) { it.intro = false; it.fresh = true; }
   } else {
-    const v = state.still ? null : it.video();
+    // a recording feeds the dots frame by frame; where the browser hands over empty frames (Safari, for a recording
+    // that plays but is not shown), the still picture is used instead
+    const v = state.still || it.stillOnly ? null : it.video();
     if (v && v.readyState >= 2 && !v.paused) {
-      if (now - it.last > 64) { tone.sample(cover(v), { reset: it.fresh }); it.last = now; it.fresh = false; }
+      if (now - it.last > 64) {
+        const got = tone.sample(cover(v), { reset: it.fresh, skipEmpty: true });
+        it.last = now;
+        if (got === 'empty') { it.empty = (it.empty || 0) + 1; if (it.empty >= 3) { it.stillOnly = true; it.fresh = true; } } else { it.empty = 0; it.fresh = false; }
+      }
     } else if (it.fresh && it.picture() !== false) {
       it.fresh = false;
       if (!motion) tone.snap();
@@ -141,7 +147,7 @@ if (tones.length) {
     for (const it of tones) {
       if (!it.seen) continue;
       if (due) step(it, now, d);
-      const v = state.still ? null : it.video();
+      const v = state.still || it.stillOnly ? null : it.video();
       if (it.intro || it.fresh || it.tone.busy || (v && !v.paused && !v.ended)) live = true;
     }
     if (due) drawn = now;
@@ -165,7 +171,7 @@ if (live) {
     img.alt = s.alt;
     name.textContent = s.name;
     if (onScreen.has(box) && !state.still) play(box);
-    if (heroTone) { heroTone.intro = false; heroTone.fresh = true; wake(); }
+    if (heroTone) { heroTone.intro = false; heroTone.fresh = true; heroTone.stillOnly = false; heroTone.empty = 0; wake(); }
   };
   // by itself only on a desktop that has not asked to save data; the button works everywhere
   const arm = () => {

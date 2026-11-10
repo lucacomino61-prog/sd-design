@@ -17,6 +17,9 @@ const html = document.documentElement, body = document.body;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const wide = matchMedia('(min-width: 900px)');
 const moving = () => html.classList.contains('move');
+// where in the story (0..1) each line of the example conversation arrives
+const CHAT_AT = [0.03, 0.12, 0.28, 0.37, 0.53, 0.59];
+const CHAT_GAP = 8, CHAT_PAD = 12;
 
 // ---------- the ground ----------
 // Each section names its ground; the page wears the one in the middle of the screen and the stylesheet fades between
@@ -28,7 +31,8 @@ let toneNow = '';
 function setTone(color) {
   if (color === toneNow) return;
   toneNow = color;
-  if (color) body.style.setProperty('--ground', color); else body.style.removeProperty('--ground');
+  // on a client's colour the softer text is as strong as the main text: some of those colours are bright
+  if (color) { body.style.setProperty('--ground', color); body.style.setProperty('--soft', '#f9f4eb'); } else { body.style.removeProperty('--ground'); body.style.removeProperty('--soft'); }
 }
 
 // ---------- scenes ----------
@@ -39,13 +43,15 @@ const scenes = $$('[data-scene]').map((el) => {
     sc.step = 0;
     sc.list = $('.chat-list', el);
     sc.screen = $('.mock-s', el);
+    sc.msgs = $$('.chat-m', el).map((m, i) => ({ el: m, at: CHAT_AT[i] ?? 1, h: 0, shown: '' }));
+    sc.room = 0;
   } else {
     sc.wrap = $('.reel-wrap', el);
     sc.reel = $('.reel', el);
     sc.bar = $('.reel-bar i', el);
     sc.centre = false;
     sc.active = null;
-    sc.slides = $$('.slide', el).map((li) => ({ el: li, img: $('.tall', li), name: $('.slide-name', li), tone: li.dataset.tone || '', left: 0, width: 0, enter: 0, leave: 1, q: -1 }));
+    sc.slides = $$('.slide', el).map((li) => ({ el: li, img: $('.tall', li), tone: li.dataset.tone || '', left: 0, width: 0, enter: 0, leave: 1, q: -1 }));
   }
   return sc;
 });
@@ -96,12 +102,18 @@ function layout() {
   for (const sc of scenes) {
     if (sc.kind === 'story') {
       sc.pinned = moving();
-      sc.list.style.setProperty('--over', '0px');
+      for (const m of sc.msgs) { m.el.style.translate = ''; m.el.style.opacity = ''; m.shown = ''; }
+      sc.screen.style.removeProperty('--seen');
       if (sc.pinned) {
         if (!sc.step) { sc.step = 1; sc.el.dataset.step = '1'; }
-        // how far the conversation must move up for its last line to show in what can be seen of the phone
-        const list = sc.list.getBoundingClientRect(), pin = sc.pin.getBoundingClientRect(), screen = sc.screen.getBoundingClientRect();
-        sc.list.style.setProperty('--over', `${Math.max(0, Math.round(list.bottom - Math.min(screen.bottom, pin.bottom) + 10))}px`);
+        // the room the conversation has: the part of the chat that can be seen (on a phone the mock runs off the foot
+        // of the stage), and the height of each message at this width
+        const list = sc.list.getBoundingClientRect(), pin = sc.pin.getBoundingClientRect();
+        sc.room = Math.max(80, Math.min(list.bottom, pin.bottom - 10) - list.top);
+        // how much of the phone's screen can be seen, for whatever sits at its foot
+        const screen = sc.screen.getBoundingClientRect();
+        sc.screen.style.setProperty('--seen', `${Math.round(Math.min(screen.bottom, pin.bottom) - screen.top)}px`);
+        for (const m of sc.msgs) m.h = m.el.offsetHeight;
       }
     } else {
       const pinned = moving() && fine && wide.matches && sc.el.hasAttribute('data-pin');
@@ -122,7 +134,7 @@ function layout() {
         sc.el.style.height = '';
         sc.reel.style.translate = '';
         sc.bar.style.scale = '';
-        for (const sl of sc.slides) { if (sl.img) sl.img.style.translate = ''; sl.name.style.translate = ''; }
+        for (const sl of sc.slides) if (sl.img) sl.img.style.translate = '';
       }
       sc.pinned = pinned;
     }
@@ -153,6 +165,18 @@ function scenesFrame(now, dt) {
       if (text !== sc.shown) { sc.shown = text; sc.el.style.setProperty('--p', text); }
       const step = Math.min(sc.steps, Math.floor(s * sc.steps) + 1);
       if (step !== sc.step) { sc.step = step; sc.el.dataset.step = String(step); }
+      // the conversation: each message takes its place under the ones that have arrived, and when they no longer
+      // fit, all of them move up so the newest stays in view
+      let y = CHAT_PAD;
+      for (const m of sc.msgs) { const k = clamp((s - m.at) * 30); m.on = 1 - (1 - k) ** 3; m.y = y; y += m.on * (m.h + CHAT_GAP); }
+      const over = Math.max(0, y + CHAT_PAD - CHAT_GAP - sc.room);
+      for (const m of sc.msgs) {
+        const now = `${(m.y - over + (1 - m.on) * 12).toFixed(1)}|${m.on.toFixed(3)}`;
+        if (now === m.shown) continue;
+        m.shown = now;
+        m.el.style.translate = `0 ${(m.y - over + (1 - m.on) * 12).toFixed(1)}px`;
+        m.el.style.opacity = m.on.toFixed(3);
+      }
     } else {
       const x = sc.travel * s;
       sc.reel.style.translate = `${(-x).toFixed(1)}px 0`;
@@ -164,8 +188,6 @@ function scenesFrame(now, dt) {
           const q = clamp((x - sl.enter) / (sl.leave - sl.enter));
           if (q !== sl.q) { sl.q = q; sl.img.style.translate = `0 ${(-75 * q).toFixed(2)}%`; }
         }
-        // the name drifts a little against its phone
-        sl.name.style.translate = `${((at + sl.width / 2 - sc.vw / 2) * 0.07).toFixed(1)}px 0`;
       }
     }
   }
@@ -191,7 +213,7 @@ function bandsFrame() {
 }
 
 // ---------- numbers that count once, when they arrive ----------
-const counts = $$('[data-count]').map((el) => ({ el, to: Number(el.dataset.count), from: Number(el.dataset.from) || 0, t0: 0, done: false }));
+const counts = $$('[data-count]').map((el) => ({ el, to: Number(el.dataset.count), from: 0, t0: 0, done: false })).filter((c) => c.to > 0);
 const running = new Set();
 const arrive = new IntersectionObserver((es) => es.forEach((e) => {
   if (!e.isIntersecting) return;
@@ -201,7 +223,7 @@ const arrive = new IntersectionObserver((es) => es.forEach((e) => {
   c.t0 = 0;
   running.add(c);
   wake();
-}), { threshold: 0.6 });
+}), { threshold: 0.15 });
 function countsFrame(now) {
   for (const c of running) {
     if (!c.t0) c.t0 = now;
@@ -233,28 +255,38 @@ function keepPlace(change) {
   const off = after.top + part * after.height - innerHeight / 2;
   if (Math.abs(off) > 2) scrollBy({ top: off, behavior: 'instant' });
 }
-// The scenes are pinned only once an animation frame has actually arrived. A browser that runs none (some embedded
-// views, a tab opened in the background) keeps the plain page, where nothing depends on a frame to be read.
-let frames = false, armed = false;
+// The scenes take their places as soon as the script starts: the page then has its full height while it loads, so
+// after a reload or a step back the browser can put it where it was. A browser that never runs an animation frame
+// (some embedded views) could not move them, so if no frame has arrived after half a second the page goes back to
+// its plain layout, where nothing depends on a frame to be read; it returns to the scenes if frames start later.
+let frames = false, noFrames = false, armed = false, started = false;
 function setMode() {
-  const move = frames && !state.still;
-  keepPlace(() => { html.classList.toggle('move', move); layout(); });
-  if (move && !armed) {
-    armed = true;
-    // hide what will rise or count, but only what is still below the screen
-    for (const el of splits) if (el.getBoundingClientRect().top > innerHeight * 0.94) { el.classList.add('hide'); reveal.observe(el); }
-    for (const c of counts) if (c.el.getBoundingClientRect().top > innerHeight * 0.9) { c.el.textContent = String(c.from); arrive.observe(c.el); } else c.done = true;
-  }
+  const move = !state.still && !noFrames;
+  const change = () => { html.classList.toggle('move', move); layout(); };
+  // the first time the browser itself is still putting the page where it was; later changes keep the visitor's place
+  if (started) keepPlace(change); else change();
+  started = true;
+  arm();
   if (state.still) {
     for (const el of splits) el.classList.remove('hide');
     running.clear();
     for (const c of counts) { c.done = true; c.el.textContent = String(c.to); }
   }
 }
+// Hide what will rise or count, but only what is still below the screen, and only once frames are known to arrive
+// (whatever is hidden needs a frame to be shown again).
+function arm() {
+  if (armed || !frames || !moving()) return;
+  armed = true;
+  for (const el of splits) if (el.getBoundingClientRect().top > innerHeight * 0.94) { el.classList.add('hide'); reveal.observe(el); }
+  for (const c of counts) if (c.el.getBoundingClientRect().top > innerHeight * 0.9) { c.el.textContent = String(c.from); arrive.observe(c.el); } else c.done = true;
+}
 
 export function startScroll() {
   onStill(setMode);
-  firstFrame(() => { frames = true; setMode(); });
+  firstFrame(() => { frames = true; if (noFrames) { noFrames = false; setMode(); } else arm(); });
+  const watch = () => setTimeout(() => { if (!frames && document.visibilityState === 'visible') { noFrames = true; setMode(); } }, 500);
+  if (document.visibilityState === 'visible') watch(); else document.addEventListener('visibilitychange', watch, { once: true });
   onFrame(scenesFrame);
   onFrame(bandsFrame);
   onFrame(countsFrame);

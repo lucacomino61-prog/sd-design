@@ -84,6 +84,14 @@ word and three numbers count. No animation library and no 3D: one small script (
 the page has scrolled. The "Stop animations" switch in the rail, the system's "reduce motion" setting, or a browser
 without JavaScript all give the same plain page: a list of steps beside a picture, and a strip of phones.
 
+The example conversation in the story's phone behaves like a real chat: each message arrives under the one before it,
+and when the screen is full the conversation moves up under the chat's header. Its words are in the language files
+(`offer.chat`), and the moments at which each message arrives are the `CHAT_AT` list at the top of
+`src/scripts/scroll.js` (0 is the start of the story, 1 its end).
+
+Spacing follows one rule: every section starts one `--pad` (set at the top of `src/styles/site.css`) after the one
+before it, and the left and right margins are the same (`--m`).
+
 ## When something changes
 
 | You changed | Run |
@@ -92,7 +100,20 @@ without JavaScript all give the same plain page: a list of steps beside a pictur
 | Any headline or button text, in any language | `node tools/hero-fit.mjs` (it must print 0 failures: nothing under the glass phone, no word cut off on a phone) |
 | The home headline | `node tools/measure-h1.mjs` first: it prints the size each language allows (`--h1` in `src/styles/site.css`) |
 | A client's site (to record it again) | `node tools/record-phone.mjs <id>`, `node tools/tall-shots.mjs <id>` (the tall picture in the gallery), then `node tools/client-facts.mjs <id>` to re-read its facts |
-| Anything, before publishing | `npm run build && npm run preview`, then `node tools/check-site.mjs ../sd-check http://localhost:3761`, `node tools/states.mjs ../sd-states http://localhost:3761` and `node tools/scenes.mjs ../sd-scenes http://localhost:3761` |
+| Anything, before publishing | `npm run build && npm run preview`, then the checks below, all against `http://localhost:3761` |
+
+### The checks (each prints "0 failures" when all is well)
+
+| Check | What it proves |
+|---|---|
+| `node tools/check-site.mjs ../sd-check http://localhost:3761` | Every page on desktop and phone: no script errors, images with sizes and alt text, tap targets; then what a search engine reads (titles, descriptions, canonical, languages, structured data, links, sitemap) |
+| `node tools/states.mjs ../sd-states http://localhost:3761` | The interactions: the menu, the rows, the form, the stop switch, the keyboard in the gallery, an example under a level opening its row, a reload in the middle of the page coming back to the same place |
+| `node tools/scenes.mjs ../sd-scenes http://localhost:3761` | What the scroll moves: the counter, the grounds, the numbers, the story step by step, the gallery; and the plain page with the switch, with "reduce motion", without animation frames and without JavaScript |
+| `node tools/motion.mjs http://localhost:3761` | Frame by frame, at 12 screen sizes and in the 3 languages, scrolling down and back up: no message of the example conversation over another or out of the chat, nothing moving against the scroll |
+| `node tools/hero-fit.mjs http://localhost:3761` | The headline never under the glass phone, no word of any heading cut off on a phone, the button's line on one line on a desktop |
+| `node tools/webkit.mjs ../sd-webkit http://localhost:3761` | The same pages in Safari's engine (iPhone): scripts, pinned scenes, grounds, the halftone. Needs Playwright, which is installed in `../holdings` |
+| `node tools/spacing.mjs http://localhost:3761 /` | Prints the space above and below every section and its left and right margins, to check they are even (in Git Bash put `MSYS_NO_PATHCONV=1` in front, or the `/` is rewritten) |
+| `node tools/strip.mjs ../sd-strip .story-scene .mock 390x844 0 1 16` | A film strip of one moving part (here: the phone of the story on a phone screen, 16 frames), to look at a transition frame by frame |
 
 A client's colour is written twice (`src/data/sites.js` and the top of `src/styles/site.css`); the check fails if they differ.
 

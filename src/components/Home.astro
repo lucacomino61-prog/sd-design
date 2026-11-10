@@ -58,7 +58,7 @@ const nodes = [
     <ul class="poster-lines">
       {numbers.map((n, i) => (
         <li>
-          <b class="display" aria-hidden="true" data-count={n} data-from={n ? 0 : 9}>{n}</b><span class="sr">{n} </span>
+          <b class="display" aria-hidden="true" data-count={n}>{n}</b><span class="sr">{n} </span>
           <span class="display split"><Words text={o.numbers[i][0]} /></span>
         </li>
       ))}

@@ -60,7 +60,7 @@ export function makeTone(canvas, { color = '#ff4d36', glass = '#f9f4eb', lens = 
   const small = document.createElement('canvas');
   const sctx = small.getContext('2d', { willReadFrequently: true });
   let cell = 9, cols = 0, rows = 0, w = 0, h = 0, dpr = 1;
-  let cur = new Float32Array(0), tgt = new Float32Array(0);
+  let cur = new Float32Array(0), tgt = new Float32Array(0), next = new Float32Array(0);
   let inv = false, fresh = true, busy = true;
   // the glass: where the pointer is (tx, ty), where the glass has got to (px, py), and how open it is (r)
   let tx = 0, ty = 0, px = 0, py = 0, r = 0, want = 0;
@@ -72,24 +72,30 @@ export function makeTone(canvas, { color = '#ff4d36', glass = '#f9f4eb', lens = 
     cell = dot || (w < 760 ? 7 : w < 1280 ? 8 : 9);
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     const c = Math.ceil(w / cell), rr = Math.ceil(h / cell);
-    if (c !== cols || rr !== rows) { cols = c; rows = rr; small.width = cols; small.height = rows; cur = new Float32Array(cols * rows); tgt = new Float32Array(cols * rows); }
+    if (c !== cols || rr !== rows) { cols = c; rows = rr; small.width = cols; small.height = rows; cur = new Float32Array(cols * rows); tgt = new Float32Array(cols * rows); next = new Float32Array(cols * rows); }
     busy = true;
     return true;
   }
 
   // Read a source into dot sizes. Dots follow the darker tone of a light page and the lighter tone of a dark one, so
-  // an empty page stays empty and its words and pictures light up.
-  function sample(draw, { reset = false } = {}) {
+  // an empty page stays empty and its words and pictures light up. With `skipEmpty`, a source that gives no dots at
+  // all (a video frame the browser did not really decode) changes nothing and the answer is 'empty'.
+  function sample(draw, { reset = false, skipEmpty = false } = {}) {
     if (!cols) return false;
     sctx.fillStyle = '#fff';
     sctx.fillRect(0, 0, cols, rows);
     if (draw(sctx, cols, rows) === false) return false;
     const d = sctx.getImageData(0, 0, cols, rows).data;
     let sum = 0;
-    for (let i = 0, j = 0; i < tgt.length; i++, j += 4) { const v = 1 - (d[j] * 0.2126 + d[j + 1] * 0.7152 + d[j + 2] * 0.0722) / 255; tgt[i] = v; sum += v; }
-    const mean = sum / tgt.length;
-    if (reset || fresh) { inv = mean > 0.5; fresh = false; } else if (!inv && mean > 0.62) inv = true; else if (inv && mean < 0.38) inv = false;
-    for (let i = 0; i < tgt.length; i++) { const v = inv ? 1 - tgt[i] : tgt[i]; tgt[i] = v < 0.12 ? 0 : Math.min(1, (v - 0.12) * 1.45); }
+    for (let i = 0, j = 0; i < next.length; i++, j += 4) { const v = 1 - (d[j] * 0.2126 + d[j + 1] * 0.7152 + d[j + 2] * 0.0722) / 255; next[i] = v; sum += v; }
+    const mean = sum / next.length;
+    let flip = inv;
+    if (reset || fresh) flip = mean > 0.5; else if (!inv && mean > 0.62) flip = true; else if (inv && mean < 0.38) flip = false;
+    let dots = 0;
+    for (let i = 0; i < next.length; i++) { const v = flip ? 1 - next[i] : next[i]; next[i] = v < 0.12 ? 0 : Math.min(1, (v - 0.12) * 1.45); if (next[i] > 0) dots++; }
+    if (skipEmpty && dots < next.length * 0.003) return 'empty';
+    inv = flip; fresh = false;
+    tgt.set(next);
     busy = true;
     return true;
   }

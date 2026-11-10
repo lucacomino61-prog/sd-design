@@ -66,6 +66,10 @@ html:lang(it) { --h1: min(7.4vw, 9.6svh); }
 /* the ground fades; the text and the lines change in one step half-way, so the words are never the colour of the ground */
 html.fade body { transition: --ground 0.32s var(--quick), --ink 0s 0.14s, --soft 0s 0.14s, --line 0s 0.14s, --line-2 0s 0.14s, --num 0s 0.14s, --hot 0s 0.14s, --on-ink 0s 0.14s; }
 html.fade main > [data-ground] { --ground: inherit; --ink: inherit; --soft: inherit; --line: inherit; --line-2: inherit; --num: inherit; --hot: inherit; --on-ink: inherit; background: none; color: inherit; }
+/* A coloured section read plainly is a block, with the same room above and below its content and a gap before it.
+   Once the page itself wears the ground there is no block: every section then starts one --pad after the last. */
+html.fade main > [data-ground] { margin-top: 0; padding-bottom: 0; }
+html.fade main > .close { padding-bottom: clamp(56px, 6vw, 96px); }
 /* each client's own colour, sampled from their site (the same values as src/data/sites.js) */
 .t-martiri { --tone: #1f6fb0; }
 .t-elixir { --tone: #5b2132; }
@@ -158,7 +162,6 @@ h2.display { font-size: clamp(38px, 5.5vw, 104px); }
 .bar { position: fixed; z-index: 40; top: 16px; left: 50%; translate: -50% 0; width: min(430px, calc(100vw - 32px)); height: 46px; display: grid; grid-template-columns: 54px 1fr 54px; align-items: center; border: 1px solid var(--line); border-radius: 6px; background: var(--glass); color: var(--ink); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); view-transition-name: bar; }
 /* Glass is for what has a picture behind it. Over the flat light or red ground the bar and the chip turn solid, so
    their small words keep their contrast; without the script (sections paint their own ground) the glass is denser. */
-.bar, .touch { transition: background-color 0.4s var(--quick); }
 body[data-ground="light"] .bar, body[data-ground="red"] .bar, body[data-ground="light"] .touch, body[data-ground="red"] .touch { background-color: #1a1c1c; }
 html:not(.fade) .bar, html:not(.fade) .touch { background-color: rgb(26 28 28 / 0.78); }
 .logo { display: grid; place-items: center; height: 100%; }
@@ -213,7 +216,7 @@ html:not(.fade) .bar, html:not(.fade) .touch { background-color: rgb(26 28 28 / 
 @media (hover: hover) { .live-next:hover { color: var(--red); } .live-next:hover .ic { translate: 3px 0; } }
 
 /* ---------- the offer in three numbers: a poster on the red ground ---------- */
-.poster { padding: clamp(56px, 7vw, 120px) var(--m) clamp(64px, 8vw, 140px); }
+.poster { padding: var(--pad) var(--m); }
 .poster-lines { border-bottom: 2px solid var(--ink); }
 .poster-lines li { display: grid; grid-template-columns: 30vw minmax(0, 1fr); align-items: baseline; gap: var(--g); padding: 0.6vw 0 1.5vw; border-top: 2px solid var(--ink); }
 .poster-lines b { font-size: clamp(110px, 17vw, 340px); line-height: 0.86; letter-spacing: -0.045em; font-variant-numeric: tabular-nums; }
@@ -232,7 +235,7 @@ html:not(.fade) .bar, html:not(.fade) .touch { background-color: rgb(26 28 28 / 
 .beat-t { grid-column: 2; }
 .beat-t p { max-width: 31em; color: var(--soft); }
 /* the phone: a flat frame, a dark conversation and, over it, the light page of the draft */
-.mock { grid-column: 8 / span 4; justify-self: center; width: min(100%, 300px); aspect-ratio: 9 / 18.6; padding: 6px; border-radius: 30px; background: #0f1010; outline: 1px solid var(--line-2); box-shadow: 0 50px 70px -40px rgb(0 0 0 / 0.7); }
+.mock { grid-column: 7 / -1; justify-self: center; width: min(100%, 300px); aspect-ratio: 9 / 18.6; padding: 6px; border-radius: 30px; background: #0f1010; outline: 1px solid var(--line-2); box-shadow: 0 50px 70px -40px rgb(0 0 0 / 0.7); }
 .mock-s { position: relative; height: 100%; overflow: hidden; border-radius: 24px; background: #151717; color: #f9f4eb; }
 .chat { position: absolute; inset: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); }
 .chat-top { display: flex; align-items: center; gap: 8px; padding: 13px 14px 11px; border-bottom: 1px solid rgb(249 244 235 / 0.12); font: 500 10px/1 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; }
@@ -258,7 +261,7 @@ html:not(.fade) .bar, html:not(.fade) .touch { background-color: rgb(26 28 28 / 
 html:not(.fade) .page-pic { background: radial-gradient(circle, #ff4d36 0 26%, transparent 29%) 0 0 / 8px 8px #1a1c1c; }
 .page-rows { font-size: 12px; line-height: 1.35; }
 .page-rows li { padding: 8px 0; border-top: 1px solid rgb(26 28 28 / 0.18); }
-.page-done { position: absolute; left: 10px; right: 10px; bottom: 10px; padding: 11px 12px; border-radius: 6px; background: #1a1c1c; color: #f9f4eb; font-size: 13px; font-weight: 600; line-height: 1.2; text-align: center; }
+.page-done { position: absolute; left: 10px; right: 10px; bottom: calc(100% - var(--seen, 100%) + 10px); padding: 11px 12px; border-radius: 6px; background: #1a1c1c; color: #f9f4eb; font-size: 13px; font-weight: 600; line-height: 1.2; text-align: center; }
 .story-ask { display: grid; justify-items: center; padding: clamp(40px, 5vw, 80px) var(--m) 0; }
 .story-ask .ask { max-width: 30rem; }
 
@@ -275,19 +278,15 @@ html.move .story-scene[data-step="1"] .beat:nth-child(1) .beat-t, html.move .sto
 html.move .mock { width: auto; height: min(100%, 660px); max-width: 100%; }
 /* on a screen tall enough, the title stays with the stage: it sits at the top of the left column, the steps at its foot */
 @media (min-width: 761px) and (min-height: 720px) {
-  html.move .story-stage > h2 { position: sticky; z-index: 2; top: 92px; max-width: none; width: 58%; font-size: min(4.6vw, 8.2svh); pointer-events: none; }
+  html.move .story-stage > h2 { position: sticky; z-index: 2; top: 84px; max-width: none; width: 50%; font-size: min(4.2vw, 8svh); pointer-events: none; }
   html.move .beats { align-self: end; }
 }
-/* in the phone: each line of the conversation arrives at its own point of the scroll, the list moves up to keep the
-   newest line in view (--over is measured by the script), then the draft slides up over it and is read a little */
-html.move .chat-m { --on: clamp(0, calc((var(--p, 0) - var(--at, 0)) * 30), 1); opacity: var(--on); translate: 0 calc((1 - var(--on)) * 14px); }
-html.move .chat-m:nth-child(1) { --at: 0.03; }
-html.move .chat-m:nth-child(2) { --at: 0.12; }
-html.move .chat-m:nth-child(3) { --at: 0.28; }
-html.move .chat-m:nth-child(4) { --at: 0.37; }
-html.move .chat-m:nth-child(5) { --at: 0.53; }
-html.move .chat-m:nth-child(6) { --at: 0.59; }
-html.move .chat-list { translate: 0 calc(clamp(0, calc(var(--p, 0) / 0.6), 1) * -1 * var(--over, 0px)); }
+/* in the phone: the script places each message of the conversation as it arrives (under the one before it, the
+   whole conversation moving up once the screen is full); what leaves is cut off under the chat's header. Then the
+   draft slides up over the conversation and is read a little */
+html.move .chat-list { position: relative; display: block; overflow: hidden; padding: 0; }
+html.move .chat-m { position: absolute; top: 0; left: 10px; opacity: 0; will-change: translate, opacity; }
+html.move .chat-m.me { left: auto; right: 10px; }
 html.move .page { translate: 0 calc((1 - clamp(0, calc((var(--p, 0) - 0.65) * 11), 1)) * 101%); }
 html.move .page-in { translate: 0 calc(clamp(0, calc((var(--p, 0) - 0.8) * 6), 1) * -20%); }
 html.move .page-done { --on: clamp(0, calc((var(--p, 0) - 0.87) * 22), 1); opacity: var(--on); translate: 0 calc((1 - var(--on)) * 12px); }
@@ -307,9 +306,11 @@ html.move .page-done { --on: clamp(0, calc((var(--p, 0) - 0.87) * 22), 1); opaci
 .slide { flex: none; display: grid; grid-template-columns: auto minmax(0, 16rem); align-items: end; gap: 0 24px; padding: 22px; border-radius: 6px; background: var(--tone); scroll-snap-align: start; }
 /* with the script the page itself takes the colour of the client in the middle, and the cards are clear */
 html.fade .slide { padding-block: 6px; background: none; }
-.flat { position: relative; height: min(56svh, 520px); aspect-ratio: 390 / 844; overflow: hidden; border: 6px solid #0f1010; border-radius: 28px; outline: 1px solid var(--line-2); background: #0f1010; box-shadow: 0 40px 60px -34px rgb(0 0 0 / 0.65); }
+/* the height decides the size; the width is stated from it (Safari would otherwise size the column from the picture) */
+.flat { --fh: min(56svh, 520px); position: relative; flex: none; width: calc(var(--fh) * 0.4621); height: var(--fh); overflow: hidden; border: 6px solid #0f1010; border-radius: 28px; outline: 1px solid var(--line-2); background: #0f1010; box-shadow: 0 40px 60px -34px rgb(0 0 0 / 0.65); }
 .flat img { width: 100%; }
 .flat-wide { align-self: center; width: min(74vw, 30rem); height: auto; aspect-ratio: 1200 / 630; border-radius: 16px; }
+.flat-wide img { position: absolute; inset: 0; }
 .flat-wide img { height: 100%; object-fit: cover; }
 .flat-you { display: grid; place-items: center; padding: 18px; border: 1.5px dashed var(--line-2); outline: 0; background: none; box-shadow: none; font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; text-align: center; color: var(--soft); }
 .slide-b { display: grid; grid-template-rows: 1fr; align-content: end; justify-items: start; gap: 10px; height: 100%; min-width: 0; }
@@ -323,7 +324,7 @@ html.fade .slide { padding-block: 6px; background: none; }
 .reel-scene.pinned .reel-wrap { overflow: visible; scroll-snap-type: none; }
 .reel-scene.pinned .reel { gap: 0; padding: 0 14vw 0 var(--m); will-change: translate; }
 .reel-scene.pinned .slide { grid-template-columns: auto clamp(15rem, 23vw, 22rem); align-items: stretch; gap: 0 clamp(22px, 2.6vw, 44px); padding: 0 clamp(56px, 8vw, 140px) 0 0; }
-.reel-scene.pinned .flat { height: min(66svh, 640px); }
+.reel-scene.pinned .flat { --fh: min(66svh, 640px); }
 .reel-scene.pinned .flat-wide { height: auto; width: clamp(20rem, 32vw, 32rem); }
 .reel-scene.pinned .tall { will-change: translate; }
 .reel-scene.pinned .slide-b { padding: 4px 0; }
@@ -363,18 +364,18 @@ html.fade .slide { padding-block: 6px; background: none; }
 }
 
 /* ---------- every kind of site, by difficulty: the light section ---------- */
-.levels { margin-top: var(--pad); padding-bottom: var(--pad); overflow: clip; }
+.levels { margin-top: var(--pad); padding: var(--pad) 0; overflow: clip; }
 /* one line of big type that slides as the page scrolls past it */
-.band { padding: clamp(14px, 2.4vw, 36px) 0 0; white-space: nowrap; font-size: clamp(60px, 12.5vw, 230px); line-height: 1.3; }
+.band { white-space: nowrap; font-size: clamp(60px, 12.5vw, 230px); line-height: 1.3; }
 .band > span { display: inline-block; padding-left: var(--m); }
 html.move .band > span { will-change: translate; }
 .band i { display: inline-block; width: 0.26em; height: 0.26em; margin: 0 0.3em; background: var(--hot); vertical-align: 0.14em; }
-.sec-head { display: grid; gap: 20px; padding: clamp(44px, 5vw, 84px) var(--m) 0; }
+.sec-head { display: grid; gap: 20px; padding: clamp(36px, 4vw, 64px) var(--m) 0; }
 .sec-head h2 { max-width: 11em; }
 .sec-head .lead { max-width: 30em; color: var(--soft); }
 /* three levels as three stairs: each step up shows more of a real site of that level */
-.stairs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; gap: var(--g); margin-top: clamp(44px, 5vw, 80px); padding: 0 var(--m); }
-.stair { display: grid; align-content: start; gap: 14px; padding-top: 16px; border-top: 2px solid var(--ink); }
+.stairs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(5, auto); gap: 0 var(--g); margin-top: clamp(44px, 5vw, 80px); padding: 0 var(--m); }
+.stair { display: grid; grid-row: span 5; grid-template-rows: subgrid; align-content: start; gap: 14px; padding-top: 16px; border-top: 2px solid var(--ink); }
 .pips { display: flex; gap: 4px; }
 .pips i { width: 12px; height: 12px; border: 1px solid var(--line-2); border-radius: 1px; }
 .pips i.on { border-color: var(--hot); background: var(--hot); }
@@ -385,9 +386,7 @@ html.move .band > span { will-change: translate; }
 .stair-eg { display: grid; gap: 10px; margin-top: 4px; }
 .stair-cap { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; }
 .stair-cap .ic { transition: translate 0.15s var(--quick); }
-.stair-eg img { width: 100%; height: clamp(150px, 13vw, 220px); object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 6px; transition: scale 0.8s var(--out); }
-.stair:nth-child(2) .stair-eg img { height: clamp(230px, 21vw, 340px); }
-.stair:nth-child(3) .stair-eg img { height: clamp(310px, 29vw, 460px); }
+.stair-eg img { width: 100%; height: clamp(220px, 21vw, 340px); object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 6px; }
 @media (hover: hover) { .stair-eg:hover .ic { translate: 2px -2px; } }
 .kinds-b { margin-top: clamp(64px, 7vw, 120px); }
 .kinds-t, .more-t { padding: 0 var(--m) 18px; font-size: clamp(21px, 1.9vw, 30px); font-weight: 700; font-stretch: 108%; line-height: 1.12; letter-spacing: -0.025em; }
@@ -429,13 +428,14 @@ html.move .band > span { will-change: translate; }
 /* ---------- the kinds of business as big ruled links ---------- */
 .more { padding-inline: 0; }
 .more-list { border-bottom: 1px solid var(--line-2); }
-.more-list a { display: flex; align-items: center; justify-content: space-between; gap: var(--g); padding: 20px var(--m); border-top: 1px solid var(--line-2); transition: background-color 0.2s var(--quick), color 0.2s var(--quick); }
+/* the colour change belongs to the hover only: when the page changes ground these words switch with the rest, at once */
+.more-list a { display: flex; align-items: center; justify-content: space-between; gap: var(--g); padding: 20px var(--m); border-top: 1px solid var(--line-2); }
 .more-list .display { font-size: clamp(28px, 4.4vw, 80px); transition: translate 0.5s var(--out); }
 .more-list .ic { flex: none; transition: translate 0.3s var(--out); }
-@media (hover: hover) { .more-list a:hover { background: #ff4d36; color: #1a1c1c; } .more-list a:hover .display { translate: 12px 0; } .more-list a:hover .ic { translate: 4px -4px; } }
+@media (hover: hover) { .more-list a:hover { background: #ff4d36; color: #1a1c1c; transition: background-color 0.2s var(--quick), color 0.2s var(--quick); } .more-list a:hover .display { translate: 12px 0; } .more-list a:hover .ic { translate: 4px -4px; } }
 
 /* ---------- the close: the red block ---------- */
-.close { margin-top: var(--pad); padding: clamp(72px, 8vw, 136px) var(--m) clamp(48px, 5vw, 80px); }
+.close { margin-top: var(--pad); padding: var(--pad) var(--m); }
 .close > h2 { font-size: clamp(44px, 8.2vw, 156px); max-width: 12em; }
 .close-b { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 44px var(--g); margin-top: clamp(44px, 5vw, 80px); padding-top: 22px; border-top: 1px solid var(--line-2); }
 .close-ways { grid-column: 1 / span 5; display: grid; gap: 22px; justify-items: start; }
@@ -592,9 +592,9 @@ html.move .band > span { will-change: translate; }
   .live .phone { position: absolute; width: 2px; height: 4px; padding: 0; border: 0; opacity: 0; overflow: hidden; pointer-events: none; }
   .live-cap { margin: 0; justify-content: flex-start; padding: 7px 10px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--glass); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
   .live-next { margin: 0; padding: 15px 0 15px 12px; }
-  .poster-lines li { grid-template-columns: 38vw minmax(0, 1fr); padding: 6px 0 12px; }
+  .poster-lines li { grid-template-columns: 40vw minmax(0, 1fr); padding: 6px 0 12px; }
   .poster-lines b { font-size: 26vw; }
-  .poster-lines .split { font-size: 6.3vw; }
+  .poster-lines .split { font-size: 6vw; }
   .story-scene .pin { grid-template-columns: 1fr; gap: 34px; }
   .beats, .mock { grid-column: 1; }
   .beat { grid-template-columns: 1fr; gap: 6px; padding: 18px 0 22px; }
@@ -610,11 +610,10 @@ html.move .band > span { will-change: translate; }
   html.move .story-scene[data-step="1"] .beat:nth-child(1), html.move .story-scene[data-step="2"] .beat:nth-child(2), html.move .story-scene[data-step="3"] .beat:nth-child(3), html.move .story-scene[data-step="4"] .beat:nth-child(4) { translate: 0 0; }
   html.move .beat-t { grid-template-rows: 1fr; }
   html.move .mock { position: absolute; left: 50%; top: calc(78px + 13.5rem + 14px); translate: -50% 0; width: min(76vw, 310px); height: auto; }
-  html.move .page-done { top: 40%; bottom: auto; }
   .say { font-size: 18px; }
   .slide { grid-template-columns: 1fr; gap: 16px; align-items: start; width: 78vw; padding: 16px; }
   html.fade .slide { padding: 0; }
-  .flat { height: min(54svh, 470px); }
+  .flat { --fh: min(54svh, 470px); }
   .flat-wide { width: 100%; height: auto; }
   .slide-b { height: auto; }
   .slide-name { font-size: 8.4vw; }
@@ -633,11 +632,10 @@ html.move .band > span { will-change: translate; }
   .row .phone img, .row .phone video { border-radius: 9px; }
   .row .phone video { inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); }
   .band { font-size: 17vw; }
-  .stairs { grid-template-columns: 1fr; gap: 44px; }
+  .stairs { grid-template-columns: 1fr; grid-template-rows: none; gap: 44px; }
+  .stair { grid-row: auto; grid-template-rows: none; }
   .stair h3 { font-size: 8.4vw; }
-  .stair-eg img, .stair:nth-child(2) .stair-eg img, .stair:nth-child(3) .stair-eg img { height: 46vw; }
-  .stair:nth-child(2) .stair-eg img { height: 62vw; }
-  .stair:nth-child(3) .stair-eg img { height: 78vw; }
+  .stair-eg img { height: 62vw; }
   .stair-cap { padding: 12px 0; }
   .crumbs a { display: inline-block; padding: 15px 0; }
   .why, .faq, .get { grid-template-columns: 1fr; gap: 30px; }
@@ -670,6 +668,8 @@ html.move .band > span { will-change: translate; }
   .still { padding-block: 15px; }
   .kafe { left: 16px; }
 }
+/* the narrowest phones: the rail's three parts each stay on one line */
+@media (max-width: 350px) { .rail { gap: 6px; } .rail-wa, .still, .rail-count { font-size: 10px; white-space: nowrap; } }
 /* a short phone: less room above the line, so the button stays on the first screen */
 @media (max-width: 760px) and (max-height: 620px) { .hero { padding-top: 112px; } }
 /* a touch screen hides the strip's scrollbar: the strip is swiped */

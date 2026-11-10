@@ -67,6 +67,29 @@ for (const phone of [false, true]) {
   await sleep(1600);
   must(await page.$eval('#greta', (el) => el.open && el.getBoundingClientRect().top < innerHeight * 0.6), `${tag}: /#greta opens that row and shows it`);
 
+  // an example under a level opens that client's row
+  await page.goto(base + '/', { waitUntil: 'load' });
+  await sleep(1800);
+  await page.$eval('.stair-eg', (el) => { el.scrollIntoView({ block: 'center', behavior: 'instant' }); el.click(); });
+  await sleep(2600);
+  must(await page.$eval('#kater', (el) => el.open && el.getBoundingClientRect().top > -10 && el.getBoundingClientRect().top < innerHeight * 0.7), `${tag}: the example under a level opens its row and shows it`);
+
+  // the keyboard in the gallery: a link in a phone that is off to the side comes on screen when it takes the focus
+  await page.$eval('.reel-scene', (el) => el.scrollIntoView({ block: 'start', behavior: 'instant' }));
+  await sleep(700);
+  await page.$eval('.slide:nth-child(3) a.lnk', (el) => el.focus());
+  await sleep(700);
+  must(await page.$eval('.slide:nth-child(3) a.lnk', (el) => { const r = el.getBoundingClientRect(); return document.activeElement === el && r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight; }), `${tag}: a focused link in the gallery is brought on screen`);
+
+  // reloading in the middle of the page comes back to the same place (from a fresh page: an opened row closes on reload)
+  await page.goto(base + '/', { waitUntil: 'load' });
+  await sleep(1800);
+  await page.$eval('.why', (el) => el.scrollIntoView({ block: 'center', behavior: 'instant' }));
+  await sleep(500);
+  await page.reload({ waitUntil: 'load' });
+  await sleep(2200);
+  must(await page.$eval('.why', (el) => { const r = el.getBoundingClientRect(); return r.top < innerHeight * 0.8 && r.bottom > innerHeight * 0.2; }), `${tag}: a reload in the middle of the page stays at the same section`);
+
   // a question
   await page.$eval('.qs .row > summary', (el) => { el.scrollIntoView({ block: 'center', behavior: 'instant' }); el.click(); });
   await sleep(900);
