@@ -1,0 +1,14 @@
+---
+// Questions as the same ruled rows as the work. The answer is in the HTML, so it can be read and quoted without
+// the script.
+const { items, name = 'faq', level = 3 } = Astro.props;
+const H = `h${level}`;
+---
+<div class="rows qs">
+  {items.map(([q, a]) => (
+    <details class="row q" name={name}>
+      <summary><H class="q-t">{q}</H><span class="plus" aria-hidden="true"></span></summary>
+      <div class="q-a"><p>{a}</p></div>
+    </details>
+  ))}
+</div>

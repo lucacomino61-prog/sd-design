@@ -1,0 +1,29 @@
+---
+// The privacy page: only what the site really does. It sets no cookies, loads nothing from other services and
+// stores nothing; the paragraph about the form follows the way the form is wired in src/data/contact.js.
+import Base from '../layouts/Base.astro';
+import { SITE, DRAFT } from '../data/site.js';
+import { CONTACT } from '../data/contact.js';
+const { t } = Astro.props;
+const p = t.privacy;
+const form = CONTACT.formEndpoint ? p.formInbox : p.formWa;
+const who = [SITE.legal.name, SITE.legal.nipt && `NIPT ${SITE.legal.nipt}`, SITE.legal.address, CONTACT.email].filter(Boolean);
+---
+<Base t={t} page="privacy" sections={2}>
+  <article class="doc" data-section="1">
+    <h1 class="display">{p.h1}</h1>
+    <p class="lead">{p.lead}</p>
+    {p.sections.map(([title, paragraphs]) => (
+      <section>
+        <h2>{title}</h2>
+        {paragraphs.map((x) => <p>{x === '{form}' ? form : x}</p>)}
+      </section>
+    ))}
+    {(who.length > 0 || DRAFT) && (
+      <section>
+        <h2>{p.who}</h2>
+        {who.length > 0 ? <dl>{who.map((x) => <dd>{x}</dd>)}</dl> : <p>{p.whoDraft}</p>}
+      </section>
+    )}
+  </article>
+</Base>

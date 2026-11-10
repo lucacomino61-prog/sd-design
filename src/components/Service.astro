@@ -1,0 +1,65 @@
+---
+// One page per kind of business and language: what you get, where we have done it (the same rows as the home, only
+// that kind's projects), the questions, and the way to the other three. Where there is no project yet, it says so.
+import Base from '../layouts/Base.astro';
+import Icon from './Icon.astro';
+import Work from './Work.astro';
+import Faq from './Faq.astro';
+import { SERVICES, href, abs, wa } from '../data/site.js';
+import { SITES, BY_KIND } from '../data/sites.js';
+
+const { t, kind } = Astro.props;
+const lang = t.lang, S = t.services, s = S[kind];
+const pad = (n) => String(n).padStart(2, '0');
+const home = href('home', lang);
+// A clinic has no project of its own yet: the rows there are the two sites that already speak Italian.
+const ids = kind === 'clinic' ? ['martiri', 'kater'] : BY_KIND(kind);
+const src = kind === 'clinic' ? null : SITES[ids[0]];
+const others = SERVICES.filter((k) => k !== kind);
+
+const ORG = abs('/') + '#studio', here = abs(href(kind, lang));
+const nodes = [
+  { '@type': 'Service', '@id': here + '#service', name: s.h1.replace(/\.$/, ''), description: s.lead, serviceType: t.kinds[kind], url: here, provider: { '@id': ORG }, areaServed: { '@type': 'Country', name: 'Albania' }, availableLanguage: ['sq', 'en', 'it'] },
+  { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'SD Design', item: abs(home) }, { '@type': 'ListItem', position: 2, name: t.kinds[kind], item: here }] },
+];
+---
+<Base t={t} page={kind} nodes={nodes} sections={6} waMsg={s.waMsg}>
+  <section class="hero shero" id="top" aria-labelledby="h1" data-section="1">
+    <canvas class="tone hero-tone" data-tone={src ? 'site' : 'mark'} data-video={src?.video} data-poster={src?.poster ?? src?.card} aria-hidden="true"></canvas>
+    <div class="hero-b">
+      <nav class="crumbs" aria-label={t.ui.crumbs}><ol><li><a href={home}>SD Design</a></li><li aria-current="page">{t.kinds[kind]}</li></ol></nav>
+      <h1 class="display" id="h1">{s.h1}</h1>
+      <div class="hero-foot">
+        <p class="lead">{s.lead}</p>
+        <div class="ctas"><a class="cta" {...wa(s.waMsg)}><span><Icon name="whatsapp-logo" size={20} /></span>{s.cta}</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="get on-light" id="get" aria-labelledby="get-h" data-section="2">
+    <h2 class="display" id="get-h">{S.getT}</h2>
+    <ol class="get-list">
+      {s.get.map(([title, text], i) => <li><span class="num" aria-hidden="true">[ {pad(i + 1)} ]</span><h3>{title}</h3><p>{text}</p></li>)}
+    </ol>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-h" data-section="3">
+    <div class="work-top">
+      <h2 class="display" id="work-h">{S.egT}</h2>
+      {s.egNote && <p class="lead">{s.egNote}</p>}
+    </div>
+    <Work t={t} ids={ids} />
+  </section>
+
+  <section class="faq" id="faq" aria-labelledby="faq-h" data-section="4">
+    <h2 class="display" id="faq-h">{S.faqT}</h2>
+    <div class="faq-b"><Faq items={[...s.faq, S.price]} /></div>
+  </section>
+
+  <section class="more" aria-labelledby="more-h" data-section="5">
+    <h2 class="tag" id="more-h">[ {S.moreT} ]</h2>
+    <ul class="more-list">
+      {others.map((k) => <li><a href={href(k, lang)}><span class="display">{t.home.what.cards[k][0]}</span><Icon name="arrow-up-right" size={28} /></a></li>)}
+    </ul>
+  </section>
+</Base>

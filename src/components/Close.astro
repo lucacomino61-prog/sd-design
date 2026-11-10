@@ -1,0 +1,34 @@
+---
+// The close of every page: the red block with the ways to reach the studio and a short form. The form needs no
+// server: it opens WhatsApp with the message written (or posts to an inbox, when src/data/contact.js names one).
+import Icon from './Icon.astro';
+import { wa, tel, ig } from '../data/site.js';
+import { CONTACT } from '../data/contact.js';
+const { t, msg, n } = Astro.props;
+const c = t.contact;
+---
+<section class="close on-red" id="contact" aria-labelledby="close-h" data-section={n}>
+  <h2 class="display" id="close-h">{c.t[0]}<br />{c.t[1]}</h2>
+  <div class="close-b">
+    <div class="close-ways">
+      <a class="cta cta-ink" {...wa(msg)}><span><Icon name="whatsapp-logo" size={20} /></span>{c.wa}</a>
+      <p class="lead">{c.sub}</p>
+      <ul class="links">
+        <li><a class="lnk" {...tel}>{CONTACT.phone ?? c.tel}<Icon name="arrow-up-right" size={12} /></a></li>
+        <li><a class="lnk" {...ig}>{CONTACT.instagram ? `@${CONTACT.instagram}` : c.ig}<Icon name="arrow-up-right" size={12} /></a></li>
+        {CONTACT.email && <li><a class="lnk" href={`mailto:${CONTACT.email}`} data-goal="email">{CONTACT.email}<Icon name="arrow-up-right" size={12} /></a></li>}
+      </ul>
+    </div>
+    <form class="form" id="form" novalidate>
+      <h3>{c.formT}</h3>
+      <div class="field"><label for="f-name">{c.name}</label><input id="f-name" name="name" autocomplete="name" /></div>
+      <div class="field"><label for="f-phone">{c.phone}</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" /></div>
+      <div class="field"><label for="f-text">{c.need}</label><textarea id="f-text" name="message" rows="3" placeholder={c.text} aria-describedby="f-err"></textarea><p class="err" id="f-err" hidden>{c.empty}</p></div>
+      <div hidden><label for="f-web">Website</label><input id="f-web" name="website" tabindex="-1" autocomplete="off" /></div>
+      <div class="form-foot">
+        <button class="send" type="submit">{c.send}<Icon name="arrow-up-right" size={14} /></button>
+        <p class="form-note" id="f-note" role="status">{CONTACT.formEndpoint ? c.noteInbox : c.noteWa}</p>
+      </div>
+    </form>
+  </div>
+</section>

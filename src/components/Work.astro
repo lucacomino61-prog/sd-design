@@ -1,0 +1,38 @@
+---
+// The work as ruled rows that open. Each row is a client's site: what it is, where, what a visitor can do there
+// (facts read on the public site), the languages it speaks, a desktop view and the site playing on a phone.
+// A row takes its client's own colour when it opens. Only one is open at a time.
+import Icon from './Icon.astro';
+import { SITES } from '../data/sites.js';
+const { t, ids, level = 3 } = Astro.props;
+const H = `h${level}`;
+const named = (s, name) => s.replace('{name}', name);
+---
+<div class="rows">
+  {ids.map((id, i) => {
+    const s = SITES[id], p = t.projects[id];
+    return (
+      <details class={`row t-${id}`} name="work" id={id}>
+        <summary>
+          <span class="row-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <H class="row-name">{s.name}</H>
+          <span class="row-what">{p.what} · {p.place}</span>
+          <span class="chips"><i>{t.kinds[s.kind]}</i><i class={`st st-${s.state}`}>{t.states[s.state]}</i></span>
+          <span class="plus" aria-hidden="true"></span>
+        </summary>
+        <div class="row-open">
+          <div class="row-info">
+            <p class="row-lede">{p.lede}</p>
+            <ul class="facts">{p.facts.map((f) => <li>{f}</li>)}</ul>
+            <p class="row-langs">{t.ui.speaks}: {s.langs.map((l) => t.langNames[l]).join(', ')}</p>
+            {s.url && <a class="lnk" href={s.url} target="_blank" rel="noopener" aria-label={`${t.ui.open}: ${s.name}`}>{t.ui.open}<Icon name="arrow-up-right" size={12} /></a>}
+          </div>
+          {s.shot
+            ? <img class="row-shot" src={s.shot} srcset={`${s.shot.replace('.webp', '-720.webp')} 720w, ${s.shot} 1440w`} sizes="(max-width: 760px) 60vw, 54vw" alt={named(t.ui.shotAlt, s.name)} width="1440" height="900" loading="lazy" decoding="async" />
+            : <img class="row-shot row-card" src={s.card} alt={named(t.ui.cardAlt, s.name)} width="1200" height="630" loading="lazy" decoding="async" />}
+          {s.video && <figure class="phone" data-video={s.video}><img src={s.poster} alt={named(t.ui.onPhone, s.name)} width="390" height="844" loading="lazy" decoding="async" /></figure>}
+        </div>
+      </details>
+    );
+  })}
+</div>

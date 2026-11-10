@@ -1,0 +1,29 @@
+---
+// The page for an address that does not exist. One file serves every language, so it speaks all three; the dots
+// behind it spell 404.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import sq from '../i18n/sq.js';
+import en from '../i18n/en.js';
+import it from '../i18n/it.js';
+import { href } from '../data/site.js';
+---
+<Base t={sq} page="notFound" sections={2}>
+  <section class="hero shero lost" id="top" aria-labelledby="h1" data-section="1">
+    <canvas class="tone hero-tone" data-tone="text" data-text="404" aria-hidden="true"></canvas>
+    <div class="hero-b">
+      <h1 class="display" id="h1">{sq.notFound.h1}</h1>
+      <p class="lead">{sq.notFound.text}</p>
+      <p class="lead" lang="en">{en.notFound.h1} {en.notFound.text}</p>
+      <p class="lead" lang="it">{it.notFound.h1} {it.notFound.text}</p>
+      <div class="hero-foot">
+        <div class="ctas">
+          <a class="lnk" href={href('home', 'sq')}>{sq.notFound.home}<Icon name="arrow-up-right" size={12} /></a>
+          <a class="lnk" href={href('home', 'en')} lang="en" hreflang="en">{en.notFound.home}<Icon name="arrow-up-right" size={12} /></a>
+          <a class="lnk" href={href('home', 'it')} lang="it" hreflang="it">{it.notFound.home}<Icon name="arrow-up-right" size={12} /></a>
+          <a class="lnk" href={`${href('home', 'sq')}#work`}>{sq.nav.work}<Icon name="arrow-up-right" size={12} /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

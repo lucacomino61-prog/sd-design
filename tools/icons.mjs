@@ -7,8 +7,8 @@ import path from 'node:path';
 const SRC = 'node_modules/@phosphor-icons/core/assets';
 const OUT = 'src/icons';
 const ICONS = {
-  regular: ['whatsapp-logo', 'phone', 'instagram-logo', 'arrow-up-right', 'plus', 'pause', 'play', 'check', 'x'],
-  light: ['device-mobile', 'translate', 'chat-circle-dots', 'pencil-simple-line', 'coffee'],
+  regular: ['whatsapp-logo', 'arrow-up-right', 'arrow-right', 'arrow-down', 'x'],
+  light: ['coffee'],
 };
 
 fs.mkdirSync(OUT, { recursive: true });
