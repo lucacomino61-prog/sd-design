@@ -1,0 +1,7 @@
+---
+// A line of big type as words, each in its own mask, so the words can rise into place one after another.
+// A word written as *word* is set in the accent colour.
+const { text } = Astro.props;
+const words = text.split(' ').map((w) => (/^\*.*\*[.,]?$/.test(w) ? { hot: true, text: w.replace(/\*/g, '') } : { text: w }));
+---
+{words.map((w) => <Fragment><span class={`w${w.hot ? ' hot' : ''}`}><span>{w.text}</span></span>{' '}</Fragment>)}

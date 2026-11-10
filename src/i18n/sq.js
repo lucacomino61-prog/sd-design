@@ -1,10 +1,12 @@
 // Albanian, the default. Every word on the site comes from here. What is said about a client was read on that
-// client's public site on 10 Nov 2026 (research/facts); prices, deadlines and the people behind the studio are not
-// stated anywhere because they have not been given.
+// client's public site on 10 Nov 2026 (research/facts). The offer (a free working draft) says exactly what was
+// agreed on 10 Nov 2026 and nothing more: 24 hours on working days, 10 a week, Albania only, after a short chat,
+// a deposit to continue. Its numbers live in src/data/offer.js.
 export default {
   lang: 'sq',
   meta: {
-    home: { title: 'SD Design · Faqe interneti dhe dyqane online në Shqipëri', desc: 'SD Design ndërton faqe interneti, dyqane online dhe sisteme rezervimi për restorante, hotele, dyqane dhe klinika në Shqipëri. Në shqip, anglisht dhe italisht.' },
+    home: { title: 'SD Design · Faqe interneti në Shqipëri, drafti i parë falas', desc: 'Shiheni faqen tuaj para se të paguani: SD Design ju bën një draft që punon, falas, brenda 24 orëve në ditë pune. Faqe interneti dhe dyqane online në Shqipëri.' },
+    offer: { title: 'Draft falas i faqes suaj brenda 24 orëve · SD Design', desc: 'Një draft që punon i faqes suaj, falas, brenda 24 orëve në ditë pune. 10 në javë, vetëm për biznese në Shqipëri. Na shkruani në WhatsApp.' },
     food: { title: 'Faqe interneti për restorante, bare dhe kafene · SD Design', desc: 'Menu në telefon në shqip, anglisht dhe italisht, orar, hartë dhe porosi. Shihni si punon te Bar Martiri në Spille dhe te Katër Burgers në Tiranë.' },
     hotel: { title: 'Faqe interneti për hotele dhe bujtina · SD Design', desc: 'Faqe për hotele dhe bujtina me rezervime direkte, dhoma, foto dhe çmime, në shqip, anglisht dhe italisht. Shihni prototipin për Hotel Pelikan në Divjakë.' },
     shop: { title: 'Dyqan online: katalog, shportë dhe pagesë · SD Design', desc: 'Ndërtojmë dyqane online me katalog, shportë, pagesë në dorëzim ose me kartë dhe panel për stafin. Shihni elixir.al dhe Dresses by Greta.' },
@@ -14,54 +16,81 @@ export default {
   },
   ui: {
     skip: 'Kalo te përmbajtja', home: 'SD Design, faqja kryesore', menu: 'Menu', navLabel: 'Kryesore', langLabel: 'Gjuha', crumbs: 'Ku jeni',
-    still: 'Ndalo animacionet', clock: 'Shqipëri', write: 'Na shkruani', next: 'Faqja tjetër', open: 'Hap faqen', more: 'Çfarë merrni',
-    onPhone: '{name}, faqja në telefon', shotAlt: '{name}, faqja kryesore', cardAlt: '{name}, pamja e projektit',
-    count: '{n} faqe · {m} online', draft: 'Draft, jo ende online', sample: 'Shembull', noProject: 'Ende pa projekt publik', speaks: 'Gjuhët',
+    still: 'Ndalo animacionet', clock: 'Shqipëri', next: 'Faqja tjetër', open: 'Hap faqen',
+    onPhone: '{name}, faqja në telefon', shotAlt: '{name}, faqja kryesore', cardAlt: '{name}, pamja e projektit', tallAlt: '{name}, faqja nga lart poshtë në telefon',
+    count: '{n} faqe · {m} online', draft: 'Draft, jo ende online', speaks: 'Gjuhët',
+    left: 'Drafte të lira këtë javë', none: 'Këtë javë u morën të gjitha. Shkruani për javën tjetër.', answers: 'Ju përgjigjet {name}, brenda ditës së punës.', albania: 'Vetëm për biznese në Shqipëri.',
   },
-  bar: ['Mirë se erdhe', 'Pimë një kafe?', 'Na shkruani në WhatsApp'],
-  nav: { work: 'Punët', what: 'Çfarë bëjmë', why: 'Pse ne', how: 'Si punojmë', faq: 'Pyetje', contact: 'Kontakt', privacy: 'Privatësia' },
+  bar: ['Mirë se erdhe', 'Pimë një kafe?', 'Drafti i parë është falas'],
+  nav: { work: 'Punët', offer: 'Drafti falas', contact: 'Kontakt', privacy: 'Privatësia' },
   kinds: { food: 'Restorante & bare', hotel: 'Hotele & bujtina', shop: 'Dyqane online', clinic: 'Klinika & agjenci' },
+  kindTitles: { food: 'Restorante, bare, kafene', hotel: 'Hotele dhe bujtina', shop: 'Dyqane online', clinic: 'Klinika dhe agjenci' },
   states: { live: 'Online', proto: 'Prototip' },
   langNames: { sq: 'shqip', en: 'anglisht', it: 'italisht', fr: 'frëngjisht' },
 
   home: {
     tag: 'SD Design · Faqe interneti për biznese në Shqipëri',
-    h1: ['Biznesi juaj,', 'në *telefonin*', 'e çdo klienti.'],
-    lead: 'Ndërtojmë faqe interneti, dyqane online dhe sisteme rezervimi për restorante, hotele, dyqane dhe klinika. Në shqip, anglisht dhe italisht.',
-    cta: 'Kërko ofertë në WhatsApp', cta2: 'Shiko punët',
-    waMsg: 'Përshëndetje SD Design, dua një ofertë për një faqe interneti.',
-    say: 'Gjashtë faqe që kemi ndërtuar për biznese shqiptare. Një bar në plazh ku porosit nga shezlongu, një dyqan me mbi 700 parfume, një butik ku fustani zgjidhet sipas masës. Hapeni secilën dhe shihni çfarë bën.',
-    what: {
-      t: 'Çfarë bëjmë.', lead: 'Katër lloje biznesesh, një qëllim: më shumë klientë. Zgjidhni tuajin dhe shihni çfarë merrni.',
-      cards: {
-        food: ['Restorante, bare, kafene', ['Menu në telefon, në disa gjuhë', 'Orari, harta dhe telefoni', 'Rezervime ose porosi']],
-        hotel: ['Hotele dhe bujtina', ['Rezervime direkte nga faqja juaj', 'Dhoma, foto, çmime sezonale', 'Shqip, anglisht, italisht']],
-        shop: ['Dyqane online', ['Katalog dhe shportë', 'Pagesë në dorëzim ose me kartë', 'Panel ku stafi shton produkte']],
-        clinic: ['Klinika dhe agjenci', ['Faqe në italisht për klientë italianë', 'Kërkesa direkt në WhatsApp', 'Profil i plotë në Google']],
-      },
-      demo: { tag: 'Esempio · Clinica', t: 'Il tuo sorriso, a Tirana.', s: 'Visite, preventivi e viaggio: tutto in italiano.', cta: 'Scrivici su WhatsApp' },
-    },
+    h1: ['Shiheni faqen', 'tuaj *para* se', 'të paguani.'],
+    lead: 'Një draft që punon i faqes suaj, falas, brenda 24 orëve në ditë pune. E hapni në telefonin tuaj dhe vendosni vetë.',
+    cta: 'Dua draftin tim falas',
+    workT: 'Faqe që kemi ndërtuar.', yours: 'Këtu mund të jetë faqja juaj.', band: 'Drafti i parë është falas',
+    say: 'Gjashtë faqe për biznese shqiptare. Një bar në plazh ku porosit nga shezlongu, një dyqan me mbi 800 parfume, një butik ku fustani zgjidhet sipas masës.',
     why: { t: 'Një faqe që punon për ju, jo vetëm një faqe.', items: [
       ['E ndërtuar për telefonin', 'Shumica e klientëve tuaj ju gjejnë në telefon. Aty e provojmë çdo faqe para se të dalë online.'],
       ['Shqip, anglisht, italisht', 'Turistët dhe klientët e huaj ju lexojnë në gjuhën e tyre. Bar Martiri dhe Katër Burgers flasin të tria.'],
       ['WhatsApp, jo formularë të gjatë', 'Një prekje dhe klienti ju shkruan: për rezervime, porosi ose pyetje.'],
       ['Ju e ndryshoni vetë', 'Dyqanet tona kanë panel ku stafi shton produkte, foto dhe çmime pa na thirrur.'],
     ] },
-    steps: { t: 'Katër hapa, pa fjalë të vështira.', items: [
-      ['Na shkruani', 'Në WhatsApp, me telefon ose në Instagram. Na tregoni çfarë bëni.'],
-      ['Flasim', 'Shohim bashkë çfarë ju duhet dhe ju dërgojmë një ofertë të qartë.'],
-      ['Dizajni', 'E shihni faqen në telefonin tuaj para se të dalë online.'],
-      ['Online', 'E publikojmë dhe ju tregojmë si ta ndryshoni vetë.'],
-    ] },
     faq: { t: 'Pyetje që na bëhen shpesh.', more: 'Keni një pyetje tjetër?', ask: 'Na shkruani në WhatsApp', msg: 'Përshëndetje SD Design, kam një pyetje.', items: [
-      ['Sa kushton një faqe interneti?', 'Varet nga ajo që ju duhet: një faqe prezantuese, një dyqan online apo rezervime. Na shkruani në WhatsApp dhe ju dërgojmë një ofertë të qartë.'],
-      ['Sa kohë duhet?', 'E caktojmë bashkë që në fillim, sipas faqeve dhe gjuhëve që ju duhen.'],
+      ['A është vërtet falas drafti?', 'Po. Drafti është falas. Paguani vetëm nëse vendosni ta çojmë faqen deri në fund: atëherë puna nis me një paradhënie që e caktojmë bashkë.'],
+      ['Çfarë është një «draft që punon»?', 'Një faqe e vërtetë në një lidhje, jo një foto. E hapni në telefonin tuaj dhe e lëvizni si çdo faqe tjetër.'],
+      ['Çfarë duhet t’ju dërgoj?', 'Emrin dhe llojin e biznesit, Instagram-in ose faqen që keni, logon dhe disa foto, dhe çfarë duhet të bëjnë klientët: të rezervojnë, të porosisin apo t’ju telefonojnë.'],
+      ['Kur e marr draftin?', 'Brenda 24 orëve në ditë pune, nga e hëna në të premte, pasi të kemi folur shkurt në WhatsApp.'],
+      ['Sa kushton faqja e plotë?', 'Varet nga niveli: një faqe e thjeshtë, një faqe me funksione apo një dyqan. Çmimin jua themi në WhatsApp, pasi të keni parë draftin.'],
+      ['Pse vetëm 10 drafte në javë?', 'Sepse çdo draft kërkon punë të vërtetë, dhe duam t’i mbajmë fjalën për 24 orët.'],
       ['Në cilat gjuhë mund të jetë faqja?', 'Në shqip, anglisht dhe italisht. Bar Martiri dhe Katër Burgers, për shembull, flasin të tria; Dresses by Greta ka edhe frëngjisht.'],
       ['A mund ta ndryshoj vetë?', 'Po. Dyqanet që kemi ndërtuar kanë një panel ku stafi shton produkte, foto dhe çmime pa na thirrur.'],
-      ['A do të dalë në Google?', 'Faqet i ndërtojmë që Google t’i lexojë mirë: tekste të qarta, shpejtësi në telefon, adresa dhe orari i biznesit.'],
       ['Kam Instagram. Pse më duhet faqe?', 'Instagram-i ju tregon te ata që ju ndjekin. Faqja ju nxjerr te kush ju kërkon në Google dhe në hartë, edhe te turistët që nuk ju njohin. Aty klienti gjen menunë, çmimet, orarin dhe butonin për t’ju shkruar, pa kërkuar nëpër postime.'],
-      ['Ku punoni?', 'Në gjithë Shqipërinë. Bar Martiri është në Spille, Hotel Pelikan në Divjakë, Katër Burgers dhe Dresses by Greta në Tiranë. Flasim në WhatsApp ose me telefon, kudo që të jeni.'],
+      ['A është drafti falas edhe jashtë Shqipërisë?', 'Jo. Drafti falas është vetëm për biznese në Shqipëri.'],
     ] },
+  },
+
+  // the free working draft
+  offer: {
+    h1: 'Draft falas i faqes suaj, brenda 24 orëve.',
+    lead: 'Na shkruani në WhatsApp dhe flasim shkurt. Brenda 24 orëve në ditë pune e hapni draftin në telefonin tuaj dhe vendosni vetë.',
+    msg: 'Përshëndetje SD Design, dua draftin falas të faqes sime.\n\nBiznesi: \nLloji: {type}\nInstagram ose faqja që kam: \nÇfarë duhet të bëjnë klientët (rezervim, porosi, telefonatë): \n\nLogon dhe disa foto po i dërgoj këtu.',
+    numbers: [['orë, në ditë pune'], ['drafte në javë'], ['lekë për draftin']],
+    storyT: 'Si funksionon drafti falas.',
+    steps: [
+      ['Na shkruani', 'Emri dhe lloji i biznesit, Instagram-i ose faqja që keni, logoja dhe disa foto, dhe çfarë duhet të bëjnë klientët: të rezervojnë, të porosisin apo t’ju telefonojnë. Butoni e nis mesazhin për ju.'],
+      ['Flasim shkurt', 'Ju përgjigjemi brenda ditës së punës. Dy-tri pyetje në WhatsApp, që drafti të jetë për biznesin tuaj.'],
+      ['Drafti, brenda 24 orëve', 'Një faqe që punon, në një lidhje. E hapni në telefonin tuaj, e lëvizni, ua tregoni të tjerëve. Nga e hëna në të premte.'],
+      ['Vendosni ju', 'Drafti është falas. Nëse doni ta çojmë deri në fund, puna e plotë nis me një paradhënie që e caktojmë bashkë.'],
+    ],
+    chat: {
+      me: ['Përshëndetje SD Design, dua draftin falas të faqes sime.', 'Biznesi: emri juaj\nLloji: restorant\nInstagram: @emrijuaj'],
+      them: ['Përshëndetje! Faleminderit për mesazhin.', 'Dy pyetje të shkurtra: në cilat gjuhë e doni faqen? Dhe ku duhet të çojë butoni kryesor, te rezervimi apo te menuja?'],
+      ready: 'Drafti juaj është gati. Hapeni në telefon:', link: 'Emri i biznesit tuaj', linkNote: 'draft · hapet në telefon',
+      draftTag: 'Draft', draftT: 'Emri i biznesit tuaj', draftS: 'Faqja juaj fillon këtu: çfarë ofroni, kur jeni hapur, si t’ju gjejnë.', draftCta: 'Rezervo', draftCta2: 'Menuja',
+      done: 'Ju pëlqen? Vazhdojmë.',
+    },
+    sendT: 'Çfarë na dërgoni.',
+    send: ['Emrin dhe llojin e biznesit', 'Instagram-in ose faqen që keni', 'Logon dhe disa foto', 'Çfarë duhet të bëjnë klientët: rezervim, porosi apo telefonatë'],
+    termsT: 'Kushtet, shkurt.',
+    terms: ['{m} drafte falas në javë.', 'Vetëm për biznese në Shqipëri.', '24 orët numërohen në ditë pune, nga e hëna në të premte, pasi kemi folur shkurt në WhatsApp.', 'Drafti është falas. Puna e plotë nis me një paradhënie që e caktojmë bashkë.'],
+    egT: 'Faqe që kemi ndërtuar.', faqT: 'Pyetje për draftin.',
+  },
+
+  // every kind of site, by difficulty: each level names a real site of that level
+  levels: {
+    t: 'Çdo lloj faqeje, sipas vështirësisë.', lead: 'Tri nivele. Çmimin jua themi në WhatsApp, pasi të keni parë draftin.', eg: 'Shembull',
+    items: [
+      ['E thjeshtë', 'Një faqe e vetme që thotë kush jeni dhe si t’ju gjejnë.', ['Kush jeni dhe çfarë ofroni', 'Orari, harta, telefoni', 'Butoni i WhatsApp'], 'kater'],
+      ['Me funksione', 'Faqe ku klienti bën diçka: sheh menunë, rezervon, porosit.', ['Menu ose shërbime', 'Rezervime ose porosi', 'Dy ose tri gjuhë'], 'martiri'],
+      ['Dyqan ose platformë', 'Shitje online nga fillimi në fund, me panel për stafin.', ['Katalog dhe shportë', 'Pagesë në dorëzim ose me kartë', 'Panel për stafin'], 'elixir'],
+    ],
+    kindsT: 'Për çfarë biznesi?', other: 'Lloj tjetër biznesi? Na shkruani: ndërtojmë çdo lloj faqeje.',
   },
 
   projects: {
@@ -70,13 +99,13 @@ export default {
       facts: ['Menu me gjashtë kategori, në shqip, italisht dhe anglisht.', 'Porosi nga shezlongu: klienti zgjedh nga menuja dhe shënon rreshtin dhe numrin e çadrës.', 'Orari, sezoni, çmimi i shezlongut dhe parkimi falas, që në faqen e parë.', 'Butoni «Telefono tani», chat me pyetje të gatshme dhe moti i Spilles në kohë reale.'] },
     elixir: { what: 'Dyqan parfumesh online', place: 'Gjithë Shqipëria',
       lede: 'Dyqan online me parfume origjinale, me dërgim në gjithë Shqipërinë. Klienti gjen parfumin, e porosit dhe e ndjek porosinë vetë.',
-      facts: ['Katalog me mbi 700 parfume: kërkim, kategori dhe një kuiz që të gjen parfumin.', 'Shportë, pagesë me kartë ose në dorëzim dhe gjurmim i porosisë.', 'Karta dhuratë, vlerësime nga klientët dhe butoni «Pyet në WhatsApp» te çdo parfum.', 'Panel për stafin: porositë, çmimet, kuponat dhe shitjet, edhe nga telefoni.'] },
+      facts: ['Katalog me mbi 800 parfume: kërkim, kategori dhe një kuiz që të gjen parfumin.', 'Shportë, pagesë me kartë ose në dorëzim dhe gjurmim i porosisë.', 'Karta dhuratë, vlerësime nga klientët dhe butoni «Pyet në WhatsApp» te çdo parfum.', 'Panel për stafin: porositë, çmimet, kuponat dhe shitjet, edhe nga telefoni.'] },
     kater: { what: 'Restorant me burgera', place: 'Tiranë',
       lede: 'Katër smash burgera te 21 Dhjetori në Tiranë. Menuja është e shkurtër, prandaj edhe faqja: një faqe e vetme që të çon te porosia.',
       facts: ['E gjithë menuja në një faqe: katër burgera, me foto dhe çmim.', 'Porosi me një prekje në Wolt, ose me telefon.', 'Shqip, anglisht dhe italisht.', 'Adresa dhe vlerësimet në Google, që klienti të vijë pa pyetur.'] },
     greta: { what: 'Butik fustanesh', place: 'Tiranë',
       lede: 'Butik me fustane mbrëmjeje në Tiranë, me dyqan fizik dhe në Instagram. Faqja e kthen katalogun në dyqan online: klientja zgjedh masën, porosit dhe paguan në dorëzim.',
-      facts: ['Katalog me çmime në lek dhe masat 34–42; masat e shitura shënohen vetë.', 'Filtër sipas masës dhe sipas rastit: mbrëmje, maturë, dasmë, koktej.', 'Çantë dhe pagesë në dorëzim; fustanet jepen edhe me qira.', 'Shqip, anglisht dhe frëngjisht, me panel në shqip ku dyqani shton fustanet.'] },
+      facts: ['Katalog me çmime në lek dhe masat nga 34 deri në 42; masat e shitura shënohen vetë.', 'Filtër sipas masës dhe sipas rastit: mbrëmje, maturë, dasmë, koktej.', 'Çantë dhe pagesë në dorëzim; fustanet jepen edhe me qira.', 'Shqip, anglisht dhe frëngjisht, me panel në shqip ku dyqani shton fustanet.'] },
     divjaka: { what: 'Platformë turizmi', place: 'Divjakë',
       lede: 'Platformë për Hotel Pelikan në Divjakë: rezervimet, dyqani dhe itinerari i lagunës në një vend. Është prototip dhe ende nuk është publike.',
       facts: ['Rezervime dhe dyqan online në të njëjtën faqe.', 'Itinerar për lagunën e Divjakës, me një hartë që vizatohet ndërsa lëviz faqja.', 'Shqip dhe anglisht, me panel për stafin.'] },
@@ -87,11 +116,11 @@ export default {
 
   services: {
     getT: 'Çfarë merrni.', egT: 'Ku e kemi bërë.', faqT: 'Pyetje.', moreT: 'Punojmë edhe për:',
-    price: ['Sa kushton?', 'Varet nga ajo që ju duhet. Na shkruani në WhatsApp, na tregoni biznesin tuaj dhe ju dërgojmë një ofertë të qartë.'],
+    price: ['Sa kushton?', 'Varet nga niveli i faqes. Fillimisht ju bëjmë draftin falas; çmimin jua themi në WhatsApp, pasi ta keni parë.'],
     food: {
       h1: 'Faqe interneti për restorante, bare dhe kafene.',
       lead: 'Ndërtojmë faqen ku klienti sheh menunë, orarin dhe vendin, dhe ju shkruan ose porosit me një prekje. Në shqip, anglisht dhe italisht, e provuar në telefon.',
-      cta: 'Pyet për restorantin tënd', waMsg: 'Përshëndetje, dua një faqe për restorantin / barin tim.',
+      cta: 'Drafti për restorantin tim', type: 'restorant / bar / kafene',
       get: [
         ['Menu që lexohet në telefon', 'Kategori dhe çmime në faqe, pa PDF për të shkarkuar. Te Bar Martiri menuja ka gjashtë kategori, nga akullorja te koktejet.'],
         ['Tri gjuhë', 'Turisti e lexon menunë në gjuhën e vet. Bar Martiri dhe Katër Burgers flasin shqip, anglisht dhe italisht.'],
@@ -107,7 +136,7 @@ export default {
     hotel: {
       h1: 'Faqe interneti për hotele dhe bujtina.',
       lead: 'Ndërtojmë faqen ku mysafiri sheh dhomat dhe çmimet dhe rezervon direkt te ju, në gjuhën e tij. Shembulli ynë është platforma për Hotel Pelikan në Divjakë, ende prototip.',
-      cta: 'Pyet për hotelin tënd', waMsg: 'Përshëndetje, dua një faqe me rezervime për hotelin / bujtinën time.',
+      cta: 'Drafti për hotelin tim', type: 'hotel / bujtinë',
       get: [
         ['Rezervime direkte', 'Mysafiri rezervon në faqen tuaj dhe kërkesa ju vjen direkt, jo vetëm përmes platformave që mbajnë komision.'],
         ['Dhomat, fotot dhe çmimet', 'Çdo dhomë me fotot e veta dhe me çmimin sipas sezonit.'],
@@ -123,9 +152,9 @@ export default {
     shop: {
       h1: 'Dyqane online për biznese shqiptare.',
       lead: 'Ndërtojmë dyqanin ku klienti gjen produktin, e shton në shportë dhe paguan në dorëzim ose me kartë. Stafi juaj i shton produktet vetë, nga një panel në shqip.',
-      cta: 'Pyet për dyqanin tënd', waMsg: 'Përshëndetje, dua një dyqan online.',
+      cta: 'Drafti për dyqanin tim', type: 'dyqan online',
       get: [
-        ['Katalog që gjendet lehtë', 'Kërkim, kategori dhe filtra. elixir.al ka mbi 700 parfume dhe një kuiz që të gjen tëndin; Dresses by Greta filtron sipas masës dhe rastit.'],
+        ['Katalog që gjendet lehtë', 'Kërkim, kategori dhe filtra. elixir.al ka mbi 800 parfume dhe një kuiz që të gjen tëndin; Dresses by Greta filtron sipas masës dhe rastit.'],
         ['Shportë dhe pagesë', 'Pagesë në dorëzim, e zakonshme në Shqipëri, ose me kartë si te elixir.al.'],
         ['Panel për stafin', 'Stafi shton produkte, foto dhe çmime dhe sheh porositë, pa na thirrur. Te elixir.al paneli hapet edhe si aplikacion në telefon.'],
         ['Gjurmim i porosisë', 'Klienti e sheh vetë ku ndodhet porosia, si te elixir.al.'],
@@ -140,7 +169,7 @@ export default {
     clinic: {
       h1: 'Faqe në italisht për klinika dhe agjenci.',
       lead: 'Nëse klientët tuaj vijnë nga Italia, faqja duhet t’u flasë italisht. E ndërtojmë në italisht, shqip dhe anglisht, me kërkesat që ju vijnë direkt në WhatsApp.',
-      cta: 'Pyet për klinikën tënde', waMsg: 'Përshëndetje, kemi klientë italianë dhe na duhet një faqe në italisht.',
+      cta: 'Drafti për klinikën time', type: 'klinikë / agjenci, me faqe në italisht',
       get: [
         ['Italisht i shkruar si duhet', 'Tekstet shkruhen drejtpërdrejt në italisht. Edhe kjo faqe ka versionin e saj në italisht.'],
         ['Kërkesa në WhatsApp', 'Klienti ju shkruan me një prekje, me mesazhin e nisur gati.'],
@@ -157,7 +186,7 @@ export default {
 
   contact: {
     t: ['Na tregoni', 'biznesin tuaj.'], sub: 'Përgjigjemi në shqip, anglisht ose italisht.',
-    wa: 'Na shkruani në WhatsApp', tel: 'Telefononi', ig: 'Instagram',
+    wa: 'Dua draftin tim falas', tel: 'Telefononi', ig: 'Instagram',
     formT: 'Ose lini një mesazh', name: 'Emri dhe biznesi', phone: 'Telefoni', need: 'Çfarë ju duhet?', text: 'P.sh. një faqe me menu për barin tim në Durrës', send: 'Dërgo mesazhin',
     noteWa: 'Mesazhi hapet në WhatsApp, gati për t’u dërguar.', noteInbox: 'Mesazhi vjen direkt te ne.',
     empty: 'Shkruani shkurt çfarë ju duhet.', ok: 'Mesazhi u dërgua. Faleminderit!', fail: 'Mesazhi nuk u dërgua. Na shkruani në WhatsApp.',
@@ -170,7 +199,7 @@ export default {
     h1: 'Privatësia.', lead: 'Shkurt: kjo faqe nuk ju ndjek. Më poshtë është gjithçka që ndodh me të dhënat tuaja.',
     sections: [
       ['Çfarë mbledh faqja', ['Asgjë vetë. Faqja nuk vendos cookies, nuk ka mjete matjeje ose reklamash dhe nuk ruan asgjë në pajisjen tuaj.', 'Shkronjat, figurat dhe videot vijnë nga vetë faqja. Asnjë pjesë e saj nuk ngarkohet nga shërbime të tjera.']],
-      ['Kur na shkruani', ['Kur na shkruani në WhatsApp, na telefononi ose na shkruani në Instagram, marrim atë që na dërgoni: emrin, numrin dhe mesazhin. E përdorim për t’ju përgjigjur.', '{form}']],
+      ['Kur na shkruani', ['Kur na shkruani në WhatsApp, na telefononi ose na shkruani në Instagram, marrim atë që na dërgoni: emrin, numrin, mesazhin, logon dhe fotot. I përdorim për t’ju përgjigjur dhe për të bërë draftin tuaj.', '{form}']],
       ['Shërbime të tjera', ['WhatsApp dhe Instagram janë shërbime të Meta-s, me rregullat e tyre të privatësisë. Lidhjet te faqet e klientëve tanë ju çojnë në faqe që nuk i drejtojmë ne.']],
       ['Pyetje', ['Për çdo pyetje mbi të dhënat tuaja, na shkruani në WhatsApp ose na telefononi.']],
     ],

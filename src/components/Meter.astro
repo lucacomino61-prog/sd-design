@@ -1,0 +1,15 @@
+---
+// How many free drafts are left this week: a number and ten small squares. The number comes from src/data/offer.js;
+// the page script works it out again for the visitor's own day, so a page built last week never shows last week's count.
+import { OFFER, left } from '../data/offer.js';
+const { t } = Astro.props;
+const n = left();
+---
+<div class={`meter${n ? '' : ' none'}`} data-meter>
+  <p class="meter-row">
+    <span class="meter-l">{t.ui.left}</span><span class="sr">: </span>
+    <span class="meter-n"><b data-left>{n}</b>/{OFFER.perWeek}</span>
+    <span class="meter-ticks" aria-hidden="true">{Array.from({ length: OFFER.perWeek }, (_, i) => <i class={i < n ? 'on' : undefined}></i>)}</span>
+  </p>
+  <p class="meter-none">{t.ui.none}</p>
+</div>

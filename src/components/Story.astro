@@ -1,0 +1,48 @@
+---
+// How the free draft works, in four steps, with a phone beside them. Read plainly, it is a numbered list and a
+// picture of the finished draft. With the script, the block is pinned while the page scrolls through it: the steps
+// take turns, and in the phone the conversation arrives line by line, the link is sent and the draft opens.
+// The phone only repeats what the steps say, so it is hidden from screen readers.
+import { S_PATH, BUBBLE } from '../data/site.js';
+const { t } = Astro.props;
+const o = t.offer, c = o.chat;
+const pad = (n) => String(n).padStart(2, '0');
+// the draft in the phone lists what the simplest site holds
+const rows = t.levels.items[0][2];
+---
+<div class="scene story-scene" data-scene="story" data-steps={o.steps.length}>
+  <div class="pin">
+    <div class="story-bar" aria-hidden="true"><i></i></div>
+    <ol class="beats">
+      {o.steps.map(([title, text], i) => (
+        <li class="beat"><span class="num" aria-hidden="true">{pad(i + 1)}</span><h3>{title}</h3><div class="beat-t"><p>{text}</p></div></li>
+      ))}
+    </ol>
+    <div class="mock" aria-hidden="true">
+      <div class="mock-s">
+        <div class="chat">
+          <p class="chat-top"><svg viewBox="0 0 707 488"><path d={S_PATH} /><path class="bub" d={BUBBLE} /></svg>SD Design</p>
+          <div class="chat-list">
+            <p class="chat-m me">{c.me[0]}</p>
+            <p class="chat-m me">{c.me[1]}</p>
+            <p class="chat-m">{c.them[0]}</p>
+            <p class="chat-m">{c.them[1]}</p>
+            <p class="chat-m">{c.ready}</p>
+            <p class="chat-m chat-link"><i></i><b>{c.link}</b><span>{c.linkNote}</span></p>
+          </div>
+        </div>
+        <div class="page">
+          <div class="page-in">
+            <p class="page-tag">{c.draftTag}</p>
+            <p class="page-t">{c.draftT}</p>
+            <p class="page-s">{c.draftS}</p>
+            <p class="page-btns"><i>{c.draftCta}</i><i>{c.draftCta2}</i></p>
+            <div class="page-pic"><canvas class="tone" data-tone="mark" data-dot="5"></canvas></div>
+            <ul class="page-rows">{rows.map((x) => <li>{x}</li>)}</ul>
+          </div>
+          <p class="page-done">{c.done}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

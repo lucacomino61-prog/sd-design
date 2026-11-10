@@ -1,7 +1,11 @@
-// SD Design. One requestAnimationFrame loop, owned here, draws the halftones (about thirty frames a second, and
-// only while something in them is changing). Everything else is CSS and a few listeners. The page reads, links and
-// opens its rows without this file; nothing is stored on the visitor's device.
+// SD Design. One requestAnimationFrame loop (loop.js) serves everything that moves: the halftones here (about thirty
+// frames a second, and only while something in them is changing) and the scroll scenes (scroll.js). Everything else
+// is CSS and a few listeners. The page reads, links and opens its rows without this file; nothing is stored on the
+// visitor's device.
 import { $, $$, motion, fine, state, onStill, stillSwitch, makeTone, cover, mark, text } from './tone.js';
+import { onFrame, firstFrame, wake } from './loop.js';
+import { startScroll } from './scroll.js';
+import { left } from '../data/offer.js';
 
 const html = document.documentElement;
 const i18n = JSON.parse($('#i18n').textContent);
@@ -43,6 +47,7 @@ function play(box) {
     v = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true, preload: 'metadata', src: box.dataset.video });
     v.setAttribute('aria-hidden', 'true');
     v.addEventListener('playing', () => v.classList.add('ready'), { once: true });
+    v.addEventListener('playing', wake);
     box.append(v);
   }
   v?.play().catch(() => {});
@@ -60,12 +65,15 @@ $$('.phone[data-video]').forEach((el) => videos.observe(el));
 const hidden = (src) => {
   const v = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true, preload: 'auto', src });
   v.setAttribute('aria-hidden', 'true');
+  v.addEventListener('playing', wake);
   Object.assign(v.style, { position: 'absolute', width: '2px', height: '2px', opacity: '0', pointerEvents: 'none' });
   return v;
 };
 function setup(canvas) {
   const kind = canvas.dataset.tone;
-  const tone = makeTone(canvas, { lens: fine });
+  // a small picture (data-dot) has finer dots and no glass
+  const dot = Number(canvas.dataset.dot) || 0;
+  const tone = makeTone(canvas, { lens: fine && !dot, dot });
   const it = { canvas, tone, kind, seen: false, last: 0, fresh: true, intro: false, t0: 0, video: () => null };
   if (kind === 'hero') {
     // the dots show whatever plays in the glass phone; on load they draw the SD mark first
@@ -86,19 +94,19 @@ function setup(canvas) {
     onStill(() => { if (it.seen) it.wake(); });
   } else if (kind === 'text') {
     it.picture = () => tone.sample(text(canvas.dataset.text), { reset: true });
-    document.fonts?.ready.then(() => { it.fresh = true; });
+    document.fonts?.ready.then(() => { it.fresh = true; wake(); });
   } else {
-    const draw = canvas.classList.contains('foot-tone') ? mark(0.66, 0.5, 0.5) : mark();
+    const draw = canvas.classList.contains('foot-tone') ? mark(0.66, 0.5, 0.5) : dot ? mark(0.84, 0.5, 0.5) : mark();
     it.picture = () => tone.sample(draw, { reset: true });
   }
-  new ResizeObserver(() => { if (tone.size()) it.fresh = true; }).observe(canvas);
-  new IntersectionObserver(([e]) => { it.seen = e.isIntersecting; it.seen ? it.wake?.() : it.sleep?.(); }).observe(canvas);
-  if (fine) {
+  new ResizeObserver(() => { if (tone.size()) { it.fresh = true; wake(); } }).observe(canvas);
+  new IntersectionObserver(([e]) => { it.seen = e.isIntersecting; it.seen ? it.wake?.() : it.sleep?.(); wake(); }).observe(canvas);
+  if (fine && !dot) {
     // the glass follows the pointer anywhere over the section the canvas fills
     const host = canvas.parentElement;
     let x = 0, y = 0;
-    host.addEventListener('pointermove', (e) => { const r = canvas.getBoundingClientRect(); x = e.clientX - r.left; y = e.clientY - r.top; tone.pointer(x, y, !state.still && x >= 0 && y >= 0 && x <= r.width && y <= r.height); });
-    host.addEventListener('pointerleave', () => tone.pointer(x, y, false));
+    host.addEventListener('pointermove', (e) => { const r = canvas.getBoundingClientRect(); x = e.clientX - r.left; y = e.clientY - r.top; tone.pointer(x, y, !state.still && x >= 0 && y >= 0 && x <= r.width && y <= r.height); wake(); });
+    host.addEventListener('pointerleave', () => { tone.pointer(x, y, false); wake(); });
     onStill((still) => { if (still) tone.pointer(x, y, false); });
   }
   return it;
@@ -123,17 +131,24 @@ function step(it, now, dt) {
   }
   tone.frame(dt);
 }
-let then = performance.now();
-function loop(now) {
-  const dt = now - then;
-  if (dt >= 30) {
-    then = now;
-    const d = Math.min(dt, 80);
-    for (const it of tones) if (it.seen) step(it, now, d);
-  }
-  requestAnimationFrame(loop);
+// The halftones take a turn about thirty times a second, and only those on screen. When none of them has anything left
+// to draw (no recording playing, no dot still moving), they stop asking for frames.
+let drawn = 0;
+if (tones.length) {
+  onFrame((now) => {
+    const due = now - drawn >= 30, d = Math.min(now - drawn, 80);
+    let live = false;
+    for (const it of tones) {
+      if (!it.seen) continue;
+      if (due) step(it, now, d);
+      const v = state.still ? null : it.video();
+      if (it.intro || it.fresh || it.tone.busy || (v && !v.paused && !v.ended)) live = true;
+    }
+    if (due) drawn = now;
+    return live;
+  });
+  onStill(wake);
 }
-if (tones.length) requestAnimationFrame(loop);
 
 // ---------- first screen: the client sites take turns in the phone and in the dots ----------
 const live = $('#live');
@@ -150,7 +165,7 @@ if (live) {
     img.alt = s.alt;
     name.textContent = s.name;
     if (onScreen.has(box) && !state.still) play(box);
-    if (heroTone) { heroTone.intro = false; heroTone.fresh = true; }
+    if (heroTone) { heroTone.intro = false; heroTone.fresh = true; wake(); }
   };
   // by itself only on a desktop that has not asked to save data; the button works everywhere
   const arm = () => {
@@ -161,6 +176,16 @@ if (live) {
   arm();
 }
 
+// ---------- the free drafts left this week, worked out for the visitor's own day ----------
+const free = left();
+$$('[data-meter]').forEach((m) => {
+  $('[data-left]', m).textContent = String(free);
+  $$('.meter-ticks i', m).forEach((tick, k) => tick.classList.toggle('on', k < free));
+  m.classList.toggle('none', free === 0);
+});
+
+// the scroll scenes listen to the same switch, so they start before it is read
+startScroll();
 stillSwitch();
 
 // ---------- the bar: a line that changes, and the menu ----------
@@ -210,9 +235,10 @@ $$('[data-section]').forEach((el) => middle.observe(el));
 
 // ---------- blocks rise once as they arrive ----------
 // Only blocks that start below the screen are hidden first, so nothing a visitor already sees ever blinks, and a
-// jump far down the page shows everything it passed.
-if (motion) {
-  const all = $$('.work-top, .rows > .row, .sec-top, .kind, .why > h2, .why-list > li, .steps > h2, .step-list > li, .faq > h2, .faq-more, .get > h2, .get-list > li, .more-list > li, .close > h2, .close-b, .foot-nav > div, .doc section');
+// jump far down the page shows everything it passed. Nothing is hidden before the first animation frame has arrived
+// (and the scroll scenes have taken their places): a browser that runs no frames shows the whole page as it is.
+if (motion) firstFrame(() => {
+  const all = $$('.say, .work-top > .lead, .rows > .row, .sec-head > .lead, .stair, .kinds-t, .levels-other, .why-list > li, .step-list > li, .terms-col, .work-all, .faq-more, .get-list > li, .more-t, .more-list > li, .story-ask, .close > h2, .close-b, .foot-nav > div, .doc section');
   const below = all.filter((el) => el.getBoundingClientRect().top > innerHeight * 0.92);
   const rise = new IntersectionObserver((es) => es.forEach((e) => {
     if (!e.isIntersecting) return;
@@ -228,7 +254,7 @@ if (motion) {
     }
   }), { rootMargin: '0px 0px -7% 0px' });
   below.forEach((el) => { el.classList.add('rise'); rise.observe(el); });
-}
+});
 
 // ---------- links within the page glide when clicked ----------
 // Only a pointer click glides. The keyboard gets the browser's own jump, which also moves the focus to the place, and
@@ -318,7 +344,8 @@ const KONAMI = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'Ar
 let konami = 0;
 function showMark() {
   for (const it of tones) { if (it.seen) { it.intro = false; it.tone.sample(mark(), { reset: true }); it.last = performance.now() + 3200; } }
-  setTimeout(() => { for (const it of tones) it.fresh = true; }, 3200);
+  wake();
+  setTimeout(() => { for (const it of tones) { it.fresh = true; } wake(); }, 3200);
 }
 addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !kafe.hidden) { closeKafe(); return; }

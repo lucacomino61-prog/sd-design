@@ -1,7 +1,8 @@
 ---
-// The four service pages and the privacy page, in each language. The addresses come from the table in
+// The offer page, the four service pages and the privacy page, in each language. The addresses come from the table in
 // src/data/site.js, so a page exists exactly where the menus, hreflang and the sitemap say it does.
 import Service from '../components/Service.astro';
+import Offer from '../components/Offer.astro';
 import Privacy from '../components/Privacy.astro';
 import sq from '../i18n/sq.js';
 import en from '../i18n/en.js';
@@ -9,9 +10,9 @@ import it from '../i18n/it.js';
 import { LANGS, PAGES, SERVICES } from '../data/site.js';
 
 export function getStaticPaths() {
-  return LANGS.flatMap((lang) => [...SERVICES, 'privacy'].map((page) => ({ params: { path: PAGES[page][lang].replace(/^\/|\/$/g, '') }, props: { lang, page } })));
+  return LANGS.flatMap((lang) => ['offer', ...SERVICES, 'privacy'].map((page) => ({ params: { path: PAGES[page][lang].replace(/^\/|\/$/g, '') }, props: { lang, page } })));
 }
 const { lang, page } = Astro.props;
 const t = { sq, en, it }[lang];
 ---
-{page === 'privacy' ? <Privacy t={t} /> : <Service t={t} kind={page} />}
+{page === 'privacy' ? <Privacy t={t} /> : page === 'offer' ? <Offer t={t} /> : <Service t={t} kind={page} />}

@@ -69,15 +69,15 @@ if (!only || only === 'icons') {
 if (!only || only === 'og') {
   fs.mkdirSync(path.join(pub, 'og'), { recursive: true });
   // which client's site sits behind which page's headline
-  const BEHIND = { home: 'kater', food: 'martiri', hotel: 'divjaka', shop: 'greta', clinic: null };
+  const BEHIND = { home: 'kater', offer: null, food: 'martiri', hotel: 'divjaka', shop: 'greta', clinic: null };
   await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
   for (const t of [sq, en, it]) {
-    for (const key of ['home', ...SERVICES]) {
-      const lines = key === 'home' ? t.home.h1 : [t.services[key].h1];
+    for (const key of ['home', 'offer', ...SERVICES]) {
+      const lines = key === 'home' ? t.home.h1 : key === 'offer' ? [t.offer.h1] : [t.services[key].h1];
       const title = lines.map((l) => l.replace(/\*([^*]+)\*/g, '<b>$1</b>')).join(key === 'home' ? '<br>' : ' ');
       const site = BEHIND[key] && SITES[BEHIND[key]];
       const img = site ? data(site.poster ?? site.card, 'image/webp') : '';
-      const label = key === 'home' ? t.foot.line : `${t.kinds[key]} · ${t.foot.line.split(' · ')[1]}`;
+      const label = key === 'home' ? t.foot.line : key === 'offer' ? t.bar[2] : `${t.kinds[key]} · ${t.foot.line.split(' · ')[1]}`;
       await page.setContent(`<!doctype html><html lang="${t.lang}"><style>
         @font-face{font-family:A;src:url("${font('archivo-latin-wdth-normal.woff2')}");font-weight:100 900;font-stretch:62% 125%}
         @font-face{font-family:M;src:url("${font('sometype-mono-latin-wght-normal.woff2')}");font-weight:400 700}

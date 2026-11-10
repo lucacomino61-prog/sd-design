@@ -19,7 +19,7 @@ const TMP = path.resolve('assets-src/phone-frames');
 const only = process.argv.slice(2);
 const browser = await puppeteer.launch({
   executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: 'new',
-  args: ['--mute-audio', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--hide-scrollbars'],
+  args: ['--mute-audio', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--hide-scrollbars', '--lang=sq-AL'],
   protocolTimeout: 180000,
 });
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -28,8 +28,16 @@ for (const site of SITES.filter((s) => !only.length || only.includes(s.id))) {
   const page = await ctx.newPage();
   await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1');
   await page.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  // the sites are shown as an Albanian visitor sees them
+  await page.setExtraHTTPHeaders({ 'Accept-Language': 'sq-AL,sq;q=0.9' });
+  await page.evaluateOnNewDocument(() => { Object.defineProperty(navigator, 'language', { get: () => 'sq-AL' }); Object.defineProperty(navigator, 'languages', { get: () => ['sq-AL', 'sq'] }); });
   await page.goto(site.url, { waitUntil: 'networkidle2', timeout: 90000 }).catch(() => {});
   await sleep(4000);
+  await page.evaluate(() => {
+    for (const b of document.querySelectorAll('button, [role="button"]')) { if (/Shqip/.test((b.textContent || '').trim())) { b.click(); break; } }
+    for (const s of document.querySelectorAll('select')) { const o = [...s.options].find((x) => /albanian|shqip/i.test(x.textContent)); if (o) { s.value = o.value; s.dispatchEvent(new Event('change', { bubbles: true })); } }
+  }).catch(() => {});
+  await sleep(900);
   // the most private answer to any consent or welcome dialog, then make sure nothing covers the page
   await page.evaluate(() => {
     const want = /^(vetëm thelbësore|only essential|necessary only|anulo|refuzo|reject( all)?|decline|mbyll|close|×)$/i;
@@ -64,6 +72,8 @@ for (const site of SITES.filter((s) => !only.length || only.includes(s.id))) {
   for (let k = 0; k < n; k++) { const t = t0 + k / 30; while (j + 1 < frames.length && frames[j + 1].t <= t) j++; fs.writeFileSync(path.join(dir, `${String(k).padStart(5, '0')}.jpg`), Buffer.from(frames[j].data, 'base64')); }
   execFileSync(ffmpeg, ['-y', '-loglevel', 'error', '-framerate', '30', '-i', path.join(dir, '%05d.jpg'), '-vf', 'scale=390:-2:flags=lanczos', '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-preset', 'slow', '-movflags', '+faststart', path.join(OUT, `${site.id}.mp4`)]);
   fs.copyFileSync(path.join(dir, '00000.jpg'), path.join(OUT, `${site.id}.jpg`));
+  // the poster the pages use: the first frame as WebP, at the size of the recording
+  execFileSync(ffmpeg, ['-y', '-loglevel', 'error', '-i', path.join(dir, '00000.jpg'), '-vf', 'scale=390:-2:flags=lanczos', '-c:v', 'libwebp', '-quality', '82', path.join(OUT, `${site.id}.webp`)]);
   console.log(site.id, `${frames.length} frames captured, ${n} written`, Math.round(fs.statSync(path.join(OUT, `${site.id}.mp4`)).size / 1024) + ' KB');
   await ctx.close();
 }

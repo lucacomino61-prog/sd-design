@@ -2,20 +2,23 @@
 // The shell every page shares: the head (title, description, canonical, languages, share image, icons, structured
 // data), the glass bar with the menu, the closing contact block, the footer and the ruled rail. Every word is in the
 // HTML; the script adds the motion, and the page reads and links without it.
+// Every WhatsApp button on a page starts the same request for the free draft; `type` writes the kind of business
+// into it and `label` is that page's wording for the button.
 import '../styles/site.css';
 import Icon from '../components/Icon.astro';
 import Close from '../components/Close.astro';
-import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, S_PATH, BUBBLE } from '../data/site.js';
+import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, S_PATH, BUBBLE } from '../data/site.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER, LIVE } from '../data/sites.js';
 
-const { t, page, nodes = [], sections = 1, waMsg = t.home.waMsg, close = true } = Astro.props;
+const { t, page, nodes = [], sections = 1, type = '', label = t.home.cta, close = true } = Astro.props;
 const lang = t.lang;
 const meta = t.meta[page];
+const msg = offerMsg(t, type);
 const path = PAGES[page]?.[lang] ?? null; // a page without a place in the table (the 404) is never indexed
 const home = href('home', lang);
 const other = (l) => PAGES[page]?.[l] ?? href('home', l);
-const share = `/og/${page === 'home' || SERVICES.includes(page) ? page : 'home'}-${lang}.jpg`;
+const share = `/og/${['home', 'offer', ...SERVICES].includes(page) ? page : 'home'}-${lang}.jpg`;
 const year = new Date().getFullYear();
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -36,7 +39,7 @@ const graph = [
 ];
 const safe = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 const client = { toast: t.toast, eggs: t.eggs, bar: t.bar, form: { ...t.contact, endpoint: CONTACT.formEndpoint, fields: CONTACT.formFields, whatsapp: CONTACT.whatsapp } };
-const menu = [[`${home}#work`, t.nav.work], ...SERVICES.map((k) => [href(k, lang), t.kinds[k]]), ['#contact', t.nav.contact]];
+const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], ...SERVICES.map((k) => [href(k, lang), t.kinds[k]]), ['#contact', t.nav.contact]];
 ---
 <!doctype html>
 <html lang={lang}>
@@ -76,46 +79,46 @@ const menu = [[`${home}#work`, t.nav.work], ...SERVICES.map((k) => [href(k, lang
 </head>
 <body data-page={page}>
   <a class="skip" href="#main">{t.ui.skip}</a>
-  <header class="bar">
+  <header class="bar on-dark">
     <a class="logo" id="logo" href={home} aria-label={t.ui.home}><svg viewBox="0 0 707 488" aria-hidden="true"><path d={S_PATH} /><path class="bub" d={BUBBLE} /></svg></a>
     <p class="msg" aria-hidden="true"><span id="msg">{t.bar[0]}</span></p>
     <button type="button" class="burger" id="burger" aria-expanded="false" aria-controls="nav" aria-label={t.ui.menu}><i></i><i></i></button>
     <nav class="nav" id="nav" aria-label={t.ui.navLabel} inert>
-      {menu.map(([to, label]) => <a href={to} aria-current={to === path ? 'page' : undefined}>{label}<Icon name="arrow-up-right" size={12} /></a>)}
-      <a {...wa(waMsg)}>WhatsApp<Icon name="arrow-up-right" size={12} /></a>
+      {menu.map(([to, text]) => <a href={to} aria-current={to === path ? 'page' : undefined}>{text}<Icon name="arrow-up-right" size={12} /></a>)}
+      <a {...wa(msg)}>WhatsApp<Icon name="arrow-up-right" size={12} /></a>
       <p>{LANGS.map((l) => <a href={other(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{LANG_NAME[l]}</a>)}</p>
     </nav>
   </header>
-  <a class="touch" {...wa(waMsg)}><span><Icon name="whatsapp-logo" size={16} /></span>{t.ui.write}</a>
+  <a class="touch on-dark" {...wa(msg)}><span><Icon name="whatsapp-logo" size={16} /></span>{t.nav.offer}</a>
 
   <main id="main">
     <slot />
-    {close && <Close t={t} msg={waMsg} n={sections} />}
+    {close && <Close t={t} label={label} type={type} n={sections} />}
   </main>
 
-  <footer class="foot">
+  <footer class="foot on-dark">
     <canvas class="tone foot-tone" data-tone="mark" aria-hidden="true"></canvas>
     <div class="foot-in">
       <nav class="foot-nav" aria-label={t.foot.services}>
-        <div><h2>{t.foot.services}</h2><ul>{SERVICES.map((k) => <li><a href={href(k, lang)}>{t.kinds[k]}</a></li>)}</ul></div>
+        <div><h2>{t.foot.services}</h2><ul>{SERVICES.map((k) => <li><a href={href(k, lang)}>{t.kinds[k]}</a></li>)}<li><a href={href('offer', lang)} aria-current={page === 'offer' ? 'page' : undefined}>{t.nav.offer}</a></li></ul></div>
         <div><h2>{t.foot.work}</h2><ul>{ORDER.map((id) => <li><a href={`${home}#${id}`}>{SITES[id].name}</a></li>)}</ul></div>
-        <div><h2>{t.foot.contact}</h2><ul><li><a {...wa(waMsg)}>WhatsApp</a></li><li><a {...tel}>{t.contact.tel}</a></li><li><a {...ig}>Instagram</a></li><li><a href={href('privacy', lang)}>{t.nav.privacy}</a></li></ul></div>
+        <div><h2>{t.foot.contact}</h2><ul><li><a {...wa(msg)}>WhatsApp</a></li><li><a {...tel}>{t.contact.tel}</a></li><li><a {...ig}>Instagram</a></li><li><a href={href('privacy', lang)}>{t.nav.privacy}</a></li></ul></div>
         <div><h2>{t.foot.langs}</h2><ul>{LANGS.map((l) => <li><a href={other(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{LANG_NAME[l]}</a></li>)}</ul></div>
       </nav>
       <p class="fine"><span>© {year} {SITE.name}</span><span>{t.foot.line}</span>{DRAFT && <span class="fine-draft">{t.ui.draft}</span>}</p>
     </div>
   </footer>
 
-  <div class="rail" role="group" aria-label={SITE.name}>
+  <div class="rail on-dark" role="group" aria-label={SITE.name}>
     <span class="rail-a">{t.ui.count.replace('{n}', ORDER.length).replace('{m}', LIVE.length)}</span>
     <span class="rail-clock">{t.ui.clock} <time data-clock>--:--</time></span>
-    <a class="rail-wa" {...wa(waMsg)}><Icon name="whatsapp-logo" size={16} />{t.ui.write}</a>
+    <a class="rail-wa" {...wa(msg)}><Icon name="whatsapp-logo" size={16} />{t.nav.offer}</a>
     <span class="rail-count" aria-hidden="true">&lt; <b id="count">01</b> / {pad(sections)} &gt;</span>
     <button type="button" class="still" data-still aria-pressed="false">{t.ui.still}</button>
     <nav class="rail-langs" aria-label={t.ui.langLabel}>{LANGS.map((l) => <a href={other(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined} aria-label={LANG_NAME[l]}>{l.toUpperCase()}</a>)}</nav>
   </div>
 
-  <div class="kafe" id="kafe" role="dialog" aria-labelledby="kafe-t" hidden>
+  <div class="kafe on-dark" id="kafe" role="dialog" aria-labelledby="kafe-t" hidden>
     <Icon name="coffee" size={40} />
     <div>
       <p class="kafe-t" id="kafe-t"><span lang="sq">{t.eggs.kafe.t}</span>{t.eggs.kafe.tr && <small>{t.eggs.kafe.tr}</small>}</p>

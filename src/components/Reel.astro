@@ -1,0 +1,45 @@
+---
+// The client sites as a row of flat phones, each holding its site from top to bottom. Without the script (or with the
+// animations stopped) the row is an ordinary strip that scrolls sideways. With it, on a desktop the row is pinned and
+// the page's own scroll moves it, each site scrolling inside its phone as it crosses the screen; on a touch screen it
+// stays a strip you swipe and the site in the middle scrolls by itself. `pin` allows the pinned version.
+import Icon from './Icon.astro';
+import Ask from './Ask.astro';
+import { SITES } from '../data/sites.js';
+const { t, ids, label, pin = false, last = false } = Astro.props;
+const named = (s, name) => s.replace('{name}', name);
+---
+<div class="scene reel-scene" data-scene="reel" data-pin={pin ? '' : undefined}>
+  <div class="pin">
+    <div class="reel-wrap" role="region" aria-label={label} tabindex="0">
+      <ul class="reel">
+        {ids.map((id) => {
+          const s = SITES[id], p = t.projects[id];
+          return (
+            <li class={`slide t-${id}`} data-tone={s.tone}>
+              {s.tall
+                ? <figure class="flat"><img class="tall" src={s.tall} alt={named(t.ui.tallAlt, s.name)} width="585" height="5064" loading="lazy" decoding="async" /></figure>
+                : <figure class="flat flat-wide"><img src={s.card} alt={named(t.ui.cardAlt, s.name)} width="1200" height="630" loading="lazy" decoding="async" /></figure>}
+              <div class="slide-b">
+                <p class="slide-name">{s.name}</p>
+                <p class="slide-what">{p.what} · {p.place}</p>
+                <p class="chips"><i>{t.kinds[s.kind]}</i><i class={`st st-${s.state}`}>{t.states[s.state]}</i></p>
+                {s.url && <a class="lnk" href={s.url} target="_blank" rel="noopener" aria-label={`${t.ui.open}: ${s.name}`}>{t.ui.open}<Icon name="arrow-up-right" size={12} /></a>}
+              </div>
+            </li>
+          );
+        })}
+        {last && (
+          <li class="slide slide-you" data-tone="">
+            <div class="flat flat-you" aria-hidden="true"><span>{t.offer.chat.draftT}</span></div>
+            <div class="slide-b">
+              <p class="slide-name">{t.home.yours}</p>
+              <Ask t={t} who={false} />
+            </div>
+          </li>
+        )}
+      </ul>
+    </div>
+    <div class="reel-bar" aria-hidden="true"><i></i></div>
+  </div>
+</div>

@@ -1,30 +1,37 @@
 ---
-// The home page in one language. First screen: a client's site drawn as a red halftone across the whole screen,
-// the same site playing in a glass phone, and the line that says what the studio does. Then the work, what we do
-// for each kind of business, why, how, the questions, and the close (from the layout).
+// The home page in one language, built around one offer: a free working draft of the visitor's own site.
+// First screen: the line, the one WhatsApp button, how many drafts are left this week and who answers, over a client's
+// site drawn as a red halftone. Then the offer in three numbers, how it works step by step, the sites already built
+// (a row of phones, then the list), every kind of site by difficulty, why, the questions, and the close (from the
+// layout). Every word is in the HTML; the script adds the movement.
 import Base from '../layouts/Base.astro';
 import Icon from './Icon.astro';
+import Words from './Words.astro';
+import Ask from './Ask.astro';
+import Story from './Story.astro';
+import Reel from './Reel.astro';
 import Work from './Work.astro';
 import Faq from './Faq.astro';
-import { SITE, SERVICES, href, abs, wa } from '../data/site.js';
-import { SITES, ORDER, HERO, BY_KIND } from '../data/sites.js';
+import { SERVICES, href, abs, wa, offerMsg } from '../data/site.js';
+import { SITES, ORDER, HERO } from '../data/sites.js';
+import { OFFER } from '../data/offer.js';
 
 const { t } = Astro.props;
-const lang = t.lang, h = t.home;
-const pad = (n) => String(n).padStart(2, '0');
+const lang = t.lang, h = t.home, o = t.offer, L = t.levels;
 const named = (s, name) => s.replace('{name}', name);
 const first = SITES[HERO[0]];
 const live = HERO.map((id) => ({ id, name: SITES[id].name, video: SITES[id].video, poster: SITES[id].poster, alt: named(t.ui.onPhone, SITES[id].name) }));
-// "në *telefonin*" -> the marked word is set in red
-const words = (line) => line.split(' ').map((w) => (/^\*.*\*[.,]?$/.test(w) ? { hot: true, text: w.replace(/\*/g, '') } : { text: w }));
+// the offer in three numbers: hours, drafts a week, and what the draft costs
+const numbers = [OFFER.hours, OFFER.perWeek, 0];
 
-const ORG = abs('/') + '#studio';
+const ORG = abs('/') + '#studio', here = abs(href('home', lang));
 const nodes = [
-  { '@type': 'OfferCatalog', '@id': abs(href('home', lang)) + '#services', name: h.what.t.replace(/\.$/, ''), itemListElement: SERVICES.map((k) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: t.services[k].h1.replace(/\.$/, ''), url: abs(href(k, lang)), provider: { '@id': ORG }, areaServed: { '@type': 'Country', name: 'Albania' } } })) },
-  { '@type': 'ItemList', '@id': abs(href('home', lang)) + '#work', name: t.nav.work, itemListElement: ORDER.map((id, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'WebSite', name: SITES[id].name, description: t.projects[id].lede, ...(SITES[id].url && { url: SITES[id].url }), inLanguage: SITES[id].langs, creator: { '@id': ORG } } })) },
+  { '@type': 'OfferCatalog', '@id': here + '#services', name: L.t.replace(/\.$/, ''), itemListElement: SERVICES.map((k) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: t.services[k].h1.replace(/\.$/, ''), url: abs(href(k, lang)), provider: { '@id': ORG }, areaServed: { '@type': 'Country', name: 'Albania' } } })) },
+  { '@type': 'ItemList', '@id': here + '#work', name: t.nav.work, itemListElement: ORDER.map((id, i) => ({ '@type': 'ListItem', position: i + 1, item: { '@type': 'WebSite', name: SITES[id].name, description: t.projects[id].lede, ...(SITES[id].url && { url: SITES[id].url }), inLanguage: SITES[id].langs, creator: { '@id': ORG } } })) },
+  { '@type': 'FAQPage', '@id': here + '#faq', inLanguage: lang, mainEntity: h.faq.items.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
 ];
 ---
-<Base t={t} page="home" nodes={nodes} sections={7}>
+<Base t={t} page="home" nodes={nodes} sections={8}>
   <section class="hero" id="top" aria-labelledby="h1" data-section="1">
     <canvas class="tone hero-tone" data-tone="hero" aria-hidden="true"></canvas>
     <div class="live" id="live" data-sites={JSON.stringify(live)}>
@@ -37,70 +44,82 @@ const nodes = [
     <div class="hero-b">
       <h1 id="h1">
         <span class="tag">{h.tag}</span><span class="sr">: </span>
-        <span class="big display">{h.h1.map((line) => <span class="ln">{words(line).map((w) => <Fragment><span class={`w${w.hot ? ' hot' : ''}`}><span>{w.text}</span></span>{' '}</Fragment>)}</span>)}</span>
+        <span class="big display">{h.h1.map((line) => <span class="ln"><Words text={line} /></span>)}</span>
       </h1>
       <div class="hero-foot">
         <p class="lead">{h.lead}</p>
-        <div class="ctas">
-          <a class="cta" {...wa(h.waMsg)}><span><Icon name="whatsapp-logo" size={20} /></span>{h.cta}</a>
-          <a class="lnk" href="#work">{h.cta2}<Icon name="arrow-down" size={12} /></a>
-        </div>
+        <Ask t={t} />
       </div>
     </div>
   </section>
 
-  <section class="work" id="work" aria-labelledby="work-h" data-section="2">
+  <section class="poster" id="offer" aria-labelledby="poster-h" data-ground="red" data-section="2">
+    <h2 class="sr" id="poster-h">{t.nav.offer}</h2>
+    <ul class="poster-lines">
+      {numbers.map((n, i) => (
+        <li>
+          <b class="display" aria-hidden="true" data-count={n} data-from={n ? 0 : 9}>{n}</b><span class="sr">{n} </span>
+          <span class="display split"><Words text={o.numbers[i][0]} /></span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="story" id="how" aria-labelledby="how-h" data-section="3">
+    <div class="story-stage">
+      <h2 class="display split" id="how-h"><Words text={o.storyT} /></h2>
+      <Story t={t} />
+    </div>
+    <div class="story-ask"><Ask t={t} note /></div>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-h" data-section="4">
     <div class="work-top">
-      <h2 class="tag" id="work-h">[ {t.nav.work} ]</h2>
+      <h2 class="display split" id="work-h"><Words text={h.workT} /></h2>
       <p class="say">{h.say}</p>
     </div>
+    <Reel t={t} ids={ORDER} label={h.workT} pin last />
     <Work t={t} ids={ORDER} />
   </section>
 
-  <section class="what on-light" id="what" aria-labelledby="what-h" data-section="3">
-    <div class="sec-top">
-      <h2 class="display" id="what-h">{h.what.t}</h2>
-      <p class="lead">{h.what.lead}</p>
+  <section class="levels" id="what" aria-labelledby="what-h" data-ground="light" data-section="5">
+    <div class="band display" aria-hidden="true" data-band><span>{[0, 1].map(() => <Fragment>{h.band}<i></i></Fragment>)}</span></div>
+    <div class="sec-head">
+      <h2 class="display split" id="what-h"><Words text={L.t} /></h2>
+      <p class="lead">{L.lead}</p>
     </div>
-    <ol class="kinds">
-      {SERVICES.map((k, i) => {
-        const [title, items] = h.what.cards[k];
-        const eg = BY_KIND(k);
-        const pic = eg[0] && SITES[eg[0]];
-        return (
-          <li class="kind">
-            <span class="num" aria-hidden="true">[ {pad(i + 1)} ]</span>
-            <div class={`kind-pic t-${eg[0] ?? 'none'}`}>
-              {pic
-                ? <img class={pic.poster ? undefined : 'whole'} src={pic.poster ?? pic.card} alt="" width={pic.poster ? 390 : 1200} height={pic.poster ? 844 : 630} loading="lazy" decoding="async" />
-                : <div class="demo" lang="it"><small>{h.what.demo.tag}</small><b>{h.what.demo.t}</b><span>{h.what.demo.s}</span><i>{h.what.demo.cta}</i></div>}
-            </div>
-            <h3><a href={href(k, lang)}>{title}</a></h3>
-            <ul>{items.map((x) => <li>{x}</li>)}</ul>
-            <p class="kind-eg">{eg.length ? eg.map((id) => SITES[id].name + (SITES[id].state === 'proto' ? ` (${t.states.proto.toLowerCase()})` : '')).join(' · ') : t.ui.noProject}</p>
-            <a class="lnk" href={href(k, lang)} aria-label={`${t.ui.more}: ${title}`}>{t.ui.more}<Icon name="arrow-up-right" size={12} /></a>
-          </li>
-        );
-      })}
+    <ol class="stairs">
+      {L.items.map(([title, text, items, eg], i) => (
+        <li class="stair">
+          <p class="pips" aria-hidden="true">{[0, 1, 2].map((k) => <i class={k <= i ? 'on' : undefined}></i>)}</p>
+          <h3>{title}</h3>
+          <p class="stair-t">{text}</p>
+          <ul class="stair-list">{items.map((x) => <li>{x}</li>)}</ul>
+          <a class="stair-eg" href={`#${eg}`}>
+            <span class="stair-cap"><span>{L.eg}: <b>{SITES[eg].name}</b></span><Icon name="arrow-up-right" size={12} /></span>
+            <img src={SITES[eg].tall} alt="" width="585" height="5064" loading="lazy" decoding="async" />
+          </a>
+        </li>
+      ))}
     </ol>
+    <div class="kinds-b">
+      <h3 class="kinds-t">{L.kindsT}</h3>
+      <ul class="more-list">
+        {SERVICES.map((k) => <li><a href={href(k, lang)}><span class="display">{t.kindTitles[k]}</span><Icon name="arrow-up-right" size={28} /></a></li>)}
+      </ul>
+      <p class="levels-other">{L.other} <a class="lnk" {...wa(offerMsg(t))}>{h.cta}<Icon name="arrow-up-right" size={12} /></a></p>
+    </div>
   </section>
 
-  <section class="why" id="why" aria-labelledby="why-h" data-section="4">
-    <h2 class="display" id="why-h">{h.why.t}</h2>
+  <section class="why" id="why" aria-labelledby="why-h" data-section="6">
+    <h2 class="display split" id="why-h"><Words text={h.why.t} /></h2>
     <ol class="why-list">
-      {h.why.items.map(([title, text], i) => <li><span class="num" aria-hidden="true">[ {pad(i + 1)} ]</span><h3>{title}</h3><p>{text}</p></li>)}
+      {h.why.items.map(([title, text]) => <li><h3>{title}</h3><p>{text}</p></li>)}
     </ol>
   </section>
 
-  <section class="steps" id="how" aria-labelledby="how-h" data-section="5">
-    <h2 class="display" id="how-h">{h.steps.t}</h2>
-    <ol class="step-list">
-      {h.steps.items.map(([title, text], i) => <li><span class="step-n display" aria-hidden="true">{i + 1}</span><h3>{title}</h3><p>{text}</p></li>)}
-    </ol>
-  </section>
-
-  <section class="faq" id="faq" aria-labelledby="faq-h" data-section="6">
-    <h2 class="display" id="faq-h">{h.faq.t}</h2>
+  <section class="faq" id="faq" aria-labelledby="faq-h" data-section="7">
+    <h2 class="display split" id="faq-h"><Words text={h.faq.t} /></h2>
     <div class="faq-b">
       <Faq items={h.faq.items} />
       <p class="faq-more">{h.faq.more} <a class="lnk" {...wa(h.faq.msg)}>{h.faq.ask}<Icon name="arrow-up-right" size={12} /></a></p>

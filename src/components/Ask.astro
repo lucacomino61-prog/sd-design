@@ -1,0 +1,24 @@
+---
+// The one call to action, wherever it appears: the WhatsApp button that starts a request for the free draft, how many
+// drafts are left this week, and who answers. `type` fills in the kind of business on a service page.
+import Icon from './Icon.astro';
+import Meter from './Meter.astro';
+import { SITE, wa, offerMsg, S_PATH, BUBBLE } from '../data/site.js';
+const { t, label = t.home.cta, type = '', who = true, note = false } = Astro.props;
+const [before, after] = t.ui.answers.split('{name}');
+---
+<div class="ask">
+  <a class="cta cta-big" {...wa(offerMsg(t, type))}><span><Icon name="whatsapp-logo" size={28} /></span>{label}<Icon name="arrow-up-right" size={18} /></a>
+  <Meter t={t} />
+  {who && (
+    <p class="who">
+      <span class="who-pic">
+        {SITE.person.photo
+          ? <img src={SITE.person.photo} alt="" width="72" height="72" loading="lazy" decoding="async" />
+          : <svg viewBox="0 0 707 488" aria-hidden="true"><path d={S_PATH} /><path class="bub" d={BUBBLE} /></svg>}
+      </span>
+      <span>{before}<b>{SITE.person.name}</b>{after}</span>
+    </p>
+  )}
+  {note && <p class="ask-note">{t.ui.albania}</p>}
+</div>

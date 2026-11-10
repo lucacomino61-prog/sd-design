@@ -16,8 +16,8 @@ export const onStill = (fn) => watchers.add(fn);
 export function stillSwitch() {
   const btn = $('[data-still]');
   const apply = () => {
+    // (the page itself is marked by scroll.js with "move"; a class named like the button's would style <html> as a button)
     btn?.setAttribute('aria-pressed', String(state.still));
-    document.documentElement.classList.toggle('still', state.still);
     watchers.forEach((fn) => fn(state.still));
   };
   btn?.addEventListener('click', () => { state.still = !state.still; apply(); });
@@ -54,7 +54,8 @@ export const text = (str) => (c, cols, rows) => {
   return true;
 };
 
-export function makeTone(canvas, { color = '#ff4d36', glass = '#f9f4eb', lens = true } = {}) {
+// `dot` fixes the size of a dot (for a small picture); otherwise it follows the width of the canvas
+export function makeTone(canvas, { color = '#ff4d36', glass = '#f9f4eb', lens = true, dot = 0 } = {}) {
   const ctx = canvas.getContext('2d');
   const small = document.createElement('canvas');
   const sctx = small.getContext('2d', { willReadFrequently: true });
@@ -68,7 +69,7 @@ export function makeTone(canvas, { color = '#ff4d36', glass = '#f9f4eb', lens = 
     dpr = Math.min(devicePixelRatio || 1, 2);
     w = canvas.clientWidth; h = canvas.clientHeight;
     if (!w || !h) return false;
-    cell = w < 760 ? 7 : w < 1280 ? 8 : 9;
+    cell = dot || (w < 760 ? 7 : w < 1280 ? 8 : 9);
     canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
     const c = Math.ceil(w / cell), rr = Math.ceil(h / cell);
     if (c !== cols || rr !== rows) { cols = c; rows = rr; small.width = cols; small.height = rows; cur = new Float32Array(cols * rows); tgt = new Float32Array(cols * rows); }

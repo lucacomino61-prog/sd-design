@@ -5,9 +5,10 @@ import en from '../i18n/en.js';
 import { SITE, LANGS, LANG_NAME, PAGES, SERVICES, abs } from '../data/site.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER } from '../data/sites.js';
+import { OFFER } from '../data/offer.js';
 
 export function GET() {
-  const t = en;
+  const t = en, o = t.offer;
   const contact = [
     CONTACT.whatsapp && `- WhatsApp: https://wa.me/${CONTACT.whatsapp}`,
     CONTACT.phone && `- Phone: ${CONTACT.phone}`,
@@ -17,7 +18,21 @@ export function GET() {
   const md = [
     `# ${SITE.name}`,
     '',
-    `> ${t.meta.home.desc} Quotes are given on WhatsApp; no prices are published.`,
+    `> ${t.meta.home.desc} The price of the full site is given on WhatsApp, after the draft; no prices are published.`,
+    '',
+    `## The free draft`,
+    `[${o.h1.replace(/\.$/, '')}](${abs(PAGES.offer.en)}): ${o.lead}`,
+    '',
+    ...o.steps.map(([title, text], i) => `${i + 1}. ${title}: ${text}`),
+    '',
+    '### What to send',
+    ...o.send.map((x) => `- ${x}`),
+    '',
+    '### The terms',
+    ...o.terms.map((x) => `- ${x.replace('{m}', OFFER.perWeek)}`),
+    '',
+    '## Kinds of site, by difficulty',
+    ...t.levels.items.map(([title, text, items, eg]) => `- ${title}: ${text} ${items.join('; ')}. Example: ${SITES[eg].name}.`),
     '',
     '## Services',
     ...SERVICES.map((k) => `- [${t.services[k].h1.replace(/\.$/, '')}](${abs(PAGES[k].en)}): ${t.services[k].lead}`),
@@ -27,9 +42,6 @@ export function GET() {
       const s = SITES[id], p = t.projects[id];
       return `- ${s.url ? `[${s.name}](${s.url})` : s.name} (${p.what}, ${p.place}; ${t.states[s.state].toLowerCase()}): ${p.lede} ${p.facts.join(' ')}`;
     }),
-    '',
-    '## How it works',
-    ...t.home.steps.items.map(([title, text], i) => `${i + 1}. ${title}: ${text}`),
     '',
     '## Questions',
     ...t.home.faq.items.flatMap(([q, a]) => [`### ${q}`, a, '']),

@@ -12,6 +12,9 @@ export const SITE = {
   verify: { google: null, bing: null },
   // Who runs the site, shown on the privacy page: the registered name, the NIPT and the address.
   legal: { name: null, nipt: null, address: null },
+  // Who answers on WhatsApp, named next to the button. The photo is shown only once there is a real one: a square
+  // picture in public/, e.g. '/person/stefano.webp'. Until then the SD mark stands in its place, never a made-up face.
+  person: { name: 'Stefano Doko', photo: null },
   // Set by the contact data: the origin the form may post to (for the content security policy).
   formOrigin: CONTACT.formEndpoint ? new URL(CONTACT.formEndpoint).origin : null,
 };
@@ -24,6 +27,7 @@ export const LOCALE = { sq: 'sq_AL', en: 'en_GB', it: 'it_IT' };
 // One page per search intent and language. The same table feeds the menus, hreflang, the sitemap and the checks.
 export const PAGES = {
   home: { sq: '/', en: '/en/', it: '/it/' },
+  offer: { sq: '/draft-falas/', en: '/en/free-draft/', it: '/it/bozza-gratis/' },
   food: { sq: '/restorante/', en: '/en/restaurants/', it: '/it/ristoranti/' },
   hotel: { sq: '/hotele/', en: '/en/hotels/', it: '/it/hotel/' },
   shop: { sq: '/dyqane-online/', en: '/en/online-shops/', it: '/it/negozi-online/' },
@@ -41,6 +45,10 @@ export const wa = (text) => (CONTACT.whatsapp
   : { href: '#contact', 'data-draft': 'wa' });
 export const tel = CONTACT.phone ? { href: `tel:${CONTACT.phone.replace(/\s+/g, '')}`, 'data-goal': 'phone' } : { href: '#contact', 'data-draft': 'tel' };
 export const ig = CONTACT.instagram ? { href: `https://instagram.com/${CONTACT.instagram}`, target: '_blank', rel: 'me noopener', 'data-goal': 'instagram' } : { href: '#contact', 'data-draft': 'ig' };
+
+// The message every WhatsApp button starts: a request for the free draft, with the lines the studio needs filled in.
+// A service page already knows the kind of business.
+export const offerMsg = (t, type = '') => t.offer.msg.replace('{type}', type);
 
 // The SD mark lives in mark.js so the page script can draw it without loading this file.
 export { S_PATH, BUBBLE } from './mark.js';

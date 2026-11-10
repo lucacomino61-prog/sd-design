@@ -1,17 +1,19 @@
 ---
-// The close of every page: the red block with the ways to reach the studio and a short form. The form needs no
-// server: it opens WhatsApp with the message written (or posts to an inbox, when src/data/contact.js names one).
+// The close of every page: the red block with the button for the free draft, the other ways to reach the studio and a
+// short form. The form needs no server: it opens WhatsApp with the message written (or posts to an inbox, when
+// src/data/contact.js names one).
 import Icon from './Icon.astro';
-import { wa, tel, ig } from '../data/site.js';
+import Ask from './Ask.astro';
+import { tel, ig } from '../data/site.js';
 import { CONTACT } from '../data/contact.js';
-const { t, msg, n } = Astro.props;
+const { t, label, type, n } = Astro.props;
 const c = t.contact;
 ---
-<section class="close on-red" id="contact" aria-labelledby="close-h" data-section={n}>
+<section class="close" id="contact" aria-labelledby="close-h" data-ground="red" data-section={n}>
   <h2 class="display" id="close-h">{c.t[0]}<br />{c.t[1]}</h2>
   <div class="close-b">
     <div class="close-ways">
-      <a class="cta cta-ink" {...wa(msg)}><span><Icon name="whatsapp-logo" size={20} /></span>{c.wa}</a>
+      <Ask t={t} label={label} type={type} note />
       <p class="lead">{c.sub}</p>
       <ul class="links">
         <li><a class="lnk" {...tel}>{CONTACT.phone ?? c.tel}<Icon name="arrow-up-right" size={12} /></a></li>
