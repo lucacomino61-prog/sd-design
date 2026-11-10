@@ -1,0 +1,25 @@
+/* Shared by the three design options: the faces, a reset, focus, selection and the draft note. Each option brings its
+   own world on top (a.css, b.css, c.css). */
+@font-face { font-family: "Archivo"; src: url("/fonts/archivo-latin-wdth-normal.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; }
+@font-face { font-family: "Archivo"; src: url("/fonts/geist-amp.woff2") format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; unicode-range: U+0026; }
+@font-face { font-family: "Archivo Fallback"; src: local("Arial"), local("ArialMT"), local("Roboto"); size-adjust: 98.5%; ascent-override: 89.1%; descent-override: 21.3%; line-gap-override: 0%; }
+@font-face { font-family: "Anton"; src: url("/fonts/anton-latin-400-normal.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Sometype Mono"; src: url("/fonts/sometype-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("/fonts/geist-mono-latin-wght-normal.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { margin: 0; overflow-x: clip; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+a { color: inherit; }
+img, video, svg, canvas { display: block; max-width: 100%; }
+/* width and height attributes reserve the space; CSS decides the size (without this an img keeps its attribute height) */
+img { height: auto; }
+button { font: inherit; color: inherit; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: fixed; z-index: 100; left: 12px; top: -64px; padding: 15px 16px; border-radius: 6px; background: #111; color: #fff; font: 500 14px/1 "Archivo", sans-serif; }
+.skip:focus { top: 12px; }
+.draft { position: fixed; z-index: 90; left: 50%; bottom: 28px; max-width: calc(100vw - 32px); padding: 11px 16px; border-radius: 8px; background: #111; color: #fff; font: 500 13px/1.35 "Archivo", sans-serif; letter-spacing: 0; text-align: center; pointer-events: none; opacity: 0; translate: -50% 8px; transition: opacity 0.2s ease-out, translate 0.2s ease-out; }
+.draft.on { opacity: 1; translate: -50% 0; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

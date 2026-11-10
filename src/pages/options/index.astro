@@ -1,0 +1,62 @@
+---
+// The three redesign options side by side, each with the studio site it follows. A review page, not part of the site.
+import '../../styles/options/base.css';
+import OptionHead from '../../components/OptionHead.astro';
+
+const OPTIONS = [
+  { id: 'a', name: 'Blloku', en: 'The Block', after: 'M&C 4.0', by: 'Mallard & Claret, Londër', score: '7.58', ref: 'https://mallardandclaret.com/',
+    line: 'Identiteti në një ekran: marka SD mbi bllokun e kuq, një fjali, ora. Pastaj çdo punë si panel me ngjyrën e vet të klientit.' },
+  { id: 'b', name: 'Ndarja', en: 'The Split', after: 'Jam Area', by: 'ET Studio, Itali', score: '7.51', ref: 'https://www.jamarea.com/en',
+    line: 'Emri i ndarë në dysh me fjalinë në mes, punët si karta të shpërndara mbi të bardhë, një listë me shkronja gjigante.' },
+  { id: 'c', name: 'Xhami', en: 'The Glass', after: 'Lama Lama', by: 'Lama Lama, Amsterdam', score: '7.51', ref: 'https://lamalama.com/',
+    line: 'Sfond i errët, faqja e klientit e vizatuar me pika, manifest me shkronja të mëdha, shirit xhami dhe një vijë në fund me orën.' },
+];
+---
+<!doctype html>
+<html lang="sq">
+<head>
+  <OptionHead title="SD Design · Tri opsione" />
+  <style is:global>
+    .o { margin: 0; background: #f4f3ef; color: #17181a; font: 400 17px/1.45 "Archivo", "Archivo Fallback", sans-serif; }
+    .o main { width: min(1320px, 100%); margin-inline: auto; padding: clamp(40px, 6vw, 96px) max(20px, 3vw) 96px; }
+    .o h1 { max-width: 16ch; font-size: clamp(34px, 5vw, 72px); font-weight: 800; font-stretch: 120%; line-height: 0.98; letter-spacing: -0.03em; text-wrap: balance; }
+    .o .intro { max-width: 60ch; margin-top: 22px; color: #55585f; text-wrap: pretty; }
+    .o ol { display: grid; gap: clamp(40px, 6vw, 88px); margin-top: clamp(48px, 7vw, 104px); }
+    .o li { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(20px, 3vw, 48px); align-items: start; }
+    .o h2 { font-size: clamp(26px, 2.6vw, 38px); font-weight: 800; font-stretch: 112%; line-height: 1.05; letter-spacing: -0.02em; }
+    .o h2 span { color: #c22a1d; }
+    .o .after { margin-top: 10px; font-weight: 600; }
+    .o .line { margin-top: 12px; color: #55585f; text-wrap: pretty; }
+    .o .open { display: inline-flex; align-items: center; min-height: 48px; margin-top: 22px; padding: 12px 22px; border-radius: 999px; background: #17181a; color: #fff; font-weight: 700; text-decoration: none; transition: scale 0.16s cubic-bezier(0.23, 1, 0.32, 1); }
+    .o .open:active { scale: 0.97; }
+    .o .ref { display: inline-block; margin: 14px 0 0 4px; padding: 10px 0; color: #55585f; font-size: 15px; text-underline-offset: 3px; }
+    .o .shots { display: grid; grid-template-columns: minmax(0, 1fr) 19%; gap: 12px; align-items: start; }
+    .o .shots img { width: 100%; border-radius: 10px; box-shadow: 0 1px 2px rgb(23 24 26 / 0.06), 0 18px 40px -24px rgb(23 24 26 / 0.4); }
+    .o :focus-visible { outline: 2px solid #c22a1d; outline-offset: 3px; border-radius: 6px; }
+    @media (max-width: 760px) { .o li { grid-template-columns: minmax(0, 1fr); } }
+  </style>
+</head>
+<body class="o">
+  <main>
+    <h1>Tri opsione për faqen e SD Design.</h1>
+    <p class="intro">Secila ndjek nga afër faqen e një studioje nga dhjetë më të vlerësuarat nga juria e Awwwards: masat, ngjyrat, ritmin dhe lëvizjen. Përmbajtja është e jona: punët, WhatsApp-i, shqipja.</p>
+    <ol>
+      {OPTIONS.map((o) => (
+        <li>
+          <div>
+            <h2><span>{o.id.toUpperCase()}</span> {o.name}</h2>
+            <p class="after">Sipas {o.after} ({o.by}) · juria {o.score}</p>
+            <p class="line">{o.line}</p>
+            <a class="open" href={`/options/${o.id}/`}>Hap opsionin {o.id.toUpperCase()}</a>
+            <a class="ref" href={o.ref} target="_blank" rel="noopener">Shiko faqen që ndjek</a>
+          </div>
+          <a class="shots" href={`/options/${o.id}/`} aria-label={`Hap opsionin ${o.id.toUpperCase()}`}>
+            <img src={`/options/${o.id}-desk.jpg`} alt={`Opsioni ${o.id.toUpperCase()}, ${o.name}, në kompjuter`} width="1440" height="900" loading="lazy" />
+            <img src={`/options/${o.id}-phone.jpg`} alt={`Opsioni ${o.id.toUpperCase()}, ${o.name}, në telefon`} width="780" height="1688" loading="lazy" />
+          </a>
+        </li>
+      ))}
+    </ol>
+  </main>
+</body>
+</html>

@@ -1,0 +1,166 @@
+/* Option B, "The Split", after Jam Area. Measured there on 10 Nov 2026 and kept here:
+   paper #FEFFF8, ink #1E1E1E and one red dot; a condensed display face at 23.5vw (theirs FK Screamer, ours Anton,
+   free) with everything else in bold capitals at 1.47vw and labels at 0.6vw; margins and gaps of 1.46vw on twelve
+   columns; a header that blends by difference; and one curve for every move: cubic-bezier(0.19, 1, 0.22, 1), 1 s.
+   Labels here are 0.76vw with an 11 px floor, because theirs (8.5 px) are too small to read. */
+.b {
+  --paper: #fefff8;
+  --ink: #1e1e1e;
+  --red: #e2382a;
+  --m: max(16px, 1.46vw);
+  --t: max(15px, 1.47vw);
+  --s: max(11px, 0.76vw);
+  --expo: cubic-bezier(0.19, 1, 0.22, 1);
+  background: var(--paper);
+  color: var(--ink);
+  font: 800 var(--t) / 1 "Archivo", "Archivo Fallback", sans-serif;
+  font-stretch: 96%;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.b :focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
+.b ::selection { background: var(--ink); color: var(--paper); }
+.b a { text-decoration: none; }
+.b-display, .b-w, .b-name, .b-who h3, .b-end h2, .b-nav > a { font-family: "Anton", "Archivo", sans-serif; font-weight: 400; font-stretch: normal; letter-spacing: 0; text-box: trim-both cap alphabetic; }
+
+/* ---------- header: a square and MENU, the lit project's title, WRITE and a dot ---------- */
+.b-top { position: fixed; z-index: 40; inset: 0 0 auto 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: start; padding: var(--m); color: #fff; mix-blend-mode: difference; pointer-events: none; }
+.b-top > * { pointer-events: auto; }
+.b-left { justify-self: start; display: flex; gap: 2.4em; }
+.b-menu, .b-write, .b-still { display: inline-flex; align-items: center; gap: 0.9em; margin: -10px 0; padding: 10px 0; font-size: var(--s); }
+.b-menu, .b-still { border: 0; background: none; cursor: pointer; text-transform: inherit; letter-spacing: inherit; }
+.b-write { justify-self: end; }
+/* stop-motion: two bars that close into a square when it is on */
+.b-still i { background: linear-gradient(90deg, currentColor 36%, transparent 36% 64%, currentColor 64%); }
+.b-still[aria-pressed="true"] i { background: currentColor; }
+.b-menu i, .b-write i { width: 1em; height: 1em; background: currentColor; transition: rotate 1s var(--expo), scale 1s var(--expo); }
+.b-write i { border-radius: 50%; }
+.b-menu[aria-expanded="true"] i { rotate: 135deg; }
+@media (hover: hover) { .b-write:hover i { scale: 1.6; } .b-menu:hover i { rotate: 90deg; } }
+.b-title { justify-self: center; white-space: nowrap; transition: opacity 0.5s var(--expo); }
+.b-away .b-title, .b-open .b-title { opacity: 0; }
+
+/* ---------- the menu: an ink sheet that wipes down ---------- */
+.b-nav { position: fixed; z-index: 35; inset: 0; display: grid; align-content: end; gap: 1.6vw; padding: var(--m); padding-bottom: calc(var(--m) * 2); background: var(--ink); color: var(--paper); clip-path: inset(0 0 100% 0); visibility: hidden; transition: clip-path 1s var(--expo), visibility 0s linear 1s; }
+.b-nav.open { clip-path: inset(0); visibility: visible; transition-delay: 0s; }
+.b-nav > a { justify-self: start; font-size: 13vw; line-height: 0.9; transition: color 0.5s var(--expo), translate 1s var(--expo); }
+@media (hover: hover) { .b-nav > a:hover { color: var(--red); translate: 1.46vw 0; } }
+.b-nav p { display: flex; gap: 2.4vw; margin-top: 3vw; }
+.b-nav p span { opacity: 0.5; }
+
+/* ---------- first screen: scattered cards above, the split wordmark below ---------- */
+.b-first { position: relative; height: 100svh; min-height: 560px; overflow: clip; }
+.b-cards li { position: absolute; left: var(--x); top: var(--y); width: max(84px, 6.9vw); aspect-ratio: 3 / 4; }
+.b-cards li.on { z-index: 4; }
+.b-cards li:hover, .b-cards li:focus-within { z-index: 5; }
+.b-cards a { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; background: var(--ink); transition: scale 1s var(--expo); }
+.b-cards img, .b-cards video, .b-peek img, .b-peek video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.b-cards img { filter: grayscale(1) contrast(1.06); transition: filter 1s var(--expo); }
+.b-cards video, .b-peek video { opacity: 0; transition: opacity 0.4s ease; }
+.b-cards video.ready, .b-peek video.ready { opacity: 1; }
+.b-cards li.on a { scale: 1.32; }
+.b-cards li.on img { filter: none; }
+@media (hover: hover) { .b-cards a:hover { scale: 1.9; } .b-cards a:hover img { filter: none; } }
+.b-cards a:focus-visible { scale: 1.9; }
+.b-yours a { display: grid; place-content: center; justify-items: center; gap: 0.5em; border: 1px dashed var(--ink); background: none; font-size: var(--s); text-align: center; transition: scale 1s var(--expo), background-color 0.5s var(--expo), color 0.5s var(--expo); }
+.b-yours span { font: 400 3.2em/0.8 "Anton", sans-serif; }
+@media (hover: hover) { .b-cards .b-yours a:hover { scale: 1.2; background: var(--red); border-color: var(--red); color: #fff; } }
+
+.b-word { position: absolute; left: var(--m); right: var(--m); bottom: var(--m); display: grid; grid-template-columns: auto 1fr auto; align-items: end; }
+.b-w { display: block; font-size: 20vw; line-height: 0.86; }
+/* the middle cell is the gap between the two words: the line sits at its centre, the coffee link at its foot */
+.b-mid { position: relative; align-self: stretch; display: grid; place-content: center; text-align: center; }
+.b-mid h1 { font: inherit; }
+.b-mid h1 span { display: block; }
+.b-cta { position: absolute; left: 50%; bottom: 0; translate: -50% 0; padding: 0.7em 0.2em; font-size: var(--s); white-space: nowrap; background: linear-gradient(var(--red), var(--red)) 0 100% / 0% 2px no-repeat; transition: background-size 1s var(--expo); }
+@media (hover: hover) { .b-cta:hover { background-size: 100% 2px; } }
+
+/* ---------- the work as a list: a name per row, its phone follows the pointer ---------- */
+.b-list, .b-who { padding: 13vw var(--m) 0; }
+.b-h { display: flex; justify-content: space-between; margin-bottom: 1.46vw; font: inherit; }
+.b-list ol, .b-who > ul { border-bottom: 1px solid var(--ink); }
+.b-row { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 2vw; padding: 1.3vw 0 1.1vw; border-top: 1px solid var(--ink); color: inherit; transition: background-color 0.5s var(--expo), color 0.5s var(--expo); }
+.b-name { font-size: 9.6vw; line-height: 0.9; }
+.b-name, .b-meta { transition: translate 1s var(--expo); }
+.b-meta { display: grid; gap: 0.35em; text-align: right; }
+.b-meta span + span { opacity: 0.55; }
+.b-thumb { display: none; }
+/* the row turns to ink and its two ends step inward (a transform, so nothing is laid out again) */
+@media (hover: hover) { a.b-row:hover, div.b-row:hover { background: var(--ink); color: var(--paper); } .b-row:hover .b-name { translate: 1.46vw 0; } .b-row:hover .b-meta { translate: -1.46vw 0; } }
+.b-peek { position: fixed; z-index: 30; left: 0; top: 0; width: 15vw; pointer-events: none; }
+.b-peek-in { position: relative; aspect-ratio: 9 / 19.5; overflow: hidden; background: #000; opacity: 0; scale: 0.86; transition: opacity 0.4s var(--expo), scale 1s var(--expo); }
+.b-peek.on .b-peek-in { opacity: 1; scale: 1; }
+
+/* ---------- who we work for: four words ---------- */
+.b-who > ul > li { display: grid; grid-template-columns: 1fr 27vw; align-items: end; gap: 2vw; padding: 1.5vw 0 1.3vw; border-top: 1px solid var(--ink); }
+.b-who h3 { font-size: 13vw; line-height: 0.9; }
+.b-who li div { display: grid; gap: 1em; font-size: max(13px, 0.97vw); line-height: 1.12; }
+/* the three points per business are sentences, so they are set in sentence case: capitals are for names and labels */
+.b-who li ul { display: grid; gap: 0.3em; font-weight: 600; letter-spacing: 0; text-transform: none; opacity: 0.72; }
+.b-who a { position: relative; justify-self: start; padding: 6px 0 4px; }
+.b-who a::after, .b-links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--red); transform-origin: 100% 50%; transition: scale 1s var(--expo); }
+.b-links a::after { background: currentColor; }
+@media (hover: hover) { .b-who a:hover::after, .b-links a:hover::after { scale: 0 1; } }
+
+/* ---------- the close: coffee ---------- */
+.b-end { padding: 15vw var(--m) var(--m); }
+.b-end h2 { font-size: 15.7vw; line-height: 0.86; white-space: nowrap; }
+.b-end h2 a { transition: color 0.5s var(--expo); }
+@media (hover: hover) { .b-end h2 a:hover { color: var(--red); } }
+.b-links { display: flex; flex-wrap: wrap; gap: 0.6em 3vw; margin-top: 3.4vw; }
+.b-links a { position: relative; padding: 5px 0 4px; }
+.b-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.8em 2vw; margin-top: 9vw; font-size: var(--s); }
+.b-foot time { font-variant-numeric: tabular-nums; }
+
+/* the red dot that travels with the pointer; the system cursor stays */
+.b-dot { position: fixed; z-index: 60; left: 0; top: 0; pointer-events: none; }
+/* drawn at its large size and scaled down to a 12 px dot, so growing it is a transform and never a layout */
+.b-dot span { display: grid; place-items: center; width: 78px; height: 78px; margin: -39px 0 0 -39px; border-radius: 50%; background: var(--red); color: transparent; font-size: 11px; scale: 0.154; transition: scale 0.6s var(--expo), translate 0.6s var(--expo), color 0.3s var(--expo); }
+.b-dot.big span { scale: 1; translate: 55px 55px; color: #fff; }
+
+/* ---------- motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* until the script sets the intro up the first screen waits in the dark; if it never comes, it shows itself */
+  html.js .b:not(.b-ready) .b-first { background: var(--ink); animation: b-safe-bg 0s 3.5s forwards; }
+  html.js .b:not(.b-ready) .b-first > *, html.js .b:not(.b-ready) .b-top { visibility: hidden; animation: b-safe 0s 3.5s forwards; }
+  html.js .b-row, html.js .b-who > ul > li { opacity: 0; translate: 0 3vw; transition: opacity 1s var(--expo), translate 1s var(--expo), background-color 0.5s var(--expo), color 0.5s var(--expo); }
+  html.js .b-row.in, html.js .b-who > ul > li.in { opacity: 1; translate: 0 0; }
+}
+@keyframes b-safe { to { visibility: visible; } }
+@keyframes b-safe-bg { to { background: var(--paper); } }
+@media (prefers-reduced-motion: reduce) { .b * { transition-duration: 0s !important; } }
+
+/* ---------- phones: the cards become a row to swipe, the wordmark closes the first screen ---------- */
+@media (max-width: 760px) {
+  .b-title { display: none; }
+  .b-top { grid-template-columns: 1fr auto; }
+  .b-menu, .b-write, .b-still { margin: -17px 0; padding: 17px 0; }
+  .b-who a, .b-links a { padding-block: 15px; }
+  .b-nav > a { font-size: 19vw; }
+  .b-nav p { gap: 5vw; margin-top: 8vw; }
+  .b-first { height: auto; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; padding-top: 62px; }
+  .b-cards { display: flex; align-items: center; gap: 12px; overflow-x: auto; padding: 4px var(--m) 22px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .b-cards::-webkit-scrollbar { display: none; }
+  .b-cards li { position: static; flex: none; width: 62vw; scroll-snap-align: center; }
+  .b-cards li.on a, .b-cards a:focus-visible { scale: 1; }
+  .b-cards img { filter: none; }
+  .b-yours { font-size: 15px; }
+  .b-word { position: static; grid-template-columns: auto auto; justify-content: space-between; padding: 0 var(--m) var(--m); }
+  .b-w { font-size: 23.4vw; }
+  .b-mid { grid-column: 1 / -1; order: -1; padding-bottom: 20px; }
+  .b-cta { position: static; display: inline-block; translate: none; margin-top: 4px; padding-block: 16px; font-size: 13px; background-size: 100% 2px; background-position: 0 calc(100% - 10px); }
+  .b-list, .b-who { padding-top: 26vw; }
+  .b-h { margin-bottom: 12px; }
+  .b-row { grid-template-columns: 1fr 22vw; align-items: center; gap: 14px; padding: 14px 0 12px; }
+  .b-name { grid-column: 1; font-size: 15.5vw; }
+  .b-meta { grid-column: 1; text-align: left; font-size: 12px; }
+  .b-thumb { display: block; grid-column: 2; grid-row: 1 / span 2; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; }
+  .b-peek, .b-dot { display: none; }
+  .b-who > ul > li { grid-template-columns: 1fr; gap: 14px; padding: 16px 0 18px; }
+  .b-who h3 { font-size: 21vw; }
+  .b-end { padding-top: 30vw; }
+  /* three lines here: looser leading so the dots of Ë clear the line above */
+  .b-end h2 { font-size: 26.5vw; line-height: 1.04; white-space: normal; }
+  .b-links { margin-top: 9vw; gap: 14px 22px; }
+  .b-foot { margin-top: 22vw; }
+}

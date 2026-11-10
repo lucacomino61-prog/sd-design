@@ -1,0 +1,180 @@
+/* Option C, "The Glass", after Lama Lama. Measured there on 10 Nov 2026 and kept here:
+   ground #1A1C1C and a warm white #F9F4EB; a bold grotesk in capitals at 5vw (72 px) with -0.02em tracking for the
+   manifesto, 20 / 16 / 14 px text, and a mono at 10 px in capitals inside [ brackets ] for every label (theirs is
+   Sometype Mono, the same face is used here; the labels are 11 px so they can be read); twelve columns with a
+   2.5rem margin and a 1.5rem gutter; small radii (2-6 px), never pills; ease-out moves and 0.15 s on
+   cubic-bezier(0.4, 0, 0.2, 1) for the small ones. */
+.c {
+  --ground: #1a1c1c;
+  --ink: #f9f4eb;
+  --line: rgb(249 244 235 / 0.16);
+  --glass: rgb(26 28 28 / 0.56);
+  --m: 2.5rem;
+  --g: 1.5rem;
+  --rail: 44px;
+  --quick: cubic-bezier(0.4, 0, 0.2, 1);
+  --out: cubic-bezier(0.16, 1, 0.3, 1);
+  --mono: "Sometype Mono", "Geist Mono", ui-monospace, monospace;
+  background: var(--ground);
+  color: var(--ink);
+  font: 400 16px/1.4 "Archivo", "Archivo Fallback", sans-serif;
+  letter-spacing: -0.02em;
+  padding-bottom: var(--rail);
+}
+.c :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 2px; }
+.c ::selection { background: var(--ink); color: var(--ground); }
+.c a { text-decoration: none; }
+.c-tag, .c-msg, .c-nav, .c-touch, .c-rail, .c-chips, .c-kinds, .c-cols, .c-live figcaption, .c-info ul, .c-info a, .c-end-b ul, .c-fine, .c-cta { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; }
+.c h1, .c h2 { font-size: clamp(40px, 5vw, 84px); font-weight: 700; line-height: 0.88; letter-spacing: -0.03em; text-transform: uppercase; }
+
+/* ---------- the glass bar: mark, a line that changes, the menu ---------- */
+.c-bar { position: fixed; z-index: 40; top: 16px; left: 50%; translate: -50% 0; width: min(430px, calc(100vw - 32px)); height: 44px; display: grid; grid-template-columns: 52px 1fr 52px; align-items: center; border: 1px solid var(--line); border-radius: 6px; background: var(--glass); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); }
+.c-logo { display: grid; place-items: center; height: 100%; }
+.c-logo svg { width: 26px; fill: var(--ink); overflow: visible; }
+.c-logo .c-bub { fill: #e2382a; }
+.c-msg { height: 1.4em; overflow: hidden; text-align: center; }
+.c-msg span { display: block; transition: translate 0.15s var(--quick), opacity 0.15s var(--quick); }
+.c-msg span.out { translate: 0 -100%; opacity: 0; }
+.c-msg span.pre { translate: 0 100%; opacity: 0; transition: none; }
+.c-burger { display: grid; place-content: center; gap: 5px; height: 100%; border: 0; background: none; cursor: pointer; }
+.c-burger i { width: 18px; height: 1.5px; background: var(--ink); transition: translate 0.15s var(--quick), rotate 0.15s var(--quick); }
+.c-burger[aria-expanded="true"] i:first-child { translate: 0 3.25px; rotate: 45deg; }
+.c-burger[aria-expanded="true"] i:last-child { translate: 0 -3.25px; rotate: -45deg; }
+.c-nav { position: absolute; top: calc(100% + 6px); left: -1px; right: -1px; display: grid; padding: 6px 16px 12px; border: 1px solid var(--line); border-radius: 6px; background: rgb(26 28 28 / 0.86); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); opacity: 0; visibility: hidden; translate: 0 -6px; transition: opacity 0.15s var(--quick), translate 0.15s var(--quick), visibility 0s linear 0.15s; }
+.c-nav.open { opacity: 1; visibility: visible; translate: 0 0; transition-delay: 0s; }
+.c-nav > a { display: flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.c-nav > a .ic { transition: translate 0.15s var(--quick); }
+@media (hover: hover) { .c-nav > a:hover .ic { translate: 3px -3px; } }
+.c-nav p { display: flex; gap: 18px; padding-top: 12px; }
+.c-nav p span { opacity: 0.5; }
+.c-touch { position: fixed; z-index: 40; top: 16px; right: var(--m); min-height: 44px; display: flex; align-items: center; gap: 10px; padding: 5px 14px 5px 5px; border: 1px solid var(--line); border-radius: 6px; background: var(--glass); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); transition: background-color 0.15s var(--quick); }
+.c-touch span, .c-cta span { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 4px; background: #25d366; color: #06210f; }
+@media (hover: hover) { .c-touch:hover { background: rgb(249 244 235 / 0.14); } }
+
+/* ---------- first screen: the halftone, the live phone, the manifesto ---------- */
+.c-hero { position: relative; height: calc(100svh - var(--rail)); min-height: 560px; overflow: clip; }
+.c-tone { position: absolute; inset: 0; width: 100%; height: 100%; }
+.c-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, var(--ground) 2%, rgb(26 28 28 / 0.72) 30%, transparent 62%), linear-gradient(90deg, rgb(26 28 28 / 0.5), transparent 55%); pointer-events: none; }
+.c-live { position: absolute; z-index: 2; right: var(--m); top: 76px; width: clamp(84px, 7.2vw, 112px); }
+.c-live img, .c-live video, .c-phone img, .c-phone video { width: 100%; aspect-ratio: 9 / 19.5; object-fit: cover; object-position: top; border-radius: 4px; }
+.c-live video, .c-phone video { position: absolute; inset: 0 0 auto 0; opacity: 0; transition: opacity 0.3s ease-out; }
+.c-live video.ready, .c-phone video.ready { opacity: 1; }
+.c-live figcaption { margin-top: 8px; opacity: 0.7; }
+.c-hero-b { position: absolute; z-index: 2; left: var(--m); right: var(--m); bottom: 30px; display: grid; grid-template-columns: 1fr minmax(240px, 22vw); align-items: end; gap: var(--g); }
+.c-tag { margin-bottom: 18px; opacity: 0.8; }
+.c-ln { display: block; overflow: hidden; padding-top: 0.12em; margin-top: -0.12em; }
+.c-ln > span { display: block; }
+.c-lead { font-size: clamp(17px, 1.39vw, 22px); line-height: 1.3; text-wrap: pretty; }
+
+/* ---------- the work: a statement, then ruled rows that open ---------- */
+.c-work { padding: clamp(96px, 11vw, 176px) var(--m) 0; }
+.c-work-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: end; gap: var(--g); margin-bottom: clamp(48px, 5.5vw, 88px); }
+.c-work-top .c-tag { justify-self: end; margin: 0; }
+.c-say { font-size: clamp(24px, 2.8vw, 46px); line-height: 1.14; letter-spacing: -0.03em; text-indent: 3.4em; text-wrap: pretty; }
+.c-rows { border-bottom: 1px solid var(--line); }
+.c-row { border-top: 1px solid var(--line); }
+.c-row summary { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: center; gap: var(--g); min-height: 68px; list-style: none; cursor: pointer; transition: background-color 0.15s var(--quick); }
+.c-row summary::-webkit-details-marker { display: none; }
+.c-name { grid-column: 1 / span 3; font-size: 16px; }
+.c-chips { grid-column: 4 / span 3; display: flex; flex-wrap: wrap; gap: 6px; }
+.c-chips i, .c-kinds li { padding: 3px 7px 2px; border: 1px solid rgb(249 244 235 / 0.34); border-radius: 2px; font-style: normal; }
+.c-plus { grid-column: 7; font: 500 11px/1 var(--mono); }
+.c-plus::before { content: "( + )"; }
+.c-row[open] .c-plus::before { content: "( - )"; }
+.c-thumbs { grid-column: 8 / -1; justify-self: end; display: flex; gap: 6px; height: 68px; padding: 6px 0; transition: translate 0.5s var(--out); }
+.c-thumbs img { width: auto; height: 100%; aspect-ratio: 16 / 11; object-fit: cover; object-position: top; border-radius: 2px; filter: saturate(0.9); }
+.c-thumbs img:nth-child(2) { aspect-ratio: 1; }
+.c-thumbs .c-t3 { object-position: 50% 62%; }
+@media (hover: hover) { .c-row summary:hover { background: rgb(249 244 235 / 0.04); } .c-row summary:hover .c-thumbs { translate: -10px 0; } }
+.c-open { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: var(--g); padding: 22px 0 44px; }
+.c-info { grid-column: 1 / span 3; display: grid; gap: 14px; justify-items: start; }
+.c-info p { font-size: clamp(17px, 1.39vw, 22px); line-height: 1.3; }
+/* lists of full phrases stay in the mono but in sentence case; capitals are kept for labels */
+.c-info ul, .c-cols ul { font-size: 12px; text-transform: none; }
+.c-info ul { display: grid; gap: 2px; opacity: 0.7; }
+.c-info a, .c-cols a, .c-end-b ul a { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px solid var(--ink); }
+.c-shot { grid-column: 4 / span 7; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 4px; }
+.c-phone { grid-column: 11 / span 2; position: relative; }
+.c-phone[data-site="divjaka"] img { object-fit: contain; background: #edeae0; padding: 0 9%; }
+/* rows open with a slide where the browser can animate to an automatic height */
+@supports (interpolate-size: allow-keywords) {
+  .c-row { interpolate-size: allow-keywords; }
+  .c-row::details-content { block-size: 0; overflow: clip; transition: block-size 0.5s var(--out), content-visibility 0.5s allow-discrete; }
+  .c-row[open]::details-content { block-size: auto; }
+}
+
+/* ---------- what we do ---------- */
+.c-what { position: relative; isolation: isolate; margin-top: clamp(96px, 11vw, 176px); padding: clamp(96px, 11vw, 176px) var(--m) clamp(72px, 8vw, 128px); overflow: clip; }
+/* the halftone stays behind the heading and fades out before the small lists begin */
+.c-tone-dim { z-index: -1; opacity: 0.3; -webkit-mask-image: linear-gradient(180deg, transparent, #000 16%, #000 46%, transparent 68%); mask-image: linear-gradient(180deg, transparent, #000 16%, #000 46%, transparent 68%); }
+.c-kinds { display: flex; flex-wrap: wrap; gap: 6px; margin: 34px 0 22px; }
+.c-what .c-lead { max-width: 30em; }
+.c-cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--g); margin-top: clamp(64px, 9vw, 144px); padding-top: 18px; border-top: 1px solid var(--line); }
+.c-cols > li { display: grid; align-content: start; justify-items: start; gap: 14px; }
+.c-cols h3 { font: inherit; }
+.c-cols ul { display: grid; gap: 2px; opacity: 0.7; }
+
+/* ---------- the close ---------- */
+.c-end { padding: clamp(96px, 11vw, 176px) var(--m) 28px; }
+.c-end-b { display: grid; grid-template-columns: auto minmax(0, 22em) 1fr; align-items: center; gap: 28px var(--g); margin-top: 44px; }
+.c-cta { display: inline-flex; align-items: center; gap: 12px; min-height: 48px; padding: 7px 18px 7px 7px; border: 1px solid var(--line); border-radius: 6px; background: rgb(249 244 235 / 0.07); transition: background-color 0.15s var(--quick), scale 0.15s var(--quick); }
+.c-cta span { width: 34px; height: 34px; }
+.c-cta:active { scale: 0.98; }
+@media (hover: hover) { .c-cta:hover { background: rgb(249 244 235 / 0.14); } }
+.c-end-b ul { display: flex; gap: 22px; justify-self: end; }
+.c-fine { margin-top: clamp(72px, 9vw, 144px); opacity: 0.6; }
+
+/* ---------- the rail: always at the foot, ruled, with the clock and the page counter ---------- */
+.c-rail { position: fixed; z-index: 30; inset: auto 0 0 0; height: var(--rail); display: grid; grid-template-columns: 1fr 1fr auto 1fr 1fr; align-items: center; gap: var(--g); padding: 0 var(--m); background: rgb(26 28 28 / 0.72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.c-rail::before { content: ""; position: absolute; left: var(--m); right: var(--m); top: 0; border-top: 1px solid rgb(249 244 235 / 0.3); }
+.c-rail time, .c-count b { font-variant-numeric: tabular-nums; font-weight: 500; }
+/* stops the halftones, the recordings and the changing line */
+.c-still { justify-self: end; padding: 12px 0; border: 0; background: none; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; }
+.c-still::before { content: "[ "; }
+.c-still::after { content: " ]"; }
+.c-still[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 3px; }
+.c-rail a { justify-self: end; padding: 12px 0; }
+@media (hover: hover) { .c-rail a:hover { text-decoration: underline; text-underline-offset: 3px; } }
+
+/* ---------- motion ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* a dark cover with the mark lifts, the manifesto rises line by line, the rest follows */
+  .c-hero::before { content: ""; position: absolute; z-index: 5; inset: 0; background: var(--ground) url("/favicon.svg") center / 56px no-repeat; animation: c-cover 0.5s ease-out 0.7s forwards; pointer-events: none; }
+  .c-ln > span { animation: c-line 0.9s var(--out) both; animation-delay: calc(0.95s + var(--i) * 0.09s); }
+  .c-hero .c-tag, .c-hero .c-lead, .c-live { animation: c-in 0.8s ease-out 1.5s both; }
+  html.js .c-rise { opacity: 0; translate: 0 24px; transition: opacity 0.8s ease-out, translate 0.8s var(--out); }
+  html.js .c-rise.in { opacity: 1; translate: 0 0; }
+}
+@keyframes c-cover { to { opacity: 0; visibility: hidden; } }
+@keyframes c-line { from { translate: 0 108%; } }
+@keyframes c-in { from { opacity: 0; translate: 0 10px; } }
+
+/* ---------- phones ---------- */
+@media (max-width: 760px) {
+  .c { --m: 1rem; --g: 0.625rem; font-size: 15px; }
+  .c h1, .c h2 { font-size: 11.6vw; line-height: 0.92; }
+  .c-touch { display: none; }
+  .c-tone-dim { opacity: 0.2; }
+  .c-live { top: 74px; width: 76px; }
+  .c-hero-b { grid-template-columns: 1fr; gap: 18px; bottom: 22px; }
+  .c-work-top { grid-template-columns: 1fr; gap: 22px; }
+  .c-work-top .c-tag { justify-self: start; order: -1; }
+  .c-say { font-size: 6.4vw; text-indent: 2.2em; }
+  .c-row summary { grid-template-columns: 1fr auto; row-gap: 8px; padding: 14px 0; }
+  .c-name { grid-column: 1; font-size: 17px; }
+  .c-chips { grid-column: 1; grid-row: 2; }
+  .c-plus { grid-column: 2; grid-row: 1 / span 2; }
+  .c-thumbs { display: none; }
+  .c-open { grid-template-columns: 1fr 34vw; padding: 6px 0 30px; }
+  .c-info { grid-column: 1 / -1; }
+  .c-shot { grid-column: 1; align-self: start; }
+  .c-phone { grid-column: 2; }
+  .c-cols { grid-template-columns: 1fr; gap: 30px; }
+  .c-end-b { grid-template-columns: 1fr; justify-items: start; }
+  .c-end-b ul { justify-self: start; }
+  .c-bar { height: 46px; }
+  .c-cols a, .c-info a, .c-end-b ul a { padding-block: 14px; }
+  .c-rail { grid-template-columns: 1fr auto 1fr; }
+  .c-rail > span:first-child, .c-rail a { display: none; }
+  .c-still { padding-block: 15px; }
+}
