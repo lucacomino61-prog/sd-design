@@ -63,7 +63,8 @@ html:lang(it) { --h1: min(7.4vw, 9.6svh); }
 [data-ground="red"] { --ground: #ff4d36; --ink: #1a1c1c; --soft: #1a1c1c; --line: rgb(26 28 28 / 0.3); --line-2: rgb(26 28 28 / 0.55); --num: #1a1c1c; --hot: #1a1c1c; --on-ink: #f9f4eb; background: var(--ground); color: var(--ink); }
 /* ...and with the script the page itself wears the ground of the section in the middle of the screen, fading from
    one to the next, while the sections are clear. */
-html.fade body { transition: --ground 0.55s var(--quick), --ink 0.55s var(--quick), --soft 0.55s var(--quick), --line 0.55s var(--quick), --line-2 0.55s var(--quick), --num 0.55s var(--quick), --hot 0.55s var(--quick), --on-ink 0.55s var(--quick); }
+/* the ground fades; the text and the lines change in one step half-way, so the words are never the colour of the ground */
+html.fade body { transition: --ground 0.32s var(--quick), --ink 0s 0.14s, --soft 0s 0.14s, --line 0s 0.14s, --line-2 0s 0.14s, --num 0s 0.14s, --hot 0s 0.14s, --on-ink 0s 0.14s; }
 html.fade main > [data-ground] { --ground: inherit; --ink: inherit; --soft: inherit; --line: inherit; --line-2: inherit; --num: inherit; --hot: inherit; --on-ink: inherit; background: none; color: inherit; }
 /* each client's own colour, sampled from their site (the same values as src/data/sites.js) */
 .t-martiri { --tone: #1f6fb0; }
