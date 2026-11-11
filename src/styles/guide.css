@@ -35,6 +35,8 @@
 .gincl { font: 500 12px/1.5 var(--mono); letter-spacing: -0.02em; }
 /* a list that opens a part sits right under the part's own rule: it does not draw a second one */
 .gtext > .gpairs:first-child > div:first-child, .gtext > .gitems:first-child > li:first-child { padding-top: 0; border-top: 0; }
+/* a source is a link as long as its words, not as long as the row */
+.gitems li > .lnk { justify-self: start; }
 .gsrc .gtext > p { font-size: 15px; color: var(--soft); }
 
 /* ---------- the list of guides ---------- */

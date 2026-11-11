@@ -10,6 +10,8 @@
 //   links      { to, text?, needs? }: `to` is a page of src/data/site.js (optionally with #place); a link whose page
 //              is switched off, or whose feature (`needs`) is, is left out
 // `glyph` is drawn in dots behind the headline. `blurb` is the line in the list of guides.
+// The guide about public funds (`grants`, with a switch of its own) says only what the official pages said on the day
+// in `checked`, and lists them (`sources`); when the pages change, read them again and change the day.
 const sq = {
   nav: 'Udhëzues',
   index: {
@@ -111,6 +113,45 @@ const sq = {
       { h: 'Çfarë nuk premtojmë', p: ['Një faqe nuk i zëvendëson platformat dhe nuk sjell rezervime vetë. Ajo u jep një rrugë pa komision atyre që do të vinin gjithsesi te ju. Sa prej tyre e përdorin, e shihni në sezonin e parë.'],
         links: [{ to: 'hotel' }, { to: 'food' }] },
     ],
+  },
+  grants: {
+    short: 'Grante', glyph: 'LEK', checked: '2026-11-11', checkedLine: 'Kontrolluar më 11 nëntor 2026.',
+    h1: 'A ka grante për një faqe interneti?',
+    title: 'Grante për faqe interneti dhe dyqan online · SD Design',
+    desc: 'Çfarë thonë faqet zyrtare për fondin e AIDA-s dhe programin Go Digital të BERZH-it: çfarë mbulojnë, për kë janë dhe çfarë nuk premtojnë.',
+    blurb: 'Çfarë mbulojnë fondi i AIDA-s dhe programi Go Digital i BERZH-it, sipas faqeve zyrtare.',
+    answer: 'Për një dyqan online ose një platformë, thirrja e AIDA-s për vitin 2026 e kishte ndër kostot që mbulon. Një faqe e thjeshtë prezantimi nuk përmendet. Këtu është çfarë thonë vetë faqet zyrtare, të lexuara më 11 nëntor 2026. Vendimin e merr gjithmonë institucioni, jo ne.',
+    sections: [
+      { h: 'Fondi i AIDA-s për zhvillimin e ndërmarrjeve', p: ['AIDA (Agjencia Shqiptare e Zhvillimit të Investimeve) administron fondin «Për zhvillimin e ndërmarrjeve», që financohet nga buxheti i shtetit, sipas ligjit nr. 43/2022 për ndërmarrjet mikro, të vogla dhe të mesme.'], list: [
+        ['Për kë', 'Ndërmarrje mikro, të vogla dhe të mesme që e ushtrojnë veprimtarinë brenda vendit.'],
+        ['Sa', 'Në skemën 1 të thirrjes 2026 (shpenzime korrente): deri në 2.500.000 lekë, me mbulim të kostove 100%.'],
+        ['Çfarë mbulon që lidhet me faqet', '«Krijimi i aplikacioneve apo platformave në funksion të zhvillimit të proceseve lidhur me tregtinë elektronike/e-commerce». Thirrja përmend edhe certifikimin, etiketimin dhe ambalazhimin, dhe trajnimet e stafit.'],
+        ['Kur', 'Thirrja 2026 ishte e hapur 30 ditë, nga 11 maji deri më 9 qershor 2026. Tani është e mbyllur. Projektet duhej të përfundonin brenda vitit, me raportin përfundimtar në nëntor.'],
+        ['Kush nuk përfiton', 'Ndërmarrjet që kanë marrë financim nga donatorë ose institucione financiare për të njëjtat zëra.'],
+      ] },
+      { h: 'Thirrja hapet një herë në vit, dhe muaji ndryshon', p: [
+        'Në 2024 thirrja ishte e hapur nga korriku në gusht, në 2025 në shkurt, në 2026 nga maji në qershor. Kush do të aplikojë duhet të ndjekë faqen e AIDA-s dhe t’i ketë dokumentet gati më parë.',
+        'Dokumentet që kërkonte thirrja 2026:',
+      ], list: [
+        'Formulari i kërkesës dhe formulari i buxhetit, nga faqja e AIDA-s',
+        'Certifikata e regjistrimit dhe ekstrakti historik nga QKB, me status aktiv',
+        'Deklarata për kategorinë e ndërmarrjes (mikro, e vogël apo e mesme)',
+        'Vërtetimet për detyrimet tatimore dhe doganore, nga e-Albania',
+        'Pasqyrat financiare të vitit të fundit, ose formulari i deklarimit të të ardhurave',
+        'Dëshmia e penalitetit e administratorit, nga e-Albania, dhe kopja e letërnjoftimit',
+      ], after: ['Aplikimi dërgohej me email te AIDA.'] },
+      { h: 'Go Digital: kredi me një grant 10%', p: [
+        'Programi «Go Digital in the Western Balkans» i BERZH-it dhe i Bashkimit Evropian nuk është grant i drejtpërdrejtë. Ndërmarrjet e vogla dhe të mesme marrin një kredi te një bankë partnere për investime në automatizim dhe dixhitalizim; pasi investimi përfundon me sukses, mund të marrin një grant të BE-së prej 10% të kredisë.',
+        'Ndër investimet që përmend BERZH-i janë programet kompjuterike për automatizimin e proceseve të biznesit dhe dixhitalizimin e punës. Një faqe prezantimi nuk përmendet. Për një dyqan online ose një sistem rezervimesh, pyesni bankën tuaj nëse merr pjesë në program dhe nëse investimi juaj pranohet.',
+      ] },
+      { h: 'Çfarë do të thotë kjo për faqen tuaj', list: [
+        ['Dyqan online ose platformë', 'Është lloji i projektit që përmend thirrja e AIDA-s. Nëse mendoni të aplikoni në thirrjen e ardhshme, përgatitni që tani dokumentet dhe një përshkrim të qartë të projektit.'],
+        ['Faqe e thjeshtë prezantimi', 'Nuk e kemi gjetur të përmendur si kosto të mbulueshme në asnjërin nga dy programet. Mos e planifikoni mbi një grant.'],
+        ['Kujdes me premtimet', 'Askush nuk mund t’ju garantojë një grant: vendos bordi vlerësues i AIDA-s, ose banka. Kush ju premton një «grant të sigurt» nuk mund ta mbajë atë premtim.'],
+      ], after: ['Nëse po përgatitni një aplikim për një dyqan online, na shkruani: drafti falas ju tregon çfarë do të ndërtohej.'], links: [{ to: 'shop' }, { to: 'offer', text: 'Si funksionon drafti falas' }] },
+    ],
+    sources: [['AIDA: Fondet 2026, faqja e thirrjes', 'https://aida.gov.al/nmvm-eksporte/nmvm/fondet-e-aida-s/'], ['AIDA: broshura e thirrjes 2026 (PDF)', 'https://aida.gov.al/wp-content/uploads/2026/05/AIDA-Thirrja-2026.pdf'], ['BERZH: Go Digital in the Western Balkans', 'https://www.ebrd.com/home/what-we-do/focus-areas/digitalisation/go-digital-in-western-balkans.html'], ['Albania Tech: njoftimi për thirrjen 2025', 'https://albaniatech.org/aida-opens-applications-for-funds-to-support-businesses'], ['Albania Tech: njoftimi për thirrjen 2024', 'https://albaniatech.org/event/aida-opens-call-for-support-and-development-of-micro-small-and-medium-enterprises/']],
+    note: 'Kushtet ndryshojnë nga viti në vit. Përpara se të veproni, lexoni thirrjen e fundit në faqen e AIDA-s.',
   },
 };
 
@@ -216,6 +257,45 @@ const en = {
         links: [{ to: 'hotel' }, { to: 'food' }] },
     ],
   },
+  grants: {
+    short: 'Grants', glyph: 'LEK', checked: '2026-11-11', checkedLine: 'Checked on 11 November 2026.',
+    h1: 'Are there grants for a website?',
+    title: 'Grants for a website or online shop in Albania · SD Design',
+    desc: 'What the official pages say about AIDA’s enterprise fund and the EBRD’s Go Digital programme: what they cover, who they are for and what they do not promise.',
+    blurb: 'What AIDA’s fund and the EBRD’s Go Digital programme cover, as the official pages put it.',
+    answer: 'For an online shop or a platform, AIDA’s call for 2026 had it among the costs it covers. A simple presentation site is not mentioned. Here is what the official pages themselves say, read on 11 November 2026. The decision always belongs to the institution, not to us.',
+    sections: [
+      { h: 'AIDA’s fund for the development of enterprises', p: ['AIDA (the Albanian Investment Development Agency) administers the fund “For the development of enterprises”, financed from the state budget under law no. 43/2022 on micro, small and medium enterprises.'], list: [
+        ['Who it is for', 'Micro, small and medium enterprises that operate inside the country.'],
+        ['How much', 'In scheme 1 of the 2026 call (current expenses): up to 2,500,000 lek, covering 100% of the costs.'],
+        ['What it covers that concerns websites', '“The creation of applications or platforms that serve the development of processes linked to electronic trade/e-commerce” (our translation). The call also names certification, labelling and packaging, and staff training.'],
+        ['When', 'The 2026 call was open for 30 days, from 11 May to 9 June 2026. It is closed now. Projects had to be completed within the year, with the final report in November.'],
+        ['Who cannot benefit', 'Enterprises that have received financing from donors or financial institutions for the same items.'],
+      ] },
+      { h: 'The call opens once a year, and the month changes', p: [
+        'In 2024 the call was open from July to August, in 2025 in February, in 2026 from May to June. Whoever wants to apply has to follow AIDA’s page and have the documents ready beforehand.',
+        'The documents the 2026 call asked for:',
+      ], list: [
+        'The application form and the budget form, from AIDA’s site',
+        'The registration certificate and the historical extract from the business register (QKB), with active status',
+        'The declaration of the enterprise’s category (micro, small or medium)',
+        'Certificates that taxes and customs duties are paid, from e-Albania',
+        'The last year’s financial statements, or the income declaration form',
+        'The administrator’s criminal-record certificate, from e-Albania, and a copy of their ID',
+      ], after: ['The application was sent to AIDA by email.'] },
+      { h: 'Go Digital: a loan with a 10% grant', p: [
+        'The “Go Digital in the Western Balkans” programme of the EBRD and the European Union is not a direct grant. Small and medium enterprises take a loan from a partner bank for investments in automation and digitalisation; once the investment is completed successfully, they can receive an EU grant of 10 per cent of the loan.',
+        'Among the investments the EBRD names is software for the automation of business processes and the digitalisation of operations. A presentation site is not mentioned. For an online shop or a booking system, ask your bank whether it takes part in the programme and whether your investment qualifies.',
+      ] },
+      { h: 'What this means for your site', list: [
+        ['An online shop or a platform', 'It is the kind of project AIDA’s call names. If you are thinking of applying to the next call, prepare the documents and a clear description of the project now.'],
+        ['A simple presentation site', 'We have not found it named as a covered cost in either programme. Do not plan it around a grant.'],
+        ['Be careful with promises', 'Nobody can guarantee you a grant: AIDA’s evaluation board decides, or the bank. Whoever promises you a “sure grant” cannot keep that promise.'],
+      ], after: ['If you are preparing an application for an online shop, write to us: the free draft shows you what would be built.'], links: [{ to: 'shop' }, { to: 'offer', text: 'How the free draft works' }] },
+    ],
+    sources: [['AIDA: Funds 2026, the page of the call (in Albanian)', 'https://aida.gov.al/nmvm-eksporte/nmvm/fondet-e-aida-s/'], ['AIDA: brochure of the 2026 call (PDF, in Albanian)', 'https://aida.gov.al/wp-content/uploads/2026/05/AIDA-Thirrja-2026.pdf'], ['EBRD: Go Digital in the Western Balkans', 'https://www.ebrd.com/home/what-we-do/focus-areas/digitalisation/go-digital-in-western-balkans.html'], ['Albania Tech: notice of the 2025 call', 'https://albaniatech.org/aida-opens-applications-for-funds-to-support-businesses'], ['Albania Tech: notice of the 2024 call', 'https://albaniatech.org/event/aida-opens-call-for-support-and-development-of-micro-small-and-medium-enterprises/']],
+    note: 'The conditions change from year to year. Before you act, read the latest call on AIDA’s page.',
+  },
 };
 
 const it = {
@@ -319,6 +399,45 @@ const it = {
       { h: 'Che cosa non promettiamo', p: ['Un sito non sostituisce le piattaforme e non porta prenotazioni da solo. Dà una via senza commissioni a chi sarebbe venuto da voi comunque. Quanti la usano, lo vedete nella prima stagione.'],
         links: [{ to: 'hotel' }, { to: 'food' }] },
     ],
+  },
+  grants: {
+    short: 'Contributi', glyph: 'LEK', checked: '2026-11-11', checkedLine: 'Controllato l’11 novembre 2026.',
+    h1: 'Ci sono contributi per un sito web?',
+    title: 'Contributi per un sito o un negozio online in Albania · SD Design',
+    desc: 'Che cosa dicono le pagine ufficiali sul fondo di AIDA per le imprese e sul programma Go Digital della BERS: che cosa coprono e che cosa non promettono.',
+    blurb: 'Che cosa coprono il fondo di AIDA e il programma Go Digital della BERS, secondo le pagine ufficiali.',
+    answer: 'Per un negozio online o una piattaforma, il bando AIDA per il 2026 li aveva tra i costi coperti. Un semplice sito vetrina non è menzionato. Qui trovate quello che dicono le pagine ufficiali, lette l’11 novembre 2026. La decisione spetta sempre all’ente, non a noi.',
+    sections: [
+      { h: 'Il fondo di AIDA per lo sviluppo delle imprese', p: ['AIDA (l’Agenzia albanese per lo sviluppo degli investimenti) gestisce il fondo «Per lo sviluppo delle imprese», finanziato dal bilancio dello Stato in base alla legge n. 43/2022 sulle micro, piccole e medie imprese.'], list: [
+        ['Per chi', 'Micro, piccole e medie imprese che operano all’interno del Paese.'],
+        ['Quanto', 'Nello schema 1 del bando 2026 (spese correnti): fino a 2.500.000 lek, con copertura dei costi al 100%.'],
+        ['Che cosa copre che riguarda i siti', '«La creazione di applicazioni o piattaforme al servizio dello sviluppo dei processi legati al commercio elettronico/e-commerce» (traduzione nostra). Il bando cita anche la certificazione, l’etichettatura e l’imballaggio, e la formazione del personale.'],
+        ['Quando', 'Il bando 2026 è rimasto aperto 30 giorni, dall’11 maggio al 9 giugno 2026. Ora è chiuso. I progetti dovevano concludersi entro l’anno, con la relazione finale a novembre.'],
+        ['Chi non può beneficiarne', 'Le imprese che hanno ricevuto finanziamenti da donatori o istituti finanziari per le stesse voci.'],
+      ] },
+      { h: 'Il bando si apre una volta l’anno, e il mese cambia', p: [
+        'Nel 2024 il bando è rimasto aperto da luglio ad agosto, nel 2025 a febbraio, nel 2026 da maggio a giugno. Chi vuole fare domanda deve seguire la pagina di AIDA e avere i documenti pronti prima.',
+        'I documenti richiesti dal bando 2026:',
+      ], list: [
+        'Il modulo di domanda e il modulo del budget, dal sito di AIDA',
+        'Il certificato di registrazione e l’estratto storico del registro delle imprese (QKB), con stato attivo',
+        'La dichiarazione sulla categoria dell’impresa (micro, piccola o media)',
+        'Le attestazioni di regolarità fiscale e doganale, da e-Albania',
+        'Il bilancio dell’ultimo anno, oppure il modulo di dichiarazione dei redditi',
+        'Il certificato penale dell’amministratore, da e-Albania, e una copia del documento d’identità',
+      ], after: ['La domanda si inviava ad AIDA per email.'] },
+      { h: 'Go Digital: un prestito con un contributo del 10%', p: [
+        'Il programma «Go Digital in the Western Balkans» della BERS e dell’Unione europea non è un contributo diretto. Le piccole e medie imprese ottengono un prestito da una banca partner per investimenti in automazione e digitalizzazione; a investimento concluso con successo possono ricevere un contributo dell’UE pari al 10% del prestito.',
+        'Tra gli investimenti che la BERS cita c’è il software per l’automazione dei processi aziendali e la digitalizzazione delle attività. Un sito vetrina non è menzionato. Per un negozio online o un sistema di prenotazioni, chiedete alla vostra banca se partecipa al programma e se il vostro investimento è ammesso.',
+      ] },
+      { h: 'Che cosa significa per il vostro sito', list: [
+        ['Negozio online o piattaforma', 'È il tipo di progetto che il bando AIDA cita. Se pensate di fare domanda al prossimo bando, preparate fin d’ora i documenti e una descrizione chiara del progetto.'],
+        ['Semplice sito vetrina', 'Non l’abbiamo trovato tra i costi coperti in nessuno dei due programmi. Non pianificatelo contando su un contributo.'],
+        ['Attenzione alle promesse', 'Nessuno può garantirvi un contributo: decide la commissione di valutazione di AIDA, oppure la banca. Chi vi promette un «contributo sicuro» non può mantenere quella promessa.'],
+      ], after: ['Se state preparando una domanda per un negozio online, scriveteci: la bozza gratis vi mostra che cosa verrebbe costruito.'], links: [{ to: 'shop' }, { to: 'offer', text: 'Come funziona la bozza gratis' }] },
+    ],
+    sources: [['AIDA: Fondi 2026, la pagina del bando (in albanese)', 'https://aida.gov.al/nmvm-eksporte/nmvm/fondet-e-aida-s/'], ['AIDA: brochure del bando 2026 (PDF, in albanese)', 'https://aida.gov.al/wp-content/uploads/2026/05/AIDA-Thirrja-2026.pdf'], ['BERS: Go Digital in the Western Balkans (in inglese)', 'https://www.ebrd.com/home/what-we-do/focus-areas/digitalisation/go-digital-in-western-balkans.html'], ['Albania Tech: avviso del bando 2025 (in inglese)', 'https://albaniatech.org/aida-opens-applications-for-funds-to-support-businesses'], ['Albania Tech: avviso del bando 2024 (in inglese)', 'https://albaniatech.org/event/aida-opens-call-for-support-and-development-of-micro-small-and-medium-enterprises/']],
+    note: 'Le condizioni cambiano di anno in anno. Prima di muovervi, leggete l’ultimo bando sulla pagina di AIDA.',
   },
 };
 

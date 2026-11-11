@@ -9,5 +9,6 @@ const on = (flags) => Object.fromEntries(Object.entries(flags).map(([name, value
 export const FEATURES = on({
   projects: true, // a page of its own for each client site that is online
   guides: true, // the guides (what a site costs, Instagram or a site, bookings without commission) and their index
+  grants: true, // the guide about public funds (needs `guides`): its facts carry the day they were checked
   calculator: true, // the commission calculator on the hotel and restaurant pages
 });

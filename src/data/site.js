@@ -41,8 +41,9 @@ const GUIDE_SLUG = {
   cost: { sq: 'sa-kushton-nje-faqe-interneti', en: 'how-much-does-a-website-cost-in-albania', it: 'quanto-costa-un-sito-web-in-albania' },
   instagram: { sq: 'instagram-apo-faqe-interneti', en: 'instagram-or-a-website', it: 'instagram-o-sito-web' },
   direct: { sq: 'rezervime-dhe-porosi-pa-komision', en: 'bookings-and-orders-without-commission', it: 'prenotazioni-e-ordini-senza-commissioni' },
+  grants: { sq: 'grante-per-faqe-interneti', en: 'grants-for-a-website-in-albania', it: 'contributi-per-un-sito-web-in-albania' },
 };
-export const GUIDES = FEATURES.guides ? Object.keys(GUIDE_SLUG) : [];
+export const GUIDES = FEATURES.guides ? Object.keys(GUIDE_SLUG).filter((g) => g !== 'grants' || FEATURES.grants) : [];
 
 // One page per search intent and language. The same table feeds the menus, hreflang, the sitemap and the checks.
 // A page that is switched off in features.js is simply not in the table.
