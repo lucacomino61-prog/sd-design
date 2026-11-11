@@ -20,5 +20,8 @@
   "verify": {
     "google": null,
     "bing": null
+  },
+  "analytics": {
+    "cloudflare": null
   }
 }

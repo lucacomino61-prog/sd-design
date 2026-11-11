@@ -235,6 +235,7 @@ export default {
     formInbox: 'Formulari i kontaktit na dërgon emrin, telefonin dhe mesazhin që shkruani, që t’ju përgjigjemi.',
     // said only while the feature is on: the line about where a visitor came from, and the visit counter
     source: 'Nëse keni ardhur nga një faqe tjetër, për shembull nga Instagram-i ose nga Google, butoni i WhatsApp-it e shkruan këtë në fund të mesazhit («Ju gjeta nga: Instagram»). E shihni para se ta dërgoni dhe mund ta fshini. Faqja nuk e ruan askund.',
+    counted: ['Faqja nuk vendos cookies, nuk ka reklama dhe nuk ruan asgjë në pajisjen tuaj. Numëron vizitat me Cloudflare Web Analytics: sa herë hapet një faqe, nga cili shtet dhe nga cila faqe tjetër vjen vizita. Nuk përdor cookies dhe nuk ju njeh si person.', 'Shkronjat, figurat dhe videot vijnë nga vetë faqja. Vetëm numëruesi i vizitave ngarkohet nga Cloudflare.'],
     who: 'Kush e mban faqen', whoDraft: 'Draft: emri i regjistruar, NIPT-i dhe adresa e studios shtohen para publikimit.',
   },
   notFound: { h1: 'Kjo faqe nuk u gjet.', text: 'Adresa mund të ketë ndryshuar. Nga këtu shkoni te faqja kryesore ose te punët tona.', home: 'Faqja kryesore' },

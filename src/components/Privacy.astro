@@ -4,7 +4,7 @@
 // only while that line is written (`source`), and the first part changes once visits are counted (`visits` and a
 // token), because the page then loads the counter from another service.
 import Base from '../layouts/Base.astro';
-import { SITE, DRAFT } from '../data/site.js';
+import { SITE, DRAFT, VISITS } from '../data/site.js';
 import { FEATURES } from '../data/features.js';
 import { CONTACT } from '../data/contact.js';
 const { t } = Astro.props;
@@ -12,7 +12,7 @@ const p = t.privacy;
 const form = CONTACT.formEndpoint ? p.formInbox : p.formWa;
 // a paragraph can be a place for something that depends on how the site is set up; an empty one is left out
 const said = (x) => (x === '{form}' ? form : x === '{source}' ? (FEATURES.source ? p.source : null) : x);
-const sections = p.sections.map(([title, paragraphs], i) => [title, paragraphs.map(said).filter(Boolean)]);
+const sections = p.sections.map(([title, paragraphs], i) => [title, (i === 0 && VISITS ? p.counted : paragraphs).map(said).filter(Boolean)]);
 const who = [SITE.legal.name, SITE.legal.nipt && `NIPT ${SITE.legal.nipt}`, SITE.legal.address, CONTACT.email].filter(Boolean);
 ---
 <Base t={t} page="privacy" sections={2}>

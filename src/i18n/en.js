@@ -233,6 +233,7 @@ export default {
     formInbox: 'The contact form sends us the name, phone and message you write, so that we can answer you.',
     // said only while the feature is on: the line about where a visitor came from, and the visit counter
     source: 'If you came from another site, for example Instagram or Google, the WhatsApp button writes that at the end of the message (“Found you via: Instagram”). You see it before you send it and can delete it. The site does not store it anywhere.',
+    counted: ['The site sets no cookies, has no advertising and stores nothing on your device. It counts visits with Cloudflare Web Analytics: how many times a page is opened, from which country and from which other site the visit comes. It uses no cookies and does not know you as a person.', 'The typefaces, pictures and videos come from the site itself. Only the visit counter is loaded from Cloudflare.'],
     who: 'Who runs the site', whoDraft: 'Draft: the studio’s registered name, tax number and address are added before launch.',
   },
   notFound: { h1: 'This page was not found.', text: 'The address may have changed. From here you can go to the home page or to our work.', home: 'Home page' },

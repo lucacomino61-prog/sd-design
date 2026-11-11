@@ -20,6 +20,9 @@ export const SITE = {
   // "person": who answers on WhatsApp, named next to the button. The photo is shown only once there is a real one: a
   // square picture in public/, e.g. '/person/stefano.webp'. Until then the SD mark stands in its place, never a made-up face.
   person: { name: 'Stefano Doko', photo: null, ...owner.person },
+  // "analytics": the token of Cloudflare Web Analytics, which counts visits without cookies (owner.json; see OWNER.md).
+  // While it is null nothing is counted and nothing is loaded from anywhere but the site itself.
+  analytics: { cloudflare: null, ...owner.analytics },
   // Set by the contact data: the origin the form may post to (for the content security policy).
   formOrigin: CONTACT.formEndpoint ? new URL(CONTACT.formEndpoint).origin : null,
   // Which commit this build was made from, when the host says so (Cloudflare Pages, Netlify, Vercel). It goes into
@@ -27,6 +30,8 @@ export const SITE = {
   build: (/^[a-f0-9]{7,40}$/.exec(env.CF_PAGES_COMMIT_SHA || env.COMMIT_REF || env.VERCEL_GIT_COMMIT_SHA || '')?.[0] || '').slice(0, 12) || null,
 };
 export const DRAFT = !SITE.url;
+// the visit counter's token, when there is one, it looks like one, and the switch is on
+export const VISITS = FEATURES.visits && /^[a-f0-9]{32}$/.test(SITE.analytics.cloudflare ?? '') ? SITE.analytics.cloudflare : null;
 
 export const LANGS = ['sq', 'en', 'it'];
 export const LANG_NAME = { sq: 'Shqip', en: 'English', it: 'Italiano' };

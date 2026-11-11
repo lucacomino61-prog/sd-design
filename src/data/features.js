@@ -14,4 +14,5 @@ export const FEATURES = on({
   quotes: true, // owners' words, wherever src/data/quotes.json has some (it is empty until there are real ones)
   proof: true, // "so far: N drafts sent, M within 24 hours", from the admin's list, once there are five (offer.json)
   source: true, // the WhatsApp message a visitor starts says where they came from (Instagram, Google, ...)
+  visits: true, // counting visits without cookies: only once owner.json holds the counter's token ("analytics")
 });

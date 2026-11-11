@@ -9,7 +9,7 @@
 import '../styles/site.css';
 import Icon from '../components/Icon.astro';
 import Close from '../components/Close.astro';
-import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, workHref, S_PATH, BUBBLE } from '../data/site.js';
+import { SITE, DRAFT, VISITS, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, workHref, S_PATH, BUBBLE } from '../data/site.js';
 import { FEATURES } from '../data/features.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER, LIVE } from '../data/sites.js';
@@ -135,5 +135,6 @@ const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], 
   <div class="draft" id="draft" role="status"></div>
   <script type="application/json" id="i18n" set:html={safe(client)} />
   <script>import '../scripts/site.js';</script>
+  {VISITS && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: VISITS })}></script>}
 </body>
 </html>

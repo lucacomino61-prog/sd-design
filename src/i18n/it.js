@@ -233,6 +233,7 @@ export default {
     formInbox: 'Il modulo di contatto ci invia il nome, il telefono e il messaggio che scrivete, per potervi rispondere.',
     // said only while the feature is on: the line about where a visitor came from, and the visit counter
     source: 'Se arrivate da un altro sito, per esempio da Instagram o da Google, il pulsante WhatsApp lo scrive alla fine del messaggio («Vi ho trovati tramite: Instagram»). Lo vedete prima di inviarlo e potete cancellarlo. Il sito non lo salva da nessuna parte.',
+    counted: ['Il sito non usa cookie, non ha pubblicità e non salva nulla sul vostro dispositivo. Conta le visite con Cloudflare Web Analytics: quante volte viene aperta una pagina, da quale Paese e da quale altro sito arriva la visita. Non usa cookie e non vi riconosce come persona.', 'Caratteri, immagini e video arrivano dal sito stesso. Solo il contatore delle visite viene caricato da Cloudflare.'],
     who: 'Chi gestisce il sito', whoDraft: 'Bozza: la ragione sociale, il codice fiscale (NIPT) e l’indirizzo dello studio si aggiungono prima della pubblicazione.',
   },
   notFound: { h1: 'Questa pagina non esiste.', text: 'L’indirizzo potrebbe essere cambiato. Da qui potete andare alla pagina principale o ai nostri lavori.', home: 'Pagina principale' },

@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
-import { SITE } from './src/data/site.js';
+import { SITE, VISITS } from './src/data/site.js';
 import { FEATURES } from './src/data/features.js';
 
 // SD Design: a static site, every word in the HTML. The domain is "url" in src/data/owner.json (read here as
@@ -39,8 +39,8 @@ export default defineConfig({
   // style attributes and no inline event handlers, so nothing needs 'unsafe-inline'.
   security: {
     csp: {
-      directives: ["default-src 'self'", "img-src 'self' data:", "media-src 'self'", "font-src 'self'", `connect-src 'self'${SITE.formOrigin ? ` ${SITE.formOrigin}` : ''}`, "object-src 'none'", "base-uri 'self'", "form-action 'self'"],
-      scriptDirective: { resources: ["'self'", "'inline-speculation-rules'"] },
+      directives: ["default-src 'self'", "img-src 'self' data:", "media-src 'self'", "font-src 'self'", `connect-src 'self'${SITE.formOrigin ? ` ${SITE.formOrigin}` : ''}${VISITS ? ' https://cloudflareinsights.com' : ''}`, "object-src 'none'", "base-uri 'self'", "form-action 'self'"],
+      scriptDirective: { resources: ["'self'", "'inline-speculation-rules'", ...(VISITS ? ['https://static.cloudflareinsights.com'] : [])] },
       styleDirective: { resources: ["'self'"] },
     },
   },
