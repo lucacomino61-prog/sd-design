@@ -22,6 +22,13 @@ type, in two small files that can also be changed by hand:
 - `src/data/offer.json`: `taken` (free drafts given away this week) and `updated` (the day that was written);
 - `src/data/owner.json`: the contact details, who answers, the legal details, the address, the search-engine codes.
 
+The same admin also exists as an online program, for a phone anywhere with the computer off
+(`../sd-design-admin/cloud/README.md`). It is built and tested but not online yet. Online, every save becomes a
+small commit to this repository on GitHub, and the host publishes each commit by itself; for that the site must be
+published from GitHub. Two small things in this folder serve it: `.node-version` (the Node the host builds with),
+and a note in every page's head of the commit the page was built from (`<meta name="build">`, only on a host),
+which is how the admin knows a change is live.
+
 ## The offer: a free working draft
 
 The whole site is built around one offer, and it says only what was agreed on 10 Nov 2026:

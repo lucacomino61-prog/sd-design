@@ -49,6 +49,7 @@ const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], 
   <title>{meta.title}</title>
   {meta.desc && <meta name="description" content={meta.desc} />}
   {(DRAFT || !path) && <meta name="robots" content="noindex" />}
+  {SITE.build && <meta name="build" content={SITE.build} />}
   {path && <link rel="canonical" href={abs(path)} />}
   {path && LANGS.map((l) => <link rel="alternate" hreflang={l} href={abs(PAGES[page][l])} />)}
   {path && <link rel="alternate" hreflang="x-default" href={abs(PAGES[page].sq)} />}

@@ -20,6 +20,9 @@ export const SITE = {
   person: { name: 'Stefano Doko', photo: null, ...owner.person },
   // Set by the contact data: the origin the form may post to (for the content security policy).
   formOrigin: CONTACT.formEndpoint ? new URL(CONTACT.formEndpoint).origin : null,
+  // Which commit this build was made from, when the host says so (Cloudflare Pages, Netlify, Vercel). It goes into
+  // every page's head as a short note, so it can be told whether the latest change is the one that is live.
+  build: (/^[a-f0-9]{7,40}$/.exec(env.CF_PAGES_COMMIT_SHA || env.COMMIT_REF || env.VERCEL_GIT_COMMIT_SHA || '')?.[0] || '').slice(0, 12) || null,
 };
 export const DRAFT = !SITE.url;
 
