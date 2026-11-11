@@ -1,0 +1,24 @@
+/* Owners' words (src/components/Quotes.astro; the switch is `quotes` in src/data/features.js, and nothing shows
+   until src/data/quotes.json has sentences). A sentence at reading size between two rules, then who said it, with a
+   square of that client's own colour. */
+.quotes { padding: clamp(44px, 5vw, 80px) var(--m) 0; }
+.quotes-t { margin-bottom: 14px; font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; color: var(--soft); }
+.quotes ul { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); gap: 0 var(--g); border-bottom: 1px solid var(--line-2); }
+.quote { display: grid; align-content: start; gap: 18px; height: 100%; margin: 0; padding: 22px 0 26px; border-top: 1px solid var(--line-2); }
+.quote blockquote { margin: 0; quotes: "«" "»"; }
+html:lang(en) .quote blockquote { quotes: "“" "”"; }
+.quote p { max-width: 24em; font-size: clamp(21px, 2vw, 32px); font-weight: 600; line-height: 1.22; letter-spacing: -0.022em; text-wrap: pretty; }
+.quote p::before { content: open-quote; }
+.quote p::after { content: close-quote; }
+.quote figcaption { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; font: 500 12px/1.4 var(--mono); letter-spacing: -0.02em; }
+.quote figcaption i { width: 12px; height: 12px; border: 1px solid var(--line-2); border-radius: 1px; background: var(--tone); }
+.quote figcaption b { font-weight: 700; }
+.quote figcaption span { color: var(--soft); }
+.quote figcaption a { padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; }
+@media (hover: hover) { .quote figcaption a:hover { color: var(--hot); } }
+/* inside a column that has its own margins (a project page's facts) the block brings none */
+.pdoes .quotes { grid-column: 7 / -1; padding: 0; }
+@media (max-width: 760px) {
+  .quote figcaption a { padding-block: 14px; }
+  .pdoes .quotes { grid-column: 1; }
+}

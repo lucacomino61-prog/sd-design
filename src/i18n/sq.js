@@ -18,7 +18,7 @@ export default {
     skip: 'Kalo te përmbajtja', home: 'SD Design, faqja kryesore', menu: 'Menu', navLabel: 'Kryesore', langLabel: 'Gjuha', crumbs: 'Ku jeni',
     still: 'Ndalo animacionet', clock: 'Shqipëri', next: 'Faqja tjetër', open: 'Hap faqen',
     onPhone: '{name}, faqja në telefon', shotAlt: '{name}, faqja kryesore', cardAlt: '{name}, pamja e projektit', tallAlt: '{name}, faqja nga lart poshtë në telefon',
-    count: '{n} faqe · {m} online', draft: 'Draft, jo ende online', speaks: 'Gjuhët',
+    count: '{n} faqe · {m} online', draft: 'Draft, jo ende online', speaks: 'Gjuhët', said: 'Me fjalët e tyre',
     left: 'Drafte të lira këtë javë', none: 'Këtë javë u morën të gjitha. Shkruani për javën tjetër.', answers: 'Ju përgjigjet {name}, brenda ditës së punës.', albania: 'Vetëm për biznese në Shqipëri.',
   },
   bar: ['Mirë se erdhe', 'Pimë një kafe?', 'Drafti i parë është falas'],

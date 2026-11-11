@@ -10,6 +10,7 @@ import Work from './Work.astro';
 import Faq from './Faq.astro';
 import Reads from './Reads.astro';
 import Calc from './Calc.astro';
+import Quotes from './Quotes.astro';
 import { SERVICES, href, abs } from '../data/site.js';
 import { SITES, BY_KIND } from '../data/sites.js';
 import { FEATURES } from '../data/features.js';
@@ -60,6 +61,7 @@ const nodes = [
       {s.egNote && <p class="lead">{s.egNote}</p>}
     </div>
     <Work t={t} ids={ids} />
+    <Quotes t={t} ids={ids} />
   </section>
 
   <section class="faq" id="faq" aria-labelledby="faq-h" data-section={4 + calc}>

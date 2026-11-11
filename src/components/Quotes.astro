@@ -1,0 +1,31 @@
+---
+// What owners said about their sites: one sentence each, with the name, and the way to that site's page. Shown only
+// where src/data/quotes.json has sentences for the clients named in `ids`; with none, nothing is rendered at all.
+// These are a client's own words, so there are no stars and no review markup.
+import '../styles/quotes.css';
+import { quotesFor } from '../data/quotes.js';
+import { workHref } from '../data/site.js';
+import { SITES } from '../data/sites.js';
+const { t, ids, level = 3 } = Astro.props;
+const H = `h${level}`;
+const list = quotesFor(ids);
+const role = (q) => (typeof q.role === 'string' ? q.role : q.role?.[t.lang] ?? q.role?.[q.lang] ?? '');
+---
+{list.length > 0 && (
+  <div class="quotes">
+    <H class="quotes-t">{t.ui.said}</H>
+    <ul>
+      {list.map((q) => {
+        const own = q.text[t.lang];
+        return (
+          <li data-rise>
+            <figure class={`quote t-${q.site}`}>
+              <blockquote lang={own ? undefined : q.lang}><p>{own ?? q.text[q.lang]}</p></blockquote>
+              <figcaption><i aria-hidden="true"></i><b>{q.name}</b>{role(q) && <span>{role(q)}</span>}<a href={workHref(q.site, t.lang)}>{SITES[q.site].name}</a></figcaption>
+            </figure>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+)}

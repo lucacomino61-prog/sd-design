@@ -6,6 +6,7 @@ import '../styles/project.css';
 import Base from '../layouts/Base.astro';
 import Icon from './Icon.astro';
 import Words from './Words.astro';
+import Quotes from './Quotes.astro';
 import { PROJECTS, href, abs, wa, offerMsg } from '../data/site.js';
 import { SITES } from '../data/sites.js';
 
@@ -49,6 +50,7 @@ const nodes = [
   <section class={`get pdoes t-${id}`} id="does" aria-labelledby="does-h" data-wear={s.tone} data-section="2">
     <h2 class="display split" id="does-h"><Words text={w.doesT} /></h2>
     <ul class="plain-list">{p.facts.map((f) => <li data-rise>{f}</li>)}</ul>
+    <Quotes t={t} ids={[id]} />
   </section>
 
   <section class={`pview t-${id}`} id="see" aria-labelledby="see-h" data-wear={s.tone} data-section="3">
