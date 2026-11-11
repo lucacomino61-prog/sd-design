@@ -19,7 +19,8 @@ The admin is not part of the site. None of its code is in this folder or in `dis
 the built folder and says so ("Nothing from this admin is in the built site"). All it puts here are the values you
 type, in two small files that can also be changed by hand:
 
-- `src/data/offer.json`: `taken` (free drafts given away this week) and `updated` (the day that was written);
+- `src/data/offer.json`: `taken` (free drafts given away this week), `updated` (the day that was written) and, once
+  a draft has been sent, `proof` (drafts sent so far and how many of them on time: see "The promise, kept" below);
 - `src/data/owner.json`: the contact details, who answers, the legal details, the address, the search-engine codes.
 
 The same admin also exists as an online program, for a phone anywhere with the computer off
@@ -103,6 +104,100 @@ Sentences to confirm, because they speak for the studio:
 - The offer on its own (`/draft-falas/`, `/en/free-draft/`, `/it/bozza-gratis/`): a short page for the Instagram bio
   and for adverts.
 - One page per kind of business (restaurants, hotels, shops, clinics) in each language, and the privacy page.
+- One page per client site that is online (`/punet/bar-martiri/`, `/en/work/...`, `/it/lavori/...`): Bar Martiri,
+  elixir.al, Katër Burgers, Dresses by Greta.
+- The guides (`/udhezues/`, `/en/guides/`, `/it/guide/`) and the four of them: what a website costs, Instagram or a
+  website, bookings and orders without commission, and the public funds that can pay for an online shop.
+
+16 pages in each of the three languages: 48, and the page for an address that does not exist.
+
+## The additions, and their switches
+
+Eight things were added on 11 Nov 2026. Each has a switch in `src/data/features.js` (`true` or `false`; build again
+after changing one) and each is a commit of its own, so any of them can be turned off or taken out without touching
+the others. `node tools/switches.mjs` proves that the site is whole with each one off, and with all of them off.
+
+| Switch | What it is | What it waits for |
+|---|---|---|
+| `projects` | A page for each client site that is online: the name at poster size in that client's colour, the facts of its row, the site as four phone screens, on a desktop and playing | Nothing. It says only what the row on the home page already says (`projects` in the language files) |
+| `guides` | The guides and their list, and "Read more" links under the questions of the other pages. Their words are in `src/i18n/guides.js` | Your reading of the price guide: it names no price, on purpose (see below) |
+| `grants` | The guide about public funds (one of the guides, with a switch of its own) | Reading again when AIDA opens its next call (see below) |
+| `calculator` | The commission calculator on the hotel and restaurant pages | Nothing. The numbers it opens with are examples and the page says so |
+| `quotes` | Owners' words, under the work list, on a kind's page and on a client's page | Real sentences from clients, with their agreement (see below). Until then nothing shows |
+| `proof` | One sentence: drafts sent so far, and how many within 24 hours | Five drafts sent, in the admin's list. Until then nothing shows |
+| `source` | The WhatsApp message a visitor starts ends with where they came from ("Ju gjeta nga: Instagram") | The WhatsApp number (without it the buttons are still drafts) |
+| `visits` | A visit counter without cookies | A token from Cloudflare (see below). Until then nothing is loaded |
+
+### The price guide names no price
+
+"How much does a website cost in Albania?" says what decides a price, the three levels with a real site for each, the
+costs that come back every year and five questions to ask, and that the price is given on WhatsApp after the draft.
+That is the rule of the whole site. If you decide to publish prices or ranges, the place is the second part of that
+guide (`cost` in `src/i18n/guides.js`), and the sentences on the home page that say the price is given on WhatsApp
+change with it.
+
+### The guide about public funds must be read again
+
+It says only what AIDA's and the EBRD's own pages said on 11 November 2026, and lists them at its foot with that day.
+The 2026 call is closed; the conditions change every year. When AIDA opens the next call, read its page again, change
+the amounts, the dates and the documents in `grants` in `src/i18n/guides.js` (three languages), and change `checked`
+and the sentence beside it to the day you read it. If you would rather not keep it up, set `grants: false`.
+The guide invites an owner who is preparing an application to write to you. It does not promise a written offer or
+any help with the application: add that sentence only if you want to promise it.
+
+### Owners' words
+
+`src/data/quotes.json` is an empty list. One entry per sentence a client said or wrote and agreed to see on the site:
+
+```json
+[
+  { "site": "martiri", "name": "Emri Mbiemri", "role": { "sq": "pronar", "en": "owner", "it": "titolare" },
+    "lang": "sq", "text": { "sq": "Fjalia e tij.", "en": "His sentence.", "it": "La sua frase." }, "ok": "2026-11-20" }
+]
+```
+
+`site` is the client's short name (as in `src/data/sites.js`), `lang` the language it was said in, `ok` the day
+the client agreed. An entry without that day, without a name or for an unknown client is never shown. A page in a
+language without a translation shows the original. Nothing goes into this file that a client did not say.
+
+### The promise, kept
+
+When a draft is marked "sent" in the admin, the admin writes into `src/data/offer.json` what its list proves:
+
+```json
+"proof": { "since": "2026-11-17", "sent": 14, "onTime": 13 }
+```
+
+From five drafts up the site says it in one sentence ("So far: 14 drafts sent, 13 of them within 24 hours on working
+days. Counted since 17 November 2026.") under the three numbers on the home page, and beside the button in the red
+closing block and on the offer page. "On time" means sent within the promised working hours after the chat, the same
+clock the admin shows on each line. The numbers are whatever the list gives: a late draft shows as late. If you do
+not want them on the site, set `proof: false`.
+
+### Where a visitor came from
+
+On the page a visitor arrives at, the message every WhatsApp button and the form start ends with one line, for
+example "Ju gjeta nga: Instagram". It is read from the address they arrived at or from the page that linked here;
+another site is named by its name only. Nothing is stored, so the line is there only on the first page they open, and
+they see it before sending. The privacy page says so. To tell your own links apart, end them with
+`?utm_source=` and a word: `https://your-address.al/draft-falas/?utm_source=fletushka` gives "Ju gjeta nga:
+fletushka". Instagram adds its own mark to the link in a bio, so that one needs nothing.
+
+### Counting visits
+
+The site can count visits with Cloudflare Web Analytics, which uses no cookies: how many times a page is opened, from
+which country and from which other site. It does not count taps on buttons; for that there is the line above and the
+admin's list.
+
+1. In your Cloudflare account: Analytics and logs, Web Analytics, add the site's address, and copy the token from
+   the snippet it shows (32 letters and digits). Do not turn on the automatic setup: the site loads the counter
+   itself.
+2. Put the token in `src/data/owner.json`: `"analytics": { "cloudflare": "the token" }`.
+3. Build and publish. From then on every page loads the counter, the content security policy lets it in, and the
+   privacy page says that visits are counted instead of saying that nothing is measured. Read that paragraph once
+   (`privacy.counted` in the language files): it speaks for you.
+
+`node tools/owner-check.mjs` proves all of that with a test token.
 
 ## What moves, and how to stop it
 
@@ -124,7 +219,8 @@ before it, and the left and right margins are the same (`--m`).
 
 | You changed | Run |
 |---|---|
-| A headline, or a client's screenshot | `node tools/assets.mjs` (share images, icons, small screenshots) |
+| A headline, a guide's question, or a client's screenshot | `node tools/assets.mjs` (share images, icons, small screenshots) |
+| A switch in `src/data/features.js` | `node tools/switches.mjs`, and `node tools/assets.mjs og` if a page came back |
 | Any headline or button text, in any language | `node tools/hero-fit.mjs` (it must print 0 failures: nothing under the glass phone, no word cut off on a phone) |
 | The home headline | `node tools/measure-h1.mjs` first: it prints the size each language allows (`--h1` in `src/styles/site.css`) |
 | A client's site (to record it again) | `node tools/record-phone.mjs <id>`, `node tools/tall-shots.mjs <id>` (the tall picture in the gallery), then `node tools/client-facts.mjs <id>` to re-read its facts |
@@ -140,7 +236,10 @@ before it, and the left and right margins are the same (`--m`).
 | `node tools/motion.mjs http://localhost:3761` | Frame by frame, at 12 screen sizes and in the 3 languages, scrolling down and back up: no message of the example conversation over another or out of the chat, nothing moving against the scroll |
 | `node tools/hero-fit.mjs http://localhost:3761` | The headline never under the glass phone, no word of any heading cut off on a phone, the button's line on one line on a desktop |
 | `node tools/webkit.mjs ../sd-webkit http://localhost:3761` | The same pages in Safari's engine (iPhone): scripts, pinned scenes, grounds, the halftone. Needs Playwright, which is installed in `../holdings` |
-| `node tools/owner-check.mjs` | That what the admin writes reaches the pages: it builds the site with every owner detail set to a test value (handed to the build, `owner.json` is not touched) and looks for each one: the WhatsApp number in every button, the phone, Instagram and email, the photo and the name, the legal details, the address in the links and the sitemap, the search-engine codes |
+| `node tools/owner-check.mjs` | That what the admin writes reaches the pages: it builds the site with every owner detail set to a test value (handed to the build, `owner.json` is not touched) and looks for each one: the WhatsApp number in every button, the phone, Instagram and email, the photo and the name, the legal details, the address in the links and the sitemap, the search-engine codes, and the visit counter with its token |
+| `node tools/switches.mjs` | Every switch in `src/data/features.js`: each addition off in turn and all of them off (its pages gone, nothing linking to them, its code out of the page's script, the page check still passing), and the two empty places with test entries: owners' words and the proof line |
+| `node tools/calc-check.mjs ../sd-calc http://localhost:3761` | The commission calculator in the three languages at three screen sizes: the sums, euro and lek, the slider, an empty or impossible field, and that neither the fields nor the big number run off the screen |
+| `node tools/source-check.mjs` | The line that says where a visitor came from: the reading case by case, real visits in a browser (from Instagram, from a Google search, from nowhere), the form, and that the device holds nothing afterwards |
 | `node tools/spacing.mjs http://localhost:3761 /` | Prints the space above and below every section and its left and right margins, to check they are even (in Git Bash put `MSYS_NO_PATHCONV=1` in front, or the `/` is rewritten) |
 | `node tools/strip.mjs ../sd-strip .story-scene .mock 390x844 0 1 16` | A film strip of one moving part (here: the phone of the story on a phone screen, 16 frames), to look at a transition frame by frame |
 
@@ -148,14 +247,16 @@ A client's colour is written twice (`src/data/sites.js` and the top of `src/styl
 
 ## What is already done for search engines and AI assistants
 
-- One page per search intent and language (the home, the offer, four kinds of business: 18 pages, plus privacy), each
-  with its own title, description, canonical address, language alternates, share image and structured data
-  (Organization, WebSite, WebPage, Service, the free draft as an Offer, the questions as a FAQPage, breadcrumbs, the
-  list of work).
+- One page per search intent and language (the home, the offer, four kinds of business, four client sites, four
+  guides and their list, privacy: 48 pages), each with its own title, description, canonical address, language
+  alternates, share image and structured data (Organization, WebSite, WebPage, Service, the free draft as an Offer,
+  the questions as a FAQPage, breadcrumbs, the list of work, a client's site as a CreativeWork, a guide as an
+  Article).
 - Every word is in the HTML: the pages read the same with JavaScript off, which is how the AI crawlers read them.
 - `robots.txt` lets everyone in and names the AI crawlers on purpose; `sitemap.xml` lists every page with its
   translations; `llms.txt` is the site as plain text (Google ignores that file, a few other tools read it).
-- No cookies, no tracker, nothing loaded from other sites: no consent banner is needed.
+- No cookies, no tracker, nothing loaded from other sites: no consent banner is needed. (The visit counter, once it
+  has a token, is the one thing loaded from elsewhere; it sets no cookies either.)
 - A content security policy in every page, and `public/_headers` for Netlify or Cloudflare Pages.
 
 ## After launch, in your own accounts
@@ -166,10 +267,10 @@ A client's colour is written twice (`src/data/sites.js` and the top of `src/styl
 2. A Google Business Profile for the studio, complete, with the same name, phone and address as the site.
 3. Mentions on other sites: client sites linking back ("Site by SD Design"), local directories, a few lists. For AI
    answers, being mentioned counts more than links.
-4. If you add analytics, taps on WhatsApp, the phone, Instagram and the form are already sent as events named
-   `whatsapp`, `phone`, `instagram`, `form` (to Plausible or Google Analytics if either is on the page). Adding a
-   tracker means adding its address to the content security policy in `astro.config.mjs`, and a consent banner if it
-   uses cookies.
+4. Counting visits: see "Counting visits" above (a token in `owner.json`, nothing else). If you add another
+   analytics tool instead, taps on WhatsApp, the phone, Instagram and the form are already sent as events named
+   `whatsapp`, `phone`, `instagram`, `form` (to Plausible or Google Analytics if either is on the page); that means
+   adding its address to the content security policy in `astro.config.mjs`, and a consent banner if it uses cookies.
 5. Once a month: Search Console (which searches show the site, which pages are indexed), and the same five
    questions asked to ChatGPT and Perplexity, to see whether the studio is named.
 

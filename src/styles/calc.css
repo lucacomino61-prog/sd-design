@@ -48,6 +48,8 @@
 .calc-out .cta { margin-top: 10px; }
 
 @media (max-width: 760px) {
+  /* the Italian headline ends in a long word ("commissione?"): set a little smaller, it stays on the screen */
+  html:lang(it) .calc-top h2 { font-size: 8.6vw; }
   .calc-b { grid-template-columns: minmax(0, 1fr); gap: 34px; }
   .calc-in, .calc-out { grid-column: 1; }
   /* on a phone a field is its label, then the number at full width with its unit at the end; the row's own rule
