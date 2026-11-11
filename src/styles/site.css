@@ -637,7 +637,8 @@ html.move .band > span { will-change: translate; }
   .stair h3 { font-size: 8.4vw; }
   .stair-eg img { height: 62vw; }
   .stair-cap { padding: 12px 0; }
-  .crumbs a { display: inline-block; padding: 15px 0; }
+  /* a short word ("Punët", "Work") is still a full-size target: room on both sides, taken back by the margin */
+  .crumbs a { display: inline-block; padding: 15px 10px; margin-inline: -10px; }
   .why, .faq, .get { grid-template-columns: 1fr; gap: 30px; }
   .why > h2, .faq > h2, .get > h2, .why-list, .get-list, .faq-b { grid-column: 1; position: static; }
   .why-list li, .get-list li { gap: 6px; padding: 18px 0 22px; }
