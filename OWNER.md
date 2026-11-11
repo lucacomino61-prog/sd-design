@@ -280,5 +280,11 @@ The admin lives in `../sd-design-admin`, outside this folder, with its own guide
 (`npm test` there). Your list of businesses is in its `data/` folder and nowhere else.
 
 The 3D studio page is parked: it opens at `/studio` while developing, and its models are left out of the build
-(`STUDIO=1 npm run build` includes it). The earlier home without the offer is commit 653ded1 on the `glass-site`
-branch; the two designs that were not chosen are on the `redesign-options` branch.
+(`STUDIO=1 npm run build` includes it). The earlier home without the offer is the `glass-site` branch; the two
+designs that were not chosen are on the `redesign-options` branch.
+
+Two folders are kept out of the repository on purpose, because it is public: `comps/` (the direction boards and the
+designs that were not chosen) and `research/` (studies of other studios' sites, whose screenshots are not ours to
+share, and the raw text read from client sites). They exist only on the studio's computer, where `.gitignore` keeps
+them from ever being committed; `tools/ref-study.mjs` and `tools/client-facts.mjs` still write there. The full
+history from before the repository became public (11 Nov 2026) is kept privately.

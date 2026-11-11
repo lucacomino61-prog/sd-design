@@ -6,3 +6,8 @@ assets-src/
 *.log
 .DS_Store
 .impeccable/
+
+# Working material that stays on the studio's computer and is never published: the design comps, the studies of
+# other studios' sites (their screenshots are not ours to share) and the raw text read from client sites.
+comps/
+research/
