@@ -196,6 +196,19 @@ export default {
     },
   },
 
+  // the commission calculator on the hotel and restaurant pages: the visitor types their own numbers (the ones it
+  // opens with are examples, set in src/components/Calc.astro); `sep` goes between thousands
+  calc: {
+    t: 'Quanto vi costa la commissione?', lead: 'Inserite i vostri numeri e guardate quanto se ne va in commissioni. Il calcolo avviene sul vostro dispositivo: niente viene inviato.',
+    example: 'I numeri iniziali sono solo un esempio.', where: 'La vostra percentuale la trovate nel contratto o nella fattura della piattaforma.',
+    currency: 'Valuta', lek: 'lek', months: ['mese', 'mesi'], sep: '.',
+    out: 'Se ne vanno in commissioni, in {n} {months}', share: 'Se questa parte arrivasse direttamente', kept: 'vi resterebbero',
+    hotel: { n: 'Notti vendute al mese tramite le piattaforme', unit: 'notti', price: 'Prezzo medio di una notte', pct: 'Commissione della piattaforma', months: 'Mesi di stagione',
+      note: 'Le piattaforme vi portano anche ospiti che non vi avrebbero trovato. Il calcolo vale per chi vi conosce già o vi cerca per nome.' },
+    food: { n: 'Ordini al mese tramite le app di consegna', unit: 'ordini', price: 'Valore medio di un ordine', pct: 'Commissione dell’app', months: 'Mesi all’anno',
+      note: 'L’app fa anche la consegna. L’ordine diretto ha senso quando il cliente viene a ritirare, quando consegnate voi, o quando ordina sul posto.' },
+  },
+
   contact: {
     t: ['Raccontateci', 'la vostra attività.'], sub: 'Rispondiamo in albanese, inglese o italiano.',
     wa: 'Voglio la mia bozza gratis', tel: 'Chiamateci', ig: 'Instagram',

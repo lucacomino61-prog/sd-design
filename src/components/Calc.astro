@@ -1,0 +1,90 @@
+---
+// The commission calculator on the hotel and restaurant pages: a poster on the red ground. The owner types their
+// own numbers on the left; on the right, what leaves in commissions over the season, at poster size, and what would
+// stay if a share of those sales came direct. The sum is done in the browser: nothing is sent, nothing is kept.
+// The numbers it opens with are examples, and the page says so. Without the script the example is simply read.
+import '../styles/calc.css';
+import Icon from './Icon.astro';
+import Words from './Words.astro';
+import { wa, offerMsg } from '../data/site.js';
+
+const { t, kind, n } = Astro.props;
+const c = t.calc, k = c[kind], s = t.services[kind];
+// where it starts: a small hotel in euro, a restaurant in lek
+const EG = { hotel: { n: 60, price: 50, pct: 15, months: 5, cur: 'eur' }, food: { n: 300, price: 1500, pct: 25, months: 12, cur: 'lek' } }[kind];
+const SHARE = 20;
+const group = (x) => String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g, c.sep);
+// the poster number is set smaller the longer it is (the same steps as in the script below)
+const size = (str) => (str.length <= 5 ? 'a' : str.length <= 7 ? 'b' : str.length <= 9 ? 'c' : str.length <= 11 ? 'd' : 'e');
+const total = (EG.n * EG.price * EG.pct * EG.months) / 100, kept = (total * SHARE) / 100;
+const unit = EG.cur === 'eur' ? '€' : c.lek;
+const label = c.out.replace('{n}', EG.months).replace('{months}', c.months[EG.months === 1 ? 0 : 1]);
+---
+<section class="calc" id="calc" aria-labelledby="calc-h" data-ground="red" data-section={n}>
+  <div class="calc-top">
+    <h2 class="display split" id="calc-h"><Words text={c.t} /></h2>
+    <p class="lead">{c.lead}</p>
+  </div>
+  <div class="calc-b" role="group" aria-labelledby="calc-h" data-calc data-sep={c.sep} data-lek={c.lek} data-month={c.months[0]} data-months={c.months[1]} data-out={c.out}>
+    <div class="calc-in" data-rise>
+      <div class="calc-row"><label for="c-n">{k.n}</label><p class="calc-num"><input id="c-n" name="n" inputmode="numeric" autocomplete="off" maxlength="5" value={EG.n} /><span>{k.unit}</span></p></div>
+      <div class="calc-row">
+        <label for="c-price">{k.price}</label>
+        <p class="calc-num">
+          <input id="c-price" name="price" inputmode="decimal" autocomplete="off" maxlength="7" value={EG.price} />
+          <span class="calc-cur" role="radiogroup" aria-label={c.currency}>
+            <label><input type="radio" name="cur" value="eur" checked={EG.cur === 'eur'} /><i>€</i></label>
+            <label><input type="radio" name="cur" value="lek" checked={EG.cur === 'lek'} /><i>{c.lek}</i></label>
+          </span>
+        </p>
+      </div>
+      <div class="calc-row"><label for="c-pct">{k.pct}</label><p class="calc-num"><input id="c-pct" name="pct" inputmode="decimal" autocomplete="off" maxlength="5" value={EG.pct} /><span>%</span></p></div>
+      <div class="calc-row"><label for="c-months">{k.months}</label><p class="calc-num"><input id="c-months" name="months" inputmode="numeric" autocomplete="off" maxlength="2" value={EG.months} /><span>{c.months[1]}</span></p></div>
+      <p class="calc-note">{c.example} {c.where}</p>
+    </div>
+    <div class="calc-out" data-rise>
+      <p class="calc-label" data-label>{label}</p>
+      <output class="calc-big display" for="c-n c-price c-pct c-months" data-len={size(group(total))}><span data-total>{group(total)}</span><small data-unit>{unit}</small></output>
+      <div class="calc-share">
+        <label for="c-share">{c.share}: <b><span data-share>{SHARE}</span>%</b></label>
+        <input type="range" id="c-share" name="share" min="0" max="100" step="5" value={SHARE} />
+        <p class="calc-kept">{c.kept} <b><span data-kept>{group(kept)}</span> <span data-unit>{unit}</span></b></p>
+      </div>
+      <p class="calc-note">{k.note}</p>
+      <a class="cta" {...wa(offerMsg(t, s.type))}><span><Icon name="whatsapp-logo" size={20} /></span>{s.cta}</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // The sum, again whenever a number changes. What is typed is read leniently (a comma or a point, spaces ignored)
+  // and held within bounds, and so is the result (ten digits: far above any real season, and it still fits the
+  // screen); an empty or impossible field counts as zero and the result says so.
+  for (const root of document.querySelectorAll('[data-calc]')) {
+    const { sep, lek, month, months, out } = root.dataset;
+    const el = (s) => root.querySelector(s);
+    const read = (name, max) => {
+      const v = parseFloat(String(el(`[name="${name}"]`).value).replace(/\s/g, '').replace(',', '.'));
+      return Number.isFinite(v) && v > 0 ? Math.min(v, max) : 0;
+    };
+    const group = (x) => String(Math.round(x)).replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+    const size = (str) => (str.length <= 5 ? 'a' : str.length <= 7 ? 'b' : str.length <= 9 ? 'c' : str.length <= 11 ? 'd' : 'e');
+    const big = el('.calc-big');
+    const draw = () => {
+      const m = Math.min(12, Math.max(1, Math.round(read('months', 12)) || 1));
+      const total = Math.min(9999999999, (read('n', 99999) * read('price', 999999) * read('pct', 100) * m) / 100);
+      const share = Number(el('[name="share"]').value) || 0;
+      const text = group(total);
+      const unit = el('[name="cur"]:checked').value === 'eur' ? '€' : lek;
+      el('[data-total]').textContent = text;
+      big.dataset.len = size(text);
+      el('[data-kept]').textContent = group((total * share) / 100);
+      el('[data-share]').textContent = String(share);
+      el('[data-label]').textContent = out.replace('{n}', m).replace('{months}', m === 1 ? month : months);
+      for (const u of root.querySelectorAll('[data-unit]')) u.textContent = unit;
+    };
+    root.addEventListener('input', draw);
+    root.addEventListener('change', draw);
+    draw();
+  }
+</script>

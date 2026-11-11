@@ -198,6 +198,19 @@ export default {
     },
   },
 
+  // the commission calculator on the hotel and restaurant pages: the visitor types their own numbers (the ones it
+  // opens with are examples, set in src/components/Calc.astro); `sep` goes between thousands
+  calc: {
+    t: 'Sa ju kushton komisioni?', lead: 'Vendosni numrat tuaj dhe shihni sa largohet në komisione. Llogaria bëhet në pajisjen tuaj: asgjë nuk dërgohet askund.',
+    example: 'Numrat fillestarë janë vetëm shembull.', where: 'Përqindjen tuaj e gjeni në kontratën ose në faturën e platformës.',
+    currency: 'Monedha', lek: 'lekë', months: ['muaj', 'muaj'], sep: '\u00a0',
+    out: 'Shkojnë në komisione, në {n} {months}', share: 'Nëse kaq prej tyre do të vinin direkt', kept: 'te ju do të mbeteshin',
+    hotel: { n: 'Net të shitura në muaj përmes platformave', unit: 'net', price: 'Çmimi mesatar i një nate', pct: 'Komisioni i platformës', months: 'Muaj sezoni',
+      note: 'Platformat ju sjellin edhe mysafirë që nuk do t’ju gjenin vetë. Llogaria vlen për ata që ju njohin tashmë ose ju kërkojnë me emër.' },
+    food: { n: 'Porosi në muaj përmes aplikacioneve të dërgesës', unit: 'porosi', price: 'Vlera mesatare e një porosie', pct: 'Komisioni i aplikacionit', months: 'Muaj në vit',
+      note: 'Aplikacioni bën edhe dërgesën. Porosia direkte ka kuptim kur klienti vjen ta marrë vetë, kur dërgoni ju, ose kur porosit në lokal.' },
+  },
+
   contact: {
     t: ['Na tregoni', 'biznesin tuaj.'], sub: 'Përgjigjemi në shqip, anglisht ose italisht.',
     wa: 'Dua draftin tim falas', tel: 'Telefononi', ig: 'Instagram',

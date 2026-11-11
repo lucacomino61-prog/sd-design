@@ -9,8 +9,10 @@ import Ask from './Ask.astro';
 import Work from './Work.astro';
 import Faq from './Faq.astro';
 import Reads from './Reads.astro';
+import Calc from './Calc.astro';
 import { SERVICES, href, abs } from '../data/site.js';
 import { SITES, BY_KIND } from '../data/sites.js';
+import { FEATURES } from '../data/features.js';
 
 const { t, kind } = Astro.props;
 const lang = t.lang, S = t.services, s = S[kind];
@@ -19,6 +21,8 @@ const home = href('home', lang);
 const ids = kind === 'clinic' ? ['martiri', 'kater'] : BY_KIND(kind);
 const src = kind === 'clinic' ? null : SITES[ids[0]];
 const others = SERVICES.filter((k) => k !== kind);
+// hotels and restaurants sell through platforms that keep a commission: those two pages have the calculator
+const calc = FEATURES.calculator && (kind === 'hotel' || kind === 'food') ? 1 : 0;
 // the guides an owner of this kind of business is most likely to want next
 const READS = { food: ['direct', 'instagram', 'cost'], hotel: ['direct', 'grants', 'cost'], shop: ['cost', 'grants', 'instagram'], clinic: ['cost', 'instagram'] };
 
@@ -28,7 +32,7 @@ const nodes = [
   { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'SD Design', item: abs(home) }, { '@type': 'ListItem', position: 2, name: t.kinds[kind], item: here }] },
 ];
 ---
-<Base t={t} page={kind} nodes={nodes} sections={6} type={s.type} label={s.cta}>
+<Base t={t} page={kind} nodes={nodes} sections={6 + calc} type={s.type} label={s.cta}>
   <section class="hero shero" id="top" aria-labelledby="h1" data-section="1">
     <canvas class="tone hero-tone" data-tone={src ? 'site' : 'mark'} data-video={src?.video} data-poster={src?.poster ?? src?.card} aria-hidden="true"></canvas>
     <div class="hero-b">
@@ -48,7 +52,9 @@ const nodes = [
     </ol>
   </section>
 
-  <section class="work" id="work" aria-labelledby="work-h" data-section="3">
+  {calc > 0 && <Calc t={t} kind={kind} n={3} />}
+
+  <section class="work" id="work" aria-labelledby="work-h" data-section={3 + calc}>
     <div class="work-top">
       <h2 class="display split" id="work-h"><Words text={S.egT} /></h2>
       {s.egNote && <p class="lead">{s.egNote}</p>}
@@ -56,12 +62,12 @@ const nodes = [
     <Work t={t} ids={ids} />
   </section>
 
-  <section class="faq" id="faq" aria-labelledby="faq-h" data-section="4">
+  <section class="faq" id="faq" aria-labelledby="faq-h" data-section={4 + calc}>
     <h2 class="display split" id="faq-h"><Words text={S.faqT} /></h2>
     <div class="faq-b"><Faq items={[...s.faq, S.price]} /><Reads t={t} ids={READS[kind]} /></div>
   </section>
 
-  <section class="more" aria-labelledby="more-h" data-section="5">
+  <section class="more" aria-labelledby="more-h" data-section={5 + calc}>
     <h2 class="more-t" id="more-h">{S.moreT}</h2>
     <ul class="more-list">
       {others.map((k) => <li><a href={href(k, lang)}><span class="display">{t.kindTitles[k]}</span><Icon name="arrow-up-right" size={28} /></a></li>)}

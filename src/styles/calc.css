@@ -1,0 +1,71 @@
+/* The commission calculator (src/components/Calc.astro; the switch is `calculator` in src/data/features.js).
+   A poster on the red ground, like the three numbers of the offer on the home page: the owner's numbers as ruled
+   fields on the left, what leaves in commissions at poster size on the right. */
+.calc { margin-top: var(--pad); padding: var(--pad) var(--m); }
+.calc-top { display: grid; gap: 20px; margin-bottom: clamp(36px, 4vw, 64px); }
+.calc-top h2 { max-width: 11em; }
+.calc-top .lead { max-width: 31em; }
+.calc-b { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 44px var(--g); border-top: 2px solid var(--ink); }
+
+/* ---------- the owner's numbers ---------- */
+.calc-in { grid-column: 1 / span 5; min-width: 0; }
+.calc-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 18px; min-height: 76px; padding: 12px 0; border-bottom: 1px solid var(--line-2); }
+.calc-row > label { font-size: 17px; font-weight: 500; line-height: 1.25; text-wrap: balance; }
+.calc-num { display: grid; grid-template-columns: 7rem 6rem; align-items: baseline; gap: 10px; }
+.calc-num input { width: 100%; min-width: 0; padding: 4px 0 3px; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; background: none; font-size: 30px; font-weight: 700; font-stretch: 108%; font-variant-numeric: tabular-nums; line-height: 1.1; letter-spacing: -0.02em; text-align: right; caret-color: var(--ink); }
+.calc-num input:focus-visible { outline: 0; border-bottom-color: var(--on-ink); box-shadow: 0 2px 0 var(--on-ink); }
+.calc-num > span, .calc-label, .calc-share > label { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; }
+/* euro or lek: two words, the chosen one filled */
+.calc-cur { display: flex; gap: 4px; }
+.calc-cur label { position: relative; display: grid; cursor: pointer; }
+.calc-cur input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.calc-cur i { display: grid; place-items: center; min-width: 30px; min-height: 30px; padding: 0 7px; border: 1px solid var(--line-2); border-radius: 2px; font-style: normal; transition: background-color 0.15s var(--quick), color 0.15s var(--quick); }
+.calc-cur input:checked + i { border-color: var(--ink); background: var(--ink); color: var(--on-ink); }
+.calc-cur input:focus-visible + i { outline: 2px solid var(--ink); outline-offset: 3px; }
+.calc-note { max-width: 34em; margin-top: 16px; font-size: 14px; line-height: 1.4; }
+
+/* ---------- what leaves, at poster size ---------- */
+.calc-out { grid-column: 7 / -1; display: grid; justify-items: start; gap: 14px; min-width: 0; padding-top: 22px; }
+.calc-big { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 0.12em; max-width: 100%; font-size: 10.4vw; line-height: 0.86; letter-spacing: -0.045em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.calc-big small { font-size: 0.34em; letter-spacing: -0.02em; }
+.calc-big[data-len="b"] { font-size: 8.6vw; }
+.calc-big[data-len="c"] { font-size: 6.8vw; }
+.calc-big[data-len="d"] { font-size: 5.6vw; }
+.calc-big[data-len="e"] { font-size: 4.4vw; }
+.calc-share { display: grid; width: 100%; margin-top: 14px; padding-top: 16px; border-top: 2px solid var(--ink); }
+.calc-share b { font-weight: 700; }
+.calc-share input { appearance: none; -webkit-appearance: none; width: 100%; height: 44px; margin: 0; background: none; cursor: pointer; }
+.calc-share input::-webkit-slider-runnable-track { height: 2px; background: var(--ink); }
+.calc-share input::-moz-range-track { height: 2px; background: var(--ink); }
+.calc-share input::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -12px; border: 0; border-radius: 3px; background: var(--ink); transition: scale 0.15s var(--quick); }
+.calc-share input::-moz-range-thumb { width: 26px; height: 26px; border: 0; border-radius: 3px; background: var(--ink); }
+.calc-share input:active::-webkit-slider-thumb { scale: 1.12; }
+.calc-share input:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.calc-kept { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; font-size: clamp(18px, 1.5vw, 23px); line-height: 1.2; }
+.calc-kept b { font-size: clamp(30px, 3.6vw, 64px); font-weight: 800; font-stretch: 118%; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; text-transform: uppercase; }
+.calc-kept [data-kept] { white-space: nowrap; }
+.calc-out .calc-note { margin-top: 4px; }
+.calc-out .cta { margin-top: 10px; }
+
+@media (max-width: 760px) {
+  .calc-b { grid-template-columns: minmax(0, 1fr); gap: 34px; }
+  .calc-in, .calc-out { grid-column: 1; }
+  /* on a phone a field is its label, then the number at full width with its unit at the end; the row's own rule
+     is the field's line */
+  .calc-row { grid-template-columns: minmax(0, 1fr); gap: 2px; min-height: 0; padding: 14px 0 8px; }
+  .calc-row:focus-within { border-bottom-color: var(--ink); box-shadow: 0 1px 0 var(--ink); }
+  .calc-row > label { font-size: 16px; }
+  .calc-num { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  .calc-num input { min-height: 44px; padding: 0; border-bottom: 0; font-size: 30px; text-align: left; }
+  .calc-num input:focus-visible { box-shadow: none; }
+  .calc-cur i { min-width: 44px; min-height: 36px; }
+  .calc-out { padding-top: 0; }
+  .calc-big { font-size: 20vw; }
+  .calc-big[data-len="b"] { font-size: 16vw; }
+  .calc-big[data-len="c"] { font-size: 12.4vw; }
+  .calc-big[data-len="d"] { font-size: 10.2vw; }
+  .calc-big[data-len="e"] { font-size: 8vw; }
+  .calc-kept b { font-size: 8vw; }
+}
+
+@media print { .calc-share input { display: none; } }
