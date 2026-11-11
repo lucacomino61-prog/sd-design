@@ -2,10 +2,11 @@
 // it; a few other tools do, and it costs nothing. Every sentence comes from the English copy, so it says exactly
 // what the pages say.
 import en from '../i18n/en.js';
-import { SITE, LANGS, LANG_NAME, PAGES, SERVICES, abs } from '../data/site.js';
+import { SITE, LANGS, LANG_NAME, PAGES, SERVICES, GUIDES, abs } from '../data/site.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER } from '../data/sites.js';
 import { OFFER } from '../data/offer.js';
+import { GUIDE_TEXT } from '../i18n/guides.js';
 
 export function GET() {
   const t = en, o = t.offer;
@@ -44,6 +45,7 @@ export function GET() {
       return `- ${s.url ? `[${s.name}](${s.url})` : s.name} (${p.what}, ${p.place}; ${t.states[s.state].toLowerCase()}): ${p.lede} ${p.facts.join(' ')}${more}`;
     }),
     '',
+    ...(GUIDES.length ? ['## Guides', ...GUIDES.map((id) => `- [${GUIDE_TEXT.en[id].h1}](${abs(PAGES[`guide-${id}`].en)}): ${GUIDE_TEXT.en[id].answer}`), ''] : []),
     '## Questions',
     ...t.home.faq.items.flatMap(([q, a]) => [`### ${q}`, a, '']),
     '## Languages',

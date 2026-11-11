@@ -36,6 +36,13 @@ export const LOCALE = { sq: 'sq_AL', en: 'en_GB', it: 'it_IT' };
 // in every language.
 const PROJECT_SLUG = { martiri: 'bar-martiri', elixir: 'elixir-al', kater: 'kater-burgers', greta: 'dresses-by-greta' };
 export const PROJECTS = FEATURES.projects ? LIVE.filter((id) => PROJECT_SLUG[id]) : [];
+// The guides, and the words in their addresses. Their text is in src/i18n/guides.js.
+const GUIDE_SLUG = {
+  cost: { sq: 'sa-kushton-nje-faqe-interneti', en: 'how-much-does-a-website-cost-in-albania', it: 'quanto-costa-un-sito-web-in-albania' },
+  instagram: { sq: 'instagram-apo-faqe-interneti', en: 'instagram-or-a-website', it: 'instagram-o-sito-web' },
+  direct: { sq: 'rezervime-dhe-porosi-pa-komision', en: 'bookings-and-orders-without-commission', it: 'prenotazioni-e-ordini-senza-commissioni' },
+};
+export const GUIDES = FEATURES.guides ? Object.keys(GUIDE_SLUG) : [];
 
 // One page per search intent and language. The same table feeds the menus, hreflang, the sitemap and the checks.
 // A page that is switched off in features.js is simply not in the table.
@@ -47,6 +54,8 @@ export const PAGES = {
   shop: { sq: '/dyqane-online/', en: '/en/online-shops/', it: '/it/negozi-online/' },
   clinic: { sq: '/klinika/', en: '/en/clinics/', it: '/it/cliniche/' },
   ...Object.fromEntries(PROJECTS.map((id) => [`work-${id}`, { sq: `/punet/${PROJECT_SLUG[id]}/`, en: `/en/work/${PROJECT_SLUG[id]}/`, it: `/it/lavori/${PROJECT_SLUG[id]}/` }])),
+  ...(GUIDES.length ? { guides: { sq: '/udhezues/', en: '/en/guides/', it: '/it/guide/' } } : {}),
+  ...Object.fromEntries(GUIDES.map((g) => [`guide-${g}`, { sq: `/udhezues/${GUIDE_SLUG[g].sq}/`, en: `/en/guides/${GUIDE_SLUG[g].en}/`, it: `/it/guide/${GUIDE_SLUG[g].it}/` }])),
   privacy: { sq: '/privatesia/', en: '/en/privacy/', it: '/it/privacy/' },
 };
 export const SERVICES = ['food', 'hotel', 'shop', 'clinic'];

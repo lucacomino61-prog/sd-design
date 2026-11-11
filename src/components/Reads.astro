@@ -1,0 +1,18 @@
+---
+// A short list of guides to read next, under the questions of a page. `ids` picks and orders them; a guide that is
+// switched off is left out, and with none left nothing is shown.
+import '../styles/reads.css';
+import Icon from './Icon.astro';
+import { GUIDE_TEXT } from '../i18n/guides.js';
+import { GUIDES, href } from '../data/site.js';
+const { t, ids = GUIDES, level = 3 } = Astro.props;
+const G = GUIDE_TEXT[t.lang];
+const H = `h${level}`;
+const list = ids.filter((id) => GUIDES.includes(id));
+---
+{list.length > 0 && (
+  <div class="reads" data-rise>
+    <H class="reads-t">{G.index.readsT}</H>
+    <ul>{list.map((id) => <li><a href={href(`guide-${id}`, t.lang)}><span>{G[id].h1}</span><Icon name="arrow-right" size={14} /></a></li>)}</ul>
+  </div>
+)}

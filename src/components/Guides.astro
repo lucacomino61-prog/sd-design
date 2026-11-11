@@ -1,0 +1,47 @@
+---
+// The list of guides: each as a ruled row with its question and one line about what is inside.
+import '../styles/guide.css';
+import Base from '../layouts/Base.astro';
+import Icon from './Icon.astro';
+import Ask from './Ask.astro';
+import { GUIDE_TEXT } from '../i18n/guides.js';
+import { GUIDES, href, abs } from '../data/site.js';
+
+const { t } = Astro.props;
+const lang = t.lang, G = GUIDE_TEXT[lang];
+const home = href('home', lang), here = abs(href('guides', lang));
+const pad = (n) => String(n).padStart(2, '0');
+const nodes = [
+  { '@type': 'ItemList', '@id': here + '#guides', name: G.nav, itemListElement: GUIDES.map((id, i) => ({ '@type': 'ListItem', position: i + 1, name: G[id].h1, url: abs(href(`guide-${id}`, lang)) })) },
+  { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'SD Design', item: abs(home) }, { '@type': 'ListItem', position: 2, name: G.nav, item: here }] },
+];
+---
+<Base t={t} page="guides" meta={{ title: G.index.title, desc: G.index.desc }} share={`/og/guides-${lang}.jpg`} nodes={nodes} sections={3}>
+  <section class="hero shero" id="top" aria-labelledby="h1" data-section="1">
+    <canvas class="tone hero-tone" data-tone="mark" aria-hidden="true"></canvas>
+    <div class="hero-b">
+      <nav class="crumbs" aria-label={t.ui.crumbs}><ol><li><a href={home}>SD Design</a></li><li aria-current="page">{G.nav}</li></ol></nav>
+      <h1 class="display" id="h1">{G.index.h1}</h1>
+      <div class="hero-foot">
+        <p class="lead">{G.index.lead}</p>
+        <Ask t={t} />
+      </div>
+    </div>
+  </section>
+
+  <section class="gindex" aria-labelledby="list-h" data-section="2">
+    <h2 class="sr" id="list-h">{G.nav}</h2>
+    <ol>
+      {GUIDES.map((id, i) => (
+        <li data-rise>
+          <a href={href(`guide-${id}`, lang)}>
+            <span class="row-n" aria-hidden="true">{pad(i + 1)}</span>
+            <span class="row-name">{G[id].h1}</span>
+            <span class="row-what">{G[id].blurb}</span>
+            <span class="gread">{G.index.read}<Icon name="arrow-right" size={12} /></span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Base>

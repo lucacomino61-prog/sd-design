@@ -7,6 +7,7 @@ import Words from './Words.astro';
 import Ask from './Ask.astro';
 import Reel from './Reel.astro';
 import Faq from './Faq.astro';
+import Reads from './Reads.astro';
 import { href, abs, wa } from '../data/site.js';
 import { SITES, ORDER, HERO } from '../data/sites.js';
 import { OFFER } from '../data/offer.js';
@@ -71,6 +72,7 @@ const nodes = [
     <div class="faq-b">
       <Faq items={qs} />
       <p class="faq-more">{h.faq.more} <a class="lnk" {...wa(h.faq.msg)}>{h.faq.ask}<Icon name="arrow-up-right" size={12} /></a></p>
+      <Reads t={t} ids={['cost', 'instagram']} />
     </div>
   </section>
 </Base>

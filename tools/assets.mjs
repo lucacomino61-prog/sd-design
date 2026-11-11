@@ -12,7 +12,8 @@ import ffmpeg from 'ffmpeg-static';
 import sq from '../src/i18n/sq.js';
 import en from '../src/i18n/en.js';
 import it from '../src/i18n/it.js';
-import { SERVICES, PROJECTS } from '../src/data/site.js';
+import { SERVICES, PROJECTS, GUIDES } from '../src/data/site.js';
+import { GUIDE_TEXT } from '../src/i18n/guides.js';
 import { S_PATH, BUBBLE } from '../src/data/mark.js';
 import { SITES } from '../src/data/sites.js';
 
@@ -127,6 +128,12 @@ if (!only || only === 'og') {
   for (const id of PROJECTS) {
     const s = SITES[id];
     await card({ lang: 'sq', file: `work-${id}.jpg`, title: s.name, site: s, label: s.url ? new URL(s.url).host : sq.projects[id].place });
+  }
+  // the guides and their list: the question over the SD mark
+  for (const t of [sq, en, it]) {
+    const G = GUIDE_TEXT[t.lang];
+    if (GUIDES.length) await card({ lang: t.lang, file: `guides-${t.lang}.jpg`, title: G.index.h1, label: G.nav });
+    for (const id of GUIDES) await card({ lang: t.lang, file: `guide-${id}-${t.lang}.jpg`, title: G[id].h1, label: G.nav });
   }
 }
 await browser.close();

@@ -12,6 +12,7 @@ import Close from '../components/Close.astro';
 import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, workHref, S_PATH, BUBBLE } from '../data/site.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER, LIVE } from '../data/sites.js';
+import { GUIDE_TEXT } from '../i18n/guides.js';
 
 const { t, page, nodes = [], sections = 1, type = '', label = t.home.cta, close = true, wear = '' } = Astro.props;
 const lang = t.lang;
@@ -103,7 +104,7 @@ const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], 
     <canvas class="tone foot-tone" data-tone="mark" aria-hidden="true"></canvas>
     <div class="foot-in">
       <nav class="foot-nav" aria-label={t.foot.services}>
-        <div><h2>{t.foot.services}</h2><ul>{SERVICES.map((k) => <li><a href={href(k, lang)}>{t.kinds[k]}</a></li>)}<li><a href={href('offer', lang)} aria-current={page === 'offer' ? 'page' : undefined}>{t.nav.offer}</a></li></ul></div>
+        <div><h2>{t.foot.services}</h2><ul>{SERVICES.map((k) => <li><a href={href(k, lang)}>{t.kinds[k]}</a></li>)}<li><a href={href('offer', lang)} aria-current={page === 'offer' ? 'page' : undefined}>{t.nav.offer}</a></li>{PAGES.guides && <li><a href={href('guides', lang)} aria-current={page.startsWith('guide') ? 'page' : undefined}>{GUIDE_TEXT[lang].nav}</a></li>}</ul></div>
         <div><h2>{t.foot.work}</h2><ul>{ORDER.map((id) => <li><a href={workHref(id, lang)} aria-current={page === `work-${id}` ? 'page' : undefined}>{SITES[id].name}</a></li>)}</ul></div>
         <div><h2>{t.foot.contact}</h2><ul><li><a {...wa(msg)}>WhatsApp</a></li><li><a {...tel}>{t.contact.tel}</a></li><li><a {...ig}>Instagram</a></li><li><a href={href('privacy', lang)}>{t.nav.privacy}</a></li></ul></div>
         <div><h2>{t.foot.langs}</h2><ul>{LANGS.map((l) => <li><a href={other(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{LANG_NAME[l]}</a></li>)}</ul></div>

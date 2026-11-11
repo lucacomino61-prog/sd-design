@@ -1,0 +1,10 @@
+/* "Read more": guides as ruled links under a page's questions (src/components/Reads.astro; part of the `guides`
+   switch in src/data/features.js). The rows are the same size as the questions above them. */
+.reads { margin-top: clamp(40px, 4.4vw, 72px); }
+.reads-t { margin-bottom: 10px; font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; color: var(--soft); }
+.reads ul { border-bottom: 1px solid var(--line-2); }
+.reads a { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 76px; padding: 16px 0; border-top: 1px solid var(--line-2); font-size: clamp(19px, 1.6vw, 25px); font-weight: 600; line-height: 1.2; letter-spacing: -0.02em; }
+.reads a span { transition: translate 0.5s var(--out); }
+.reads .ic { flex: none; transition: translate 0.3s var(--out); }
+@media (hover: hover) { .reads a:hover span { translate: 8px 0; } .reads a:hover .ic { translate: 4px 0; } }
+@media (max-width: 760px) { .reads a { min-height: 64px; } }

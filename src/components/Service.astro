@@ -8,6 +8,7 @@ import Words from './Words.astro';
 import Ask from './Ask.astro';
 import Work from './Work.astro';
 import Faq from './Faq.astro';
+import Reads from './Reads.astro';
 import { SERVICES, href, abs } from '../data/site.js';
 import { SITES, BY_KIND } from '../data/sites.js';
 
@@ -18,6 +19,8 @@ const home = href('home', lang);
 const ids = kind === 'clinic' ? ['martiri', 'kater'] : BY_KIND(kind);
 const src = kind === 'clinic' ? null : SITES[ids[0]];
 const others = SERVICES.filter((k) => k !== kind);
+// the guides an owner of this kind of business is most likely to want next
+const READS = { food: ['direct', 'instagram', 'cost'], hotel: ['direct', 'grants', 'cost'], shop: ['cost', 'grants', 'instagram'], clinic: ['cost', 'instagram'] };
 
 const ORG = abs('/') + '#studio', here = abs(href(kind, lang));
 const nodes = [
@@ -55,7 +58,7 @@ const nodes = [
 
   <section class="faq" id="faq" aria-labelledby="faq-h" data-section="4">
     <h2 class="display split" id="faq-h"><Words text={S.faqT} /></h2>
-    <div class="faq-b"><Faq items={[...s.faq, S.price]} /></div>
+    <div class="faq-b"><Faq items={[...s.faq, S.price]} /><Reads t={t} ids={READS[kind]} /></div>
   </section>
 
   <section class="more" aria-labelledby="more-h" data-section="5">

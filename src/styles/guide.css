@@ -1,0 +1,63 @@
+/* The guides (src/components/Guide.astro and Guides.astro; the switch is `guides` in src/data/features.js).
+   A page to read: the short answer on the first screen beside the list of its parts, then the long answer on the
+   light ground, each part a ruled block with its number and heading on the left and its text on the right. */
+
+/* ---------- first screen: the parts of the page as a small ruled list ---------- */
+.gtoc h2 { margin-bottom: 8px; font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; color: var(--soft); }
+.gtoc ol { border-bottom: 1px solid var(--line-2); }
+.gtoc a { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); align-items: baseline; padding: 10px 0 11px; border-top: 1px solid var(--line-2); font-size: 15px; line-height: 1.3; }
+.gtoc span { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; color: var(--num); }
+@media (hover: hover) { .gtoc a:hover { color: var(--hot); } }
+
+/* ---------- the long answer ---------- */
+.gbody { margin-top: var(--pad); padding: var(--pad) var(--m); }
+.gsec { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: start; gap: 22px var(--g); padding: 22px 0 clamp(56px, 6vw, 96px); border-top: 2px solid var(--ink); scroll-margin-top: 84px; }
+.gsec:first-child { padding-top: 0; border-top: 0; }
+.gsec:last-child { padding-bottom: 0; }
+.ghead { grid-column: 1 / span 5; position: sticky; top: 96px; display: grid; gap: 10px; }
+.gnum { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; color: var(--num); }
+.ghead h2 { max-width: 13em; font-size: clamp(26px, 2.9vw, 50px); font-weight: 800; font-stretch: 112%; line-height: 1.02; letter-spacing: -0.03em; text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
+.gtext { grid-column: 7 / -1; display: grid; gap: 18px; }
+.gtext > p { max-width: 36em; font-size: clamp(18px, 1.4vw, 21px); line-height: 1.45; text-wrap: pretty; }
+/* a title and a line about it, ruled */
+.gpairs { margin: 0; border-bottom: 1px solid var(--line-2); }
+.gpairs > div { display: grid; gap: 6px; padding: 18px 0 20px; border-top: 1px solid var(--line-2); }
+.gpairs dt, .glevels h3 { font-size: clamp(19px, 1.6vw, 25px); font-weight: 700; font-stretch: 108%; line-height: 1.15; letter-spacing: -0.025em; }
+.gpairs dd { max-width: 36em; margin: 0; color: var(--soft); }
+/* plain lines, numbered */
+.gitems { counter-reset: line; border-bottom: 1px solid var(--line-2); }
+.gitems li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); align-items: baseline; padding: 14px 0 15px; border-top: 1px solid var(--line-2); font-size: clamp(18px, 1.4vw, 21px); line-height: 1.35; }
+.gitems li::before { counter-increment: line; content: counter(line, decimal-leading-zero); font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; color: var(--num); }
+/* the three levels, each with the site that is its example */
+.glevels { border-bottom: 1px solid var(--line-2); }
+.glevels li { display: grid; justify-items: start; gap: 8px; padding: 18px 0 12px; border-top: 1px solid var(--line-2); }
+.glevels li > p:not(.pips) { max-width: 36em; color: var(--soft); }
+.gincl { font: 500 12px/1.5 var(--mono); letter-spacing: -0.02em; }
+/* a list that opens a part sits right under the part's own rule: it does not draw a second one */
+.gtext > .gpairs:first-child > div:first-child, .gtext > .gitems:first-child > li:first-child { padding-top: 0; border-top: 0; }
+.gsrc .gtext > p { font-size: 15px; color: var(--soft); }
+
+/* ---------- the list of guides ---------- */
+.gindex { padding-top: var(--pad); }
+.gindex ol { border-bottom: 1px solid var(--line-2); }
+.gindex a { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: center; gap: 9px var(--g); min-height: 132px; padding: 22px var(--m); border-top: 1px solid var(--line-2); }
+.gindex .row-name { font-size: clamp(24px, 2.7vw, 46px); }
+.gread { grid-column: 8 / span 4; grid-row: 2; align-self: start; display: inline-flex; align-items: center; gap: 6px; font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; }
+.gread .ic { transition: translate 0.3s var(--out); }
+/* the colour change belongs to the hover only, as on the other big ruled links */
+@media (hover: hover) { .gindex a:hover { background: #ff4d36; color: #1a1c1c; transition: background-color 0.2s var(--quick), color 0.2s var(--quick); } .gindex a:hover .row-name { translate: 12px 0; } .gindex a:hover .gread .ic { translate: 4px 0; } }
+
+@media (max-width: 760px) {
+  .gsec { grid-template-columns: 1fr; gap: 18px; padding-bottom: 56px; }
+  .ghead, .gtext { grid-column: 1; position: static; }
+  .ghead h2 { font-size: 7.4vw; }
+  .gtoc a { padding-block: 14px; }
+  .gindex a { grid-template-columns: minmax(0, 1fr); gap: 10px; min-height: 0; padding: 22px var(--m) 20px; }
+  .gindex .row-name { font-size: 7.4vw; }
+  .gread { grid-column: 1; grid-row: 3; }
+}
+
+@media print {
+  .gtoc { display: none; }
+  .ghead { position: static; }
+}

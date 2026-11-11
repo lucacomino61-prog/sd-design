@@ -1,10 +1,13 @@
 ---
 // Every page but the home, in each language: the offer, the four service pages, a page for each client site that is
-// online, and the privacy page. The addresses come from the table in src/data/site.js, so a page exists exactly where
-// the menus, hreflang and the sitemap say it does (and a page switched off in src/data/features.js does not exist).
+// online, the guides and their list, and the privacy page. The addresses come from the table in src/data/site.js, so
+// a page exists exactly where the menus, hreflang and the sitemap say it does (and a page switched off in
+// src/data/features.js does not exist).
 import Service from '../components/Service.astro';
 import Offer from '../components/Offer.astro';
 import Project from '../components/Project.astro';
+import Guides from '../components/Guides.astro';
+import Guide from '../components/Guide.astro';
 import Privacy from '../components/Privacy.astro';
 import sq from '../i18n/sq.js';
 import en from '../i18n/en.js';
@@ -20,4 +23,6 @@ const t = { sq, en, it }[lang];
 {page === 'privacy' ? <Privacy t={t} />
   : page === 'offer' ? <Offer t={t} />
   : page.startsWith('work-') ? <Project t={t} id={page.slice(5)} />
+  : page === 'guides' ? <Guides t={t} />
+  : page.startsWith('guide-') ? <Guide t={t} id={page.slice(6)} />
   : <Service t={t} kind={page} />}
