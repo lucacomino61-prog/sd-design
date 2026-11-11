@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import { SITE } from './src/data/site.js';
+import { FEATURES } from './src/data/features.js';
 
 // SD Design: a static site, every word in the HTML. The domain is "url" in src/data/owner.json (read here as
 // SITE.url); until it is filled in, the pages say "noindex" and the sitemap stays empty.
@@ -43,5 +44,6 @@ export default defineConfig({
       styleDirective: { resources: ["'self'"] },
     },
   },
-  vite: { build: { target: 'es2022' } },
+  // a switch the page's script needs is handed to it as a constant, so that code that is switched off is left out
+  vite: { build: { target: 'es2022' }, define: { 'import.meta.env.SD_SOURCE': JSON.stringify(FEATURES.source) } },
 });

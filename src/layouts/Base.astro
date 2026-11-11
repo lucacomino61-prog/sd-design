@@ -10,6 +10,7 @@ import '../styles/site.css';
 import Icon from '../components/Icon.astro';
 import Close from '../components/Close.astro';
 import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, workHref, S_PATH, BUBBLE } from '../data/site.js';
+import { FEATURES } from '../data/features.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER, LIVE } from '../data/sites.js';
 import { GUIDE_TEXT } from '../i18n/guides.js';
@@ -41,7 +42,7 @@ const graph = [
   ...nodes,
 ];
 const safe = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
-const client = { toast: t.toast, eggs: t.eggs, bar: t.bar, form: { ...t.contact, endpoint: CONTACT.formEndpoint, fields: CONTACT.formFields, whatsapp: CONTACT.whatsapp } };
+const client = { toast: t.toast, eggs: t.eggs, bar: t.bar, form: { ...t.contact, endpoint: CONTACT.formEndpoint, fields: CONTACT.formFields, whatsapp: CONTACT.whatsapp }, ...(FEATURES.source && { from: t.ui.from }) };
 const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], ...SERVICES.map((k) => [href(k, lang), t.kinds[k]]), ['#contact', t.nav.contact]];
 ---
 <!doctype html>

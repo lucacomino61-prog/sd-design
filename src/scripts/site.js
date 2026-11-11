@@ -6,6 +6,7 @@ import { $, $$, motion, fine, state, onStill, stillSwitch, makeTone, cover, mark
 import { onFrame, firstFrame, wake } from './loop.js';
 import { startScroll } from './scroll.js';
 import { left } from '../data/offer.js';
+import { arrivedFrom, tagLinks } from './source.js';
 
 const html = document.documentElement;
 const i18n = JSON.parse($('#i18n').textContent);
@@ -15,6 +16,11 @@ const saveData = navigator.connection?.saveData === true;
 // page it hears about each one; with none, this does nothing.
 const goal = (name) => { window.plausible?.(name); window.gtag?.('event', name); window.dispatchEvent(new CustomEvent('sd:goal', { detail: name })); };
 document.addEventListener('click', (e) => { const a = e.target.closest('[data-goal]'); if (a) goal(a.dataset.goal); });
+
+// ---------- where the visitor came from, said in the message they start ----------
+// (src/scripts/source.js; left out of this script when the switch is off)
+const fromLine = import.meta.env.SD_SOURCE && i18n.from ? ((from) => (from ? i18n.from.replace('{from}', from) : ''))(arrivedFrom()) : '';
+if (fromLine) tagLinks(fromLine);
 
 // ---------- Albania time, wherever the visitor is ----------
 const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Tirane' });
@@ -320,7 +326,7 @@ if (form) {
       return;
     }
     if (f.whatsapp) {
-      const words = [f.hello, data.name && `${f.labelName}: ${data.name}`, data.phone && `${f.labelPhone}: ${data.phone}`, message].filter(Boolean).join('\n');
+      const words = [f.hello, data.name && `${f.labelName}: ${data.name}`, data.phone && `${f.labelPhone}: ${data.phone}`, message].filter(Boolean).join('\n') + (fromLine ? `\n\n${fromLine}` : '');
       goal('form');
       window.open(`https://wa.me/${f.whatsapp}?text=${encodeURIComponent(words)}`, '_blank', 'noopener');
       return;
