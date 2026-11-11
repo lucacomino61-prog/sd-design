@@ -15,7 +15,7 @@ export function GET() {
     ...AI.map((bot) => `User-agent: ${bot}`),
     'Allow: /',
     '',
-    DRAFT ? '# Draft: the sitemap is announced once the domain is set in src/data/site.js.' : `Sitemap: ${SITE.url}/sitemap.xml`,
+    DRAFT ? '# Draft: the sitemap is announced once the site has its address.' : `Sitemap: ${SITE.url}/sitemap.xml`,
   ];
   return new Response(lines.join('\n') + '\n', { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
 }

@@ -1,7 +1,7 @@
 // Albanian, the default. Every word on the site comes from here. What is said about a client was read on that
 // client's public site on 10 Nov 2026 (research/facts). The offer (a free working draft) says exactly what was
 // agreed on 10 Nov 2026 and nothing more: 24 hours on working days, 10 a week, Albania only, after a short chat,
-// a deposit to continue. Its numbers live in src/data/offer.js.
+// a deposit to continue. Its numbers live in src/data/offer.json.
 export default {
   lang: 'sq',
   meta: {

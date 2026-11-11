@@ -1,12 +1,15 @@
-// The free draft, in numbers. The owner changes two things here: how many free drafts have been given away this week
-// (`taken`) and the day that was written (`updated`). The site shows what is left, and goes back to the full number
-// by itself when a new week begins (Monday, Albanian time), so last week's count is never shown as this week's.
-export const OFFER = {
-  perWeek: 10, // free drafts a week
-  hours: 24, // until the draft, counted on working days (Monday to Friday)
-  taken: 0, // free drafts given away in the week of `updated`
-  updated: '2026-11-10', // the day `taken` was last changed, as YYYY-MM-DD
-};
+// The free draft, in numbers. The numbers themselves are in offer.json, which the admin tool writes (it is a separate
+// program, not part of this site) and which can also be changed by hand:
+//   perWeek  free drafts a week
+//   hours    until the draft, counted on working days (Monday to Friday)
+//   taken    free drafts given away in the week of `updated`
+//   updated  the day `taken` was last changed, as YYYY-MM-DD
+// `perWeek` and `hours` are promises: the sentences in src/i18n say them too, so change them together.
+// The site shows what is left, and goes back to the full number by itself when a new week begins (Monday, Albanian
+// time), so last week's count is never shown as this week's.
+import numbers from './offer.json' with { type: 'json' };
+
+export const OFFER = numbers;
 
 // the Monday of the week a day (YYYY-MM-DD) falls in
 export const monday = (day) => {

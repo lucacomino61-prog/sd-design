@@ -1,0 +1,24 @@
+{
+  "contact": {
+    "whatsapp": null,
+    "phone": null,
+    "instagram": null,
+    "email": null,
+    "formEndpoint": null,
+    "formFields": {}
+  },
+  "person": {
+    "name": "Stefano Doko",
+    "photo": null
+  },
+  "legal": {
+    "name": null,
+    "nipt": null,
+    "address": null
+  },
+  "url": null,
+  "verify": {
+    "google": null,
+    "bing": null
+  }
+}

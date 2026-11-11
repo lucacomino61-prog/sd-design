@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import { SITE } from './src/data/site.js';
 
-// SD Design: a static site, every word in the HTML. The domain lives in src/data/site.js (SITE.url); until it is
-// filled in, the pages say "noindex" and the sitemap stays empty.
+// SD Design: a static site, every word in the HTML. The domain is "url" in src/data/owner.json (read here as
+// SITE.url); until it is filled in, the pages say "noindex" and the sitemap stays empty.
 const studio = process.env.STUDIO === '1';
 
 // The parked 3D studio (/studio) can still be opened while developing, but it is not part of the site that ships:

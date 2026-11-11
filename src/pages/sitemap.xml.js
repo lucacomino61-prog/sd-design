@@ -11,7 +11,7 @@ export function GET() {
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
-    ...(DRAFT ? ['  <!-- Draft: set SITE.url in src/data/site.js and every page is listed here. -->'] : rows),
+    ...(DRAFT ? ['  <!-- Draft: every page is listed here once the site has its address. -->'] : rows),
     '</urlset>',
   ].join('\n');
   return new Response(xml + '\n', { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });

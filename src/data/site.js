@@ -1,20 +1,23 @@
 // The facts about the site itself, and its page list. Nothing here is guessed: what is not known yet is null.
+// What only the owner knows (the address, the legal details, who answers) is in owner.json: see owner.js.
+import { owner } from './owner.js';
 import { CONTACT } from './contact.js';
 
 const env = typeof process !== 'undefined' ? process.env : {};
 
 export const SITE = {
   name: 'SD Design',
-  // The address the site will live at, without a slash at the end, e.g. 'https://sddesign.al'.
-  // While this is null the site is a DRAFT: every page says "noindex", the sitemap is empty and the footer says so.
-  url: env.SITE_URL || null,
-  // Codes from Google Search Console and Bing Webmaster Tools ("HTML tag" method), once the site is added there.
-  verify: { google: null, bing: null },
-  // Who runs the site, shown on the privacy page: the registered name, the NIPT and the address.
-  legal: { name: null, nipt: null, address: null },
-  // Who answers on WhatsApp, named next to the button. The photo is shown only once there is a real one: a square
-  // picture in public/, e.g. '/person/stefano.webp'. Until then the SD mark stands in its place, never a made-up face.
-  person: { name: 'Stefano Doko', photo: null },
+  // "url": the address the site will live at, without a slash at the end, e.g. 'https://sddesign.al'.
+  // While it is null the site is a DRAFT: every page says "noindex", the sitemap is empty and the footer says so.
+  // (SITE_URL=... in front of a build overrides it, to check the launch version without changing the file.)
+  url: env.SITE_URL || owner.url || null,
+  // "verify": codes from Google Search Console and Bing Webmaster Tools ("HTML tag" method), once the site is added there.
+  verify: { google: null, bing: null, ...owner.verify },
+  // "legal": who runs the site, shown on the privacy page: the registered name, the NIPT and the address.
+  legal: { name: null, nipt: null, address: null, ...owner.legal },
+  // "person": who answers on WhatsApp, named next to the button. The photo is shown only once there is a real one: a
+  // square picture in public/, e.g. '/person/stefano.webp'. Until then the SD mark stands in its place, never a made-up face.
+  person: { name: 'Stefano Doko', photo: null, ...owner.person },
   // Set by the contact data: the origin the form may post to (for the content security policy).
   formOrigin: CONTACT.formEndpoint ? new URL(CONTACT.formEndpoint).origin : null,
 };
@@ -38,7 +41,7 @@ export const SERVICES = ['food', 'hotel', 'shop', 'clinic'];
 export const href = (page, lang) => PAGES[page][lang];
 export const abs = (p) => (SITE.url ? SITE.url + p : p);
 
-// Contact links: real once src/data/contact.js is filled in. Until then they point at the contact block and the
+// Contact links: real once the contact details are filled in (owner.json). Until then they point at the contact block and the
 // script shows a "draft" note, so no number is ever guessed.
 export const wa = (text) => (CONTACT.whatsapp
   ? { href: `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent(text)}`, target: '_blank', rel: 'noopener', 'data-goal': 'whatsapp' }

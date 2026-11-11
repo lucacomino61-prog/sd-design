@@ -8,6 +8,20 @@ npm run build    # the finished site in dist/
 npm run preview  # the built site at http://localhost:3761
 ```
 
+## The admin
+
+The weekly counter, the contact details, who answers, the legal details and the site's address are changed in the
+admin. It is a separate program in its own folder, `../sd-design-admin`: double-click `Start admin.cmd` there (or
+`npm start`) and it opens at `http://127.0.0.1:3762`, on this computer only. It can also build the site and show the
+result.
+
+The admin is not part of the site. None of its code is in this folder or in `dist/`, and after every build it reads
+the built folder and says so ("Nothing from this admin is in the built site"). All it puts here are the values you
+type, in two small files that can also be changed by hand:
+
+- `src/data/offer.json`: `taken` (free drafts given away this week) and `updated` (the day that was written);
+- `src/data/owner.json`: the contact details, who answers, the legal details, the address, the search-engine codes.
+
 ## The offer: a free working draft
 
 The whole site is built around one offer, and it says only what was agreed on 10 Nov 2026:
@@ -19,26 +33,31 @@ The whole site is built around one offer, and it says only what was agreed on 10
 - the full build starts with a deposit agreed together.
 
 If any of these changes, change the sentences in the three language files (search for `offer:` and for the questions
-under `faq:`) and the numbers in `src/data/offer.js`.
+under `faq:`) and the two numbers `perWeek` and `hours` in `src/data/offer.json`.
 
 ### The weekly counter (do this each time you give a draft away)
 
-`src/data/offer.js`:
+In the admin, write the business's name on the first free line of "This week". The number goes down by one, and the
+line shows until when the draft is due (24 hours on working days, counted from that moment). The list of names stays
+in the admin's own folder; only the number comes here.
 
-```js
-taken: 3,              // free drafts given away this week
-updated: '2026-11-12', // the day you changed the number
+By hand, the same thing is two values in `src/data/offer.json`:
+
+```json
+"taken": 3,
+"updated": "2026-11-12"
 ```
 
 The site shows "10 − taken" next to every button. When a new week begins (Monday, Albanian time) it shows all 10
 again by itself, so an old number is never shown as this week's. At 0 it says this week's drafts are all taken.
-After changing the file, build and publish as usual.
+After a change, build and publish as usual (the admin's "Build" does the first of the two).
 
 ### Who answers
 
-`src/data/site.js`, `SITE.person`: the name next to the button (`Stefano Doko`) and, when there is one, a square photo
-(put it in `public/person/` and write its address, e.g. `'/person/stefano.webp'`). Until then the SD mark stands in its
-place. The site never shows a made-up face.
+In the admin, "The site", "Who answers": the name next to the button (`Stefano Doko`) and the photo. The admin cuts
+the photo square, makes it small, drops the location data a phone writes into a picture, and puts it in
+`public/person/`. Until there is a photo the SD mark stands in its place. The site never shows a made-up face.
+(By hand: `person` in `src/data/owner.json`, with the photo's address, e.g. `"/person/stefano.webp"`.)
 
 ### The message the button starts
 
@@ -48,19 +67,21 @@ photos. On a page for one kind of business the type is already filled in.
 
 ## Before it goes live: what only you can fill in
 
-The site never guesses these. While they are empty it shows a small "Draft" note instead of a wrong number.
+The site never guesses these. While they are empty it shows a small "Draft" note instead of a wrong number. All of
+them are filled in on "The site" part of the admin, which lists what is still missing; the second column is where
+each one lands in `src/data/owner.json`, for changing it by hand.
 
-| What | Where | What it changes |
+| What | In `owner.json` | What it changes |
 |---|---|---|
-| WhatsApp number, phone, Instagram, email | `src/data/contact.js` | Every button and link; the form (it opens WhatsApp with the message written) |
-| The photo of the person who answers | `src/data/site.js`, `SITE.person.photo` | The small picture next to every button |
-| An inbox for the form (optional) | `src/data/contact.js`, `formEndpoint` | The form posts there instead of opening WhatsApp. Works with Formspree, Web3Forms or your own endpoint |
-| The domain | `src/data/site.js`, `SITE.url` | Removes "noindex", fills `sitemap.xml`, makes the canonical, hreflang and share-image addresses absolute |
-| Registered name, NIPT, address | `src/data/site.js`, `SITE.legal` | The "Who runs the site" block on the privacy page |
-| Search Console and Bing codes | `src/data/site.js`, `SITE.verify` | The verification tags in the head |
+| WhatsApp number, phone, Instagram, email | `contact` | Every button and link; the form (it opens WhatsApp with the message written) |
+| The photo of the person who answers | `person.photo` | The small picture next to every button |
+| An inbox for the form (optional, by hand only) | `contact.formEndpoint`, `contact.formFields` | The form posts there instead of opening WhatsApp. Works with Formspree, Web3Forms or your own endpoint |
+| The domain | `url` | Removes "noindex", fills `sitemap.xml`, makes the canonical, hreflang and share-image addresses absolute |
+| Registered name, NIPT, address | `legal` | The "Who runs the site" block on the privacy page |
+| Search Console and Bing codes | `verify` | The verification tags in the head |
 
-**The site is a draft until `SITE.url` is set.** A draft says "noindex" on every page and "Draft" in the footer, so a
-test address can never end up in Google.
+**The site is a draft until the address is set.** A draft says "noindex" on every page and "Draft" in the footer, so
+a test address can never end up in Google. The admin asks once more before it saves an address for the first time.
 
 Sentences to confirm, because they speak for the studio:
 - the offer, as listed above (the first screen, the three numbers, the four steps, the terms, the questions);
@@ -112,6 +133,7 @@ before it, and the left and right margins are the same (`--m`).
 | `node tools/motion.mjs http://localhost:3761` | Frame by frame, at 12 screen sizes and in the 3 languages, scrolling down and back up: no message of the example conversation over another or out of the chat, nothing moving against the scroll |
 | `node tools/hero-fit.mjs http://localhost:3761` | The headline never under the glass phone, no word of any heading cut off on a phone, the button's line on one line on a desktop |
 | `node tools/webkit.mjs ../sd-webkit http://localhost:3761` | The same pages in Safari's engine (iPhone): scripts, pinned scenes, grounds, the halftone. Needs Playwright, which is installed in `../holdings` |
+| `node tools/owner-check.mjs` | That what the admin writes reaches the pages: it builds the site with every owner detail set to a test value (handed to the build, `owner.json` is not touched) and looks for each one: the WhatsApp number in every button, the phone, Instagram and email, the photo and the name, the legal details, the address in the links and the sitemap, the search-engine codes |
 | `node tools/spacing.mjs http://localhost:3761 /` | Prints the space above and below every section and its left and right margins, to check they are even (in Git Bash put `MSYS_NO_PATHCONV=1` in front, or the `/` is rewritten) |
 | `node tools/strip.mjs ../sd-strip .story-scene .mock 390x844 0 1 16` | A film strip of one moving part (here: the phone of the story on a phone screen, 16 frames), to look at a transition frame by frame |
 
@@ -131,7 +153,8 @@ A client's colour is written twice (`src/data/sites.js` and the top of `src/styl
 
 ## After launch, in your own accounts
 
-1. Google Search Console and Bing Webmaster Tools: add the site, put the codes in `SITE.verify`, submit `/sitemap.xml`.
+1. Google Search Console and Bing Webmaster Tools: add the site, put the two codes in the admin ("The site", "Address
+   and search engines"), build, publish, then submit `/sitemap.xml`.
    Bing matters more than it looks: ChatGPT and Copilot read Bing.
 2. A Google Business Profile for the studio, complete, with the same name, phone and address as the site.
 3. Mentions on other sites: client sites linking back ("Site by SD Design"), local directories, a few lists. For AI
@@ -144,6 +167,9 @@ A client's colour is written twice (`src/data/sites.js` and the top of `src/styl
    questions asked to ChatGPT and Perplexity, to see whether the studio is named.
 
 ## Not part of the site that ships
+
+The admin lives in `../sd-design-admin`, outside this folder, with its own guide (`README.md`) and its own tests
+(`npm test` there). Your list of businesses is in its `data/` folder and nowhere else.
 
 The 3D studio page is parked: it opens at `/studio` while developing, and its models are left out of the build
 (`STUDIO=1 npm run build` includes it). The earlier home without the offer is commit 653ded1 on the `glass-site`
