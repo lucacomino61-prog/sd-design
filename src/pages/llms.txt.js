@@ -40,7 +40,8 @@ export function GET() {
     '## Work',
     ...ORDER.map((id) => {
       const s = SITES[id], p = t.projects[id];
-      return `- ${s.url ? `[${s.name}](${s.url})` : s.name} (${p.what}, ${p.place}; ${t.states[s.state].toLowerCase()}): ${p.lede} ${p.facts.join(' ')}`;
+      const more = PAGES[`work-${id}`] ? ` [About this site](${abs(PAGES[`work-${id}`].en)}).` : '';
+      return `- ${s.url ? `[${s.name}](${s.url})` : s.name} (${p.what}, ${p.place}; ${t.states[s.state].toLowerCase()}): ${p.lede} ${p.facts.join(' ')}${more}`;
     }),
     '',
     '## Questions',

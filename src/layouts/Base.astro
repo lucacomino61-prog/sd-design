@@ -4,21 +4,23 @@
 // HTML; the script adds the motion, and the page reads and links without it.
 // Every WhatsApp button on a page starts the same request for the free draft; `type` writes the kind of business
 // into it and `label` is that page's wording for the button.
+// A page whose words are not in the dictionary's `meta` hands in its own title and description (`meta`) and share
+// image (`share`). `wear` names a client: the page then opens in that client's colour (see src/styles/project.css).
 import '../styles/site.css';
 import Icon from '../components/Icon.astro';
 import Close from '../components/Close.astro';
-import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, S_PATH, BUBBLE } from '../data/site.js';
+import { SITE, DRAFT, LANGS, LANG_NAME, LOCALE, PAGES, SERVICES, href, abs, wa, tel, ig, offerMsg, workHref, S_PATH, BUBBLE } from '../data/site.js';
 import { CONTACT } from '../data/contact.js';
 import { SITES, ORDER, LIVE } from '../data/sites.js';
 
-const { t, page, nodes = [], sections = 1, type = '', label = t.home.cta, close = true } = Astro.props;
+const { t, page, nodes = [], sections = 1, type = '', label = t.home.cta, close = true, wear = '' } = Astro.props;
 const lang = t.lang;
-const meta = t.meta[page];
+const meta = Astro.props.meta ?? t.meta[page];
 const msg = offerMsg(t, type);
 const path = PAGES[page]?.[lang] ?? null; // a page without a place in the table (the 404) is never indexed
 const home = href('home', lang);
 const other = (l) => PAGES[page]?.[l] ?? href('home', l);
-const share = `/og/${['home', 'offer', ...SERVICES].includes(page) ? page : 'home'}-${lang}.jpg`;
+const share = Astro.props.share ?? `/og/${['home', 'offer', ...SERVICES].includes(page) ? page : 'home'}-${lang}.jpg`;
 const year = new Date().getFullYear();
 const pad = (n) => String(n).padStart(2, '0');
 
@@ -78,7 +80,7 @@ const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], 
   <script type="application/ld+json" set:html={safe({ '@context': 'https://schema.org', '@graph': graph })} />
   <script type="speculationrules" is:inline>{"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"selector_matches":"[target=_blank]"}}]},"eagerness":"moderate"}]}</script>
 </head>
-<body data-page={page}>
+<body data-page={page} class={wear ? `t-${wear} worn` : undefined}>
   <a class="skip" href="#main">{t.ui.skip}</a>
   <header class="bar on-dark">
     <a class="logo" id="logo" href={home} aria-label={t.ui.home}><svg viewBox="0 0 707 488" aria-hidden="true"><path d={S_PATH} /><path class="bub" d={BUBBLE} /></svg></a>
@@ -102,7 +104,7 @@ const menu = [[href('offer', lang), t.nav.offer], [`${home}#work`, t.nav.work], 
     <div class="foot-in">
       <nav class="foot-nav" aria-label={t.foot.services}>
         <div><h2>{t.foot.services}</h2><ul>{SERVICES.map((k) => <li><a href={href(k, lang)}>{t.kinds[k]}</a></li>)}<li><a href={href('offer', lang)} aria-current={page === 'offer' ? 'page' : undefined}>{t.nav.offer}</a></li></ul></div>
-        <div><h2>{t.foot.work}</h2><ul>{ORDER.map((id) => <li><a href={`${home}#${id}`}>{SITES[id].name}</a></li>)}</ul></div>
+        <div><h2>{t.foot.work}</h2><ul>{ORDER.map((id) => <li><a href={workHref(id, lang)} aria-current={page === `work-${id}` ? 'page' : undefined}>{SITES[id].name}</a></li>)}</ul></div>
         <div><h2>{t.foot.contact}</h2><ul><li><a {...wa(msg)}>WhatsApp</a></li><li><a {...tel}>{t.contact.tel}</a></li><li><a {...ig}>Instagram</a></li><li><a href={href('privacy', lang)}>{t.nav.privacy}</a></li></ul></div>
         <div><h2>{t.foot.langs}</h2><ul>{LANGS.map((l) => <li><a href={other(l)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{LANG_NAME[l]}</a></li>)}</ul></div>
       </nav>

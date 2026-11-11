@@ -112,6 +112,20 @@ export default {
       facts: ['Prezzi di più venditori a confronto per lo stesso prodotto.', 'Un calcolatore che mostra quanto produce il vostro tetto, città per città.', 'Sei pacchetti solari e un solo carrello per molti venditori.', 'Albanese e inglese, con prezzi in lek o in euro.'] },
   },
 
+  // a client's site on a page of its own: the facts are the ones in `projects` above
+  work: {
+    more: 'Vedi il progetto', doesT: 'Che cosa fa il sito.', seeT: 'Il sito, dall’inizio alla fine.', seeNote: 'Quattro schermate del telefono una dopo l’altra, come le vede il cliente. Più sotto, il sito su un computer e registrato su un telefono.',
+    kind: 'Tipo', level: 'Livello', state: 'Stato',
+    yoursT: 'Volete un sito così?', yoursLead: 'Si comincia con una bozza gratis del vostro sito. La aprite sul telefono entro 24 ore nei giorni lavorativi, dopo una breve chiacchierata su WhatsApp.',
+    othersT: 'Altri siti che abbiamo realizzato:', sameKind: 'Per lo stesso tipo di attività:',
+    meta: {
+      martiri: { title: 'Bar Martiri, Spille: il sito di un bar sulla spiaggia · SD Design', desc: 'Il sito che abbiamo realizzato per Bar Martiri a Spille: menu in tre lingue, ordini dal lettino, orari e prezzi già nella prima pagina. Guardatelo sul telefono.' },
+      elixir: { title: 'elixir.al: un negozio online con oltre 800 profumi · SD Design', desc: 'Come funziona elixir.al, il negozio online di profumi realizzato da noi: catalogo con ricerca e quiz, carta o contrassegno, tracciamento e pannello per lo staff.' },
+      kater: { title: 'Katër Burgers, Tirana: tutto il menu in una pagina · SD Design', desc: 'Il sito che abbiamo realizzato per Katër Burgers a Tirana: quattro burger con foto e prezzo, ordine con un tocco su Wolt, in albanese, inglese e italiano.' },
+      greta: { title: 'Dresses by Greta: una boutique come negozio online · SD Design', desc: 'Il negozio online realizzato per la boutique Dresses by Greta a Tirana: catalogo con taglie e prezzi, filtro per occasione, pagamento alla consegna e pannello.' },
+    },
+  },
+
   services: {
     getT: 'Che cosa ottenete.', egT: 'Dove l’abbiamo fatto.', faqT: 'Domande.', moreT: 'Lavoriamo anche per:',
     price: ['Quanto costa?', 'Dipende dal livello del sito. Prima vi prepariamo la bozza gratis; il prezzo ve lo diciamo su WhatsApp, dopo che l’avete vista.'],

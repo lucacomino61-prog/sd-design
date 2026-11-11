@@ -12,7 +12,7 @@ import ffmpeg from 'ffmpeg-static';
 import sq from '../src/i18n/sq.js';
 import en from '../src/i18n/en.js';
 import it from '../src/i18n/it.js';
-import { SERVICES } from '../src/data/site.js';
+import { SERVICES, PROJECTS } from '../src/data/site.js';
 import { S_PATH, BUBBLE } from '../src/data/mark.js';
 import { SITES } from '../src/data/sites.js';
 
@@ -71,13 +71,11 @@ if (!only || only === 'og') {
   // which client's site sits behind which page's headline
   const BEHIND = { home: 'kater', offer: null, food: 'martiri', hotel: 'divjaka', shop: 'greta', clinic: null };
   await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
-  for (const t of [sq, en, it]) {
-    for (const key of ['home', 'offer', ...SERVICES]) {
-      const lines = key === 'home' ? t.home.h1 : key === 'offer' ? [t.offer.h1] : [t.services[key].h1];
-      const title = lines.map((l) => l.replace(/\*([^*]+)\*/g, '<b>$1</b>')).join(key === 'home' ? '<br>' : ' ');
-      const site = BEHIND[key] && SITES[BEHIND[key]];
+  // One card: a headline in the site's type over a red halftone of a client's site (or of the SD mark), and a ruled
+  // line with the studio's name and a label.
+  const card = async ({ lang, title, site, label, file }) => {
       const img = site ? data(site.poster ?? site.card, 'image/webp') : '';
-      const label = key === 'home' ? t.foot.line : key === 'offer' ? t.bar[2] : `${t.kinds[key]} · ${t.foot.line.split(' · ')[1]}`;
+      const t = { lang };
       await page.setContent(`<!doctype html><html lang="${t.lang}"><style>
         @font-face{font-family:A;src:url("${font('archivo-latin-wdth-normal.woff2')}");font-weight:100 900;font-stretch:62% 125%}
         @font-face{font-family:M;src:url("${font('sometype-mono-latin-wght-normal.woff2')}");font-weight:400 700}
@@ -110,10 +108,25 @@ if (!only || only === 'og') {
         })();
       </script></body></html>`);
       await page.waitForFunction(() => document.title === 'ready', { timeout: 20000 });
-      const file = path.join(pub, 'og', `${key}-${t.lang}.jpg`);
-      await page.screenshot({ path: file, type: 'jpeg', quality: 84, captureBeyondViewport: false });
-      console.log('og', path.basename(file), fs.statSync(file).size);
+      const to = path.join(pub, 'og', file);
+      await page.screenshot({ path: to, type: 'jpeg', quality: 84, captureBeyondViewport: false });
+      console.log('og', file, fs.statSync(to).size);
+  };
+  for (const t of [sq, en, it]) {
+    for (const key of ['home', 'offer', ...SERVICES]) {
+      const lines = key === 'home' ? t.home.h1 : key === 'offer' ? [t.offer.h1] : [t.services[key].h1];
+      await card({
+        lang: t.lang, file: `${key}-${t.lang}.jpg`,
+        title: lines.map((l) => l.replace(/\*([^*]+)\*/g, '<b>$1</b>')).join(key === 'home' ? '<br>' : ' '),
+        site: BEHIND[key] && SITES[BEHIND[key]],
+        label: key === 'home' ? t.foot.line : key === 'offer' ? t.bar[2] : `${t.kinds[key]} · ${t.foot.line.split(' · ')[1]}`,
+      });
     }
+  }
+  // a client's site with a page of its own: its name over its own first screen, the same picture in every language
+  for (const id of PROJECTS) {
+    const s = SITES[id];
+    await card({ lang: 'sq', file: `work-${id}.jpg`, title: s.name, site: s, label: s.url ? new URL(s.url).host : sq.projects[id].place });
   }
 }
 await browser.close();

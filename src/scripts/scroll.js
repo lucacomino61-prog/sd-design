@@ -24,8 +24,17 @@ const CHAT_GAP = 8, CHAT_PAD = 12;
 // ---------- the ground ----------
 // Each section names its ground; the page wears the one in the middle of the screen and the stylesheet fades between
 // them. Sections that name none are dark.
+// A section can also name a client's colour (data-wear): the page wears it while that section is in the middle. A
+// page that opens in a client's colour has it from the stylesheet (body.worn) until the first section reports here.
 html.classList.add('fade');
-const middle = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) body.dataset.ground = e.target.dataset.ground || 'dark'; }), { rootMargin: '-48% 0px -48% 0px' });
+let wear = '';
+const middle = new IntersectionObserver((es) => es.forEach((e) => {
+  if (!e.isIntersecting) return;
+  body.dataset.ground = e.target.dataset.ground || 'dark';
+  wear = e.target.dataset.wear || '';
+  retone();
+  body.classList.remove('worn');
+}), { rootMargin: '-48% 0px -48% 0px' });
 $$('main > *').forEach((el) => middle.observe(el));
 let toneNow = '';
 function setTone(color) {
@@ -61,7 +70,7 @@ const reels = scenes.filter((sc) => sc.kind === 'reel');
 // is on the middle of the screen.
 function retone() {
   const sc = reels.find((r) => r.centre && r.active);
-  setTone(sc ? sc.active.tone : '');
+  setTone(sc ? sc.active.tone : wear);
 }
 for (const sc of reels) {
   const centred = new IntersectionObserver((es) => es.forEach((e) => {

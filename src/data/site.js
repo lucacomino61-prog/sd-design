@@ -2,6 +2,8 @@
 // What only the owner knows (the address, the legal details, who answers) is in owner.json: see owner.js.
 import { owner } from './owner.js';
 import { CONTACT } from './contact.js';
+import { FEATURES } from './features.js';
+import { LIVE } from './sites.js';
 
 const env = typeof process !== 'undefined' ? process.env : {};
 
@@ -30,7 +32,13 @@ export const LANGS = ['sq', 'en', 'it'];
 export const LANG_NAME = { sq: 'Shqip', en: 'English', it: 'Italiano' };
 export const LOCALE = { sq: 'sq_AL', en: 'en_GB', it: 'it_IT' };
 
+// The client sites that have a page of their own: the ones that are online. The name in the address stays the same
+// in every language.
+const PROJECT_SLUG = { martiri: 'bar-martiri', elixir: 'elixir-al', kater: 'kater-burgers', greta: 'dresses-by-greta' };
+export const PROJECTS = FEATURES.projects ? LIVE.filter((id) => PROJECT_SLUG[id]) : [];
+
 // One page per search intent and language. The same table feeds the menus, hreflang, the sitemap and the checks.
+// A page that is switched off in features.js is simply not in the table.
 export const PAGES = {
   home: { sq: '/', en: '/en/', it: '/it/' },
   offer: { sq: '/draft-falas/', en: '/en/free-draft/', it: '/it/bozza-gratis/' },
@@ -38,11 +46,14 @@ export const PAGES = {
   hotel: { sq: '/hotele/', en: '/en/hotels/', it: '/it/hotel/' },
   shop: { sq: '/dyqane-online/', en: '/en/online-shops/', it: '/it/negozi-online/' },
   clinic: { sq: '/klinika/', en: '/en/clinics/', it: '/it/cliniche/' },
+  ...Object.fromEntries(PROJECTS.map((id) => [`work-${id}`, { sq: `/punet/${PROJECT_SLUG[id]}/`, en: `/en/work/${PROJECT_SLUG[id]}/`, it: `/it/lavori/${PROJECT_SLUG[id]}/` }])),
   privacy: { sq: '/privatesia/', en: '/en/privacy/', it: '/it/privacy/' },
 };
 export const SERVICES = ['food', 'hotel', 'shop', 'clinic'];
 export const href = (page, lang) => PAGES[page][lang];
 export const abs = (p) => (SITE.url ? SITE.url + p : p);
+// where a client's site is read about: its own page when it has one, else its row in the list on the home page
+export const workHref = (id, lang) => PAGES[`work-${id}`]?.[lang] ?? `${PAGES.home[lang]}#${id}`;
 
 // Contact links: real once the contact details are filled in (owner.json). Until then they point at the contact block and the
 // script shows a "draft" note, so no number is ever guessed.

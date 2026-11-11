@@ -71,9 +71,9 @@ const hidden = (src) => {
 };
 function setup(canvas) {
   const kind = canvas.dataset.tone;
-  // a small picture (data-dot) has finer dots and no glass
+  // a small picture (data-dot) has finer dots and no glass; data-ink names another colour for the dots than the red
   const dot = Number(canvas.dataset.dot) || 0;
-  const tone = makeTone(canvas, { lens: fine && !dot, dot });
+  const tone = makeTone(canvas, { lens: fine && !dot, dot, ...(canvas.dataset.ink && { color: canvas.dataset.ink }) });
   const it = { canvas, tone, kind, seen: false, last: 0, fresh: true, intro: false, t0: 0, video: () => null };
   if (kind === 'hero') {
     // the dots show whatever plays in the glass phone; on load they draw the SD mark first
@@ -244,7 +244,7 @@ $$('[data-section]').forEach((el) => middle.observe(el));
 // jump far down the page shows everything it passed. Nothing is hidden before the first animation frame has arrived
 // (and the scroll scenes have taken their places): a browser that runs no frames shows the whole page as it is.
 if (motion) firstFrame(() => {
-  const all = $$('.say, .work-top > .lead, .rows > .row, .sec-head > .lead, .stair, .kinds-t, .levels-other, .why-list > li, .step-list > li, .terms-col, .work-all, .faq-more, .get-list > li, .more-t, .more-list > li, .story-ask, .close > h2, .close-b, .foot-nav > div, .doc section');
+  const all = $$('.say, .work-top > .lead, .rows > .row, .sec-head > .lead, .stair, .kinds-t, .levels-other, .why-list > li, .step-list > li, .terms-col, .work-all, .faq-more, .get-list > li, .more-t, .more-list > li, .story-ask, .close > h2, .close-b, .foot-nav > div, .doc section, [data-rise]');
   const below = all.filter((el) => el.getBoundingClientRect().top > innerHeight * 0.92);
   const rise = new IntersectionObserver((es) => es.forEach((e) => {
     if (!e.isIntersecting) return;

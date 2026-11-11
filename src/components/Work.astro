@@ -4,6 +4,7 @@
 // A row takes its client's own colour when it opens. Only one is open at a time.
 import Icon from './Icon.astro';
 import { SITES } from '../data/sites.js';
+import { PAGES, href } from '../data/site.js';
 const { t, ids, level = 3 } = Astro.props;
 const H = `h${level}`;
 const named = (s, name) => s.replace('{name}', name);
@@ -25,7 +26,9 @@ const named = (s, name) => s.replace('{name}', name);
             <p class="row-lede">{p.lede}</p>
             <ul class="facts">{p.facts.map((f) => <li>{f}</li>)}</ul>
             <p class="row-langs">{t.ui.speaks}: {s.langs.map((l) => t.langNames[l]).join(', ')}</p>
-            {s.url && <a class="lnk" href={s.url} target="_blank" rel="noopener" aria-label={`${t.ui.open}: ${s.name}`}>{t.ui.open}<Icon name="arrow-up-right" size={12} /></a>}
+            {PAGES[`work-${id}`]
+              ? <p class="links"><a class="lnk" href={href(`work-${id}`, t.lang)} aria-label={`${t.work.more}: ${s.name}`}>{t.work.more}<Icon name="arrow-right" size={12} /></a>{s.url && <a class="lnk" href={s.url} target="_blank" rel="noopener" aria-label={`${t.ui.open}: ${s.name}`}>{t.ui.open}<Icon name="arrow-up-right" size={12} /></a>}</p>
+              : s.url && <a class="lnk" href={s.url} target="_blank" rel="noopener" aria-label={`${t.ui.open}: ${s.name}`}>{t.ui.open}<Icon name="arrow-up-right" size={12} /></a>}
           </div>
           {s.shot
             ? <img class="row-shot" src={s.shot} srcset={`${s.shot.replace('.webp', '-720.webp')} 720w, ${s.shot} 1440w`} sizes="(max-width: 760px) 60vw, 54vw" alt={named(t.ui.shotAlt, s.name)} width="1440" height="900" loading="lazy" decoding="async" />

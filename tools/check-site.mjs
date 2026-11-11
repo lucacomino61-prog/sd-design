@@ -112,7 +112,10 @@ if (what === 'all' || what === 'seo') {
         const ld = JSON.parse(pick(html, /<script type="application\/ld\+json">([\s\S]*?)<\/script>/));
         const types = ld['@graph'].map((n) => n['@type']);
         for (const need of ['Organization', 'WebSite', 'WebPage']) if (!types.includes(need)) fail(p, `structured data has no ${need}`);
-        if (key !== 'home' && key !== 'privacy' && !types.includes('Service')) fail(p, 'structured data has no Service');
+        // what each kind of page must say about itself: a service, a client's site, a guide, the list of guides
+        const own = key === 'home' || key === 'privacy' ? null : key.startsWith('work-') ? 'CreativeWork' : key === 'guides' ? 'ItemList' : key.startsWith('guide-') ? 'Article' : 'Service';
+        if (own && !types.includes(own)) fail(p, `structured data has no ${own}`);
+        if (own && !types.includes('BreadcrumbList')) fail(p, 'structured data has no BreadcrumbList');
       } catch (e) { fail(p, `structured data does not parse: ${String(e).slice(0, 80)}`); }
       // the page as a crawler that runs no scripts reads it: the words between the tags
       const words = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<svg[\s\S]*?<\/svg>/g, ' ').replace(/<[^>]+>/g, ' ').split(/\s+/).filter((w) => w.length > 1).length;

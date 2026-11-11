@@ -112,6 +112,20 @@ export default {
       facts: ['Prices from several sellers compared for the same product.', 'A calculator that shows what your roof produces, city by city.', 'Six solar packages and a single basket for many sellers.', 'Albanian and English, with prices in lek or in euro.'] },
   },
 
+  // a client's site on a page of its own: the facts are the ones in `projects` above
+  work: {
+    more: 'See the project', doesT: 'What the site does.', seeT: 'The site, from top to bottom.', seeNote: 'Four phone screens one after another, as a customer sees them. Below, the site on a computer and recorded on a phone.',
+    kind: 'Kind', level: 'Level', state: 'Status',
+    yoursT: 'Want a site like this?', yoursLead: 'We start with a free draft of your site. You open it on your phone within 24 hours on working days, after a short chat on WhatsApp.',
+    othersT: 'Other sites we have built:', sameKind: 'For the same kind of business:',
+    meta: {
+      martiri: { title: 'Bar Martiri, Spille: the website of a beach bar · SD Design', desc: 'The site we built for Bar Martiri in Spille: a menu in three languages, orders from the sunbed, opening hours and prices on the first page. See it on a phone.' },
+      elixir: { title: 'elixir.al: an online shop with over 800 perfumes · SD Design', desc: 'How elixir.al works, the online perfume shop we built: a catalogue with search and a quiz, card or cash on delivery, order tracking and a panel for the staff.' },
+      kater: { title: 'Katër Burgers, Tirana: the whole menu on one page · SD Design', desc: 'The site we built for Katër Burgers in Tirana: four burgers with photo and price, one-tap ordering on Wolt, in Albanian, English and Italian.' },
+      greta: { title: 'Dresses by Greta: a dress boutique as an online shop · SD Design', desc: 'The online shop we built for the boutique Dresses by Greta in Tirana: a catalogue with sizes and prices, a filter by occasion, cash on delivery and a staff panel.' },
+    },
+  },
+
   services: {
     getT: 'What you get.', egT: 'Where we have done it.', faqT: 'Questions.', moreT: 'We also work for:',
     price: ['How much does it cost?', 'It depends on the level of the site. First we make you the free draft; we give you the price on WhatsApp, after you have seen it.'],

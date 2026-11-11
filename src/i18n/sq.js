@@ -114,6 +114,20 @@ export default {
       facts: ['Krahasim çmimesh nga disa shitës për të njëjtin produkt.', 'Kalkulator që tregon sa prodhon çatia juaj, sipas qytetit.', 'Gjashtë paketa diellore dhe një shportë e vetme për shumë shitës.', 'Shqip dhe anglisht, me çmime në lek ose në euro.'] },
   },
 
+  // a client's site on a page of its own: the facts are the ones in `projects` above
+  work: {
+    more: 'Shiko projektin', doesT: 'Çfarë bën faqja.', seeT: 'Faqja, nga lart poshtë.', seeNote: 'Katër ekrane të telefonit njëri pas tjetrit, ashtu siç i sheh klienti. Më poshtë, faqja në kompjuter dhe e regjistruar në telefon.',
+    kind: 'Lloji', level: 'Niveli', state: 'Gjendja',
+    yoursT: 'Doni një faqe si kjo?', yoursLead: 'Fillojmë me një draft falas të faqes suaj. E hapni në telefon brenda 24 orëve në ditë pune, pasi të kemi folur shkurt në WhatsApp.',
+    othersT: 'Faqe të tjera që kemi ndërtuar:', sameKind: 'Për të njëjtin lloj biznesi:',
+    meta: {
+      martiri: { title: 'Bar Martiri, Spille: faqja e një bari në plazh · SD Design', desc: 'Faqja që ndërtuam për Bar Martirin në Spille: menu në tri gjuhë, porosi nga shezlongu, orari dhe çmimet që në faqen e parë. Shiheni në telefon.' },
+      elixir: { title: 'elixir.al: dyqan online me mbi 800 parfume · SD Design', desc: 'Si punon elixir.al, dyqani online i parfumeve që ndërtuam: katalog me kërkim dhe kuiz, pagesë me kartë ose në dorëzim, gjurmim i porosisë dhe panel për stafin.' },
+      kater: { title: 'Katër Burgers, Tiranë: menuja në një faqe të vetme · SD Design', desc: 'Faqja që ndërtuam për Katër Burgers në Tiranë: katër burgera me foto dhe çmim, porosi me një prekje në Wolt, në shqip, anglisht dhe italisht.' },
+      greta: { title: 'Dresses by Greta: butik fustanesh si dyqan online · SD Design', desc: 'Dyqani online që ndërtuam për butikun Dresses by Greta në Tiranë: katalog me masa dhe çmime, filtër sipas rastit, pagesë në dorëzim dhe panel në shqip.' },
+    },
+  },
+
   services: {
     getT: 'Çfarë merrni.', egT: 'Ku e kemi bërë.', faqT: 'Pyetje.', moreT: 'Punojmë edhe për:',
     price: ['Sa kushton?', 'Varet nga niveli i faqes. Fillimisht ju bëjmë draftin falas; çmimin jua themi në WhatsApp, pasi ta keni parë.'],

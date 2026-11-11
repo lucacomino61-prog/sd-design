@@ -1,0 +1,62 @@
+/* A client's site on a page of its own (src/components/Project.astro; the switch is `projects` in
+   src/data/features.js). The page wears the client's colour on its first screen and where the site itself is shown.
+   A section names the colour (data-wear) and the script fades the page to it like to any other ground; until the
+   script has started the colour comes from here, so the page never opens dark and then changes. */
+@media (scripting: enabled) { body.worn { --ground: var(--tone); --soft: #f9f4eb; } }
+/* read plainly, a section that names a client's colour paints it itself, as a block like the light and the red ones */
+html:not(.fade) [data-wear] { --ground: var(--tone); --soft: #f9f4eb; background: var(--tone); }
+html:not(.fade) .pview { padding-bottom: var(--pad); }
+
+/* ---------- first screen: the name at poster size, the facts as a ruled table ---------- */
+/* the dots are the client's own first screen, in the light colour; held back a little so the name leads */
+.phero .tone { opacity: 0.72; }
+.phero h1 { max-width: none; }
+.pname { display: block; font-size: clamp(48px, 10.2vw, 196px); overflow-wrap: anywhere; }
+.pfacts { margin: 0; border-bottom: 1px solid var(--line-2); }
+.pfacts > div { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; gap: 12px; padding: 9px 0 10px; border-top: 1px solid var(--line-2); }
+.pfacts > div:first-child { padding-top: 0; border-top: 0; }
+.pfacts dt { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; }
+.pfacts dd { display: flex; flex-wrap: wrap; align-items: center; gap: 0 18px; margin: 0; font-size: 15px; line-height: 1.35; }
+.pfacts .st, .pfacts .lnk { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; text-transform: uppercase; }
+.pfacts .lnk { padding-block: 6px 5px; }
+
+/* ---------- what the site does: the facts, still in the client's colour ---------- */
+.pdoes { padding-bottom: 0; }
+.pdoes > .plain-list { grid-column: 7 / -1; }
+
+/* ---------- the site itself: four screens of a phone, then the desktop and the recording ---------- */
+.pview { padding-top: var(--pad); }
+.pscreens { --sh: min(70svh, 700px); display: grid; grid-template-columns: repeat(4, minmax(0, calc(var(--sh) * 0.4621))); justify-content: space-between; gap: var(--g); padding: 0 var(--m); }
+.pscreens li { display: grid; gap: 12px; }
+.pscreen { aspect-ratio: 585 / 1266; overflow: hidden; border: 6px solid #0f1010; border-radius: 28px; outline: 1px solid var(--line-2); background: #0f1010; box-shadow: 0 40px 60px -34px rgb(0 0 0 / 0.65); }
+.pscreen img { width: 100%; height: 100%; object-fit: cover; }
+.ps-0 img { object-position: 0 0; }
+.ps-1 img { object-position: 0 33.333%; }
+.ps-2 img { object-position: 0 66.667%; }
+.ps-3 img { object-position: 0 100%; }
+.pscreens span { font: 500 11px/1.4 var(--mono); letter-spacing: -0.02em; }
+.pdesk { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: end; gap: var(--g); margin-top: clamp(44px, 5vw, 80px); padding: 0 var(--m); }
+.pdesk .row-shot { grid-column: 1 / span 9; }
+.pdesk .phone { grid-column: 11 / span 2; }
+.pyours { display: grid; justify-items: start; gap: 12px; max-width: calc(34em + var(--m) * 2); margin-top: clamp(44px, 5vw, 80px); padding: 0 var(--m); }
+.pyours h3 { font-size: clamp(21px, 1.9vw, 30px); font-weight: 700; font-stretch: 108%; line-height: 1.12; letter-spacing: -0.025em; }
+.pyours .cta { margin-top: 8px; }
+
+@media (max-width: 760px) {
+  .pname { font-size: 12.4vw; }
+  .pfacts > div { grid-template-columns: 5.5rem minmax(0, 1fr); }
+  .pfacts .lnk { padding-block: 15px; }
+  .pdoes > .plain-list { grid-column: 1; }
+  .pscreens { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px var(--g); }
+  .pscreen { border-width: 4px; border-radius: 20px; }
+  .pdesk { grid-template-columns: minmax(0, 1fr) 31vw; }
+  .pdesk .row-shot { grid-column: 1; align-self: start; }
+  .pdesk .phone { grid-column: 2; padding: 3px; border-radius: 12px; }
+  .pdesk .phone img, .pdesk .phone video { border-radius: 9px; }
+  .pdesk .phone video { inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); }
+}
+
+@media print {
+  body.worn { --ground: #fff; --soft: #222; }
+  .pscreens { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

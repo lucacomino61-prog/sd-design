@@ -1,0 +1,85 @@
+---
+// A client's site on a page of its own, in that client's colour: what it is, what a visitor can do there (the same
+// facts as its row on the home page, read on the public site), the site itself as a phone shows it from top to
+// bottom, on a desktop and playing, and the way to the other sites. Nothing is said here that the row does not say.
+import '../styles/project.css';
+import Base from '../layouts/Base.astro';
+import Icon from './Icon.astro';
+import Words from './Words.astro';
+import { PROJECTS, href, abs, wa, offerMsg } from '../data/site.js';
+import { SITES } from '../data/sites.js';
+
+const { t, id } = Astro.props;
+const lang = t.lang, s = SITES[id], p = t.projects[id], w = t.work, kind = t.services[s.kind];
+const page = `work-${id}`;
+const home = href('home', lang);
+const named = (str) => str.replace('{name}', s.name);
+// Which of the three levels a site is. The levels on the home page name three of them as their examples; a shop with
+// a basket and a panel is the third.
+const LEVEL = { kater: 0, martiri: 1, elixir: 2, greta: 2 };
+const level = t.levels.items[LEVEL[id]][0];
+const others = PROJECTS.filter((x) => x !== id);
+// the phone picture holds four screens one under the other: each is shown in a phone of its own
+const screens = [0, 1, 2, 3];
+
+const ORG = abs('/') + '#studio', here = abs(href(page, lang));
+const nodes = [
+  { '@type': 'CreativeWork', '@id': here + '#work', name: s.name, description: p.lede, inLanguage: s.langs, creator: { '@id': ORG }, image: abs(s.shot), ...(s.url && { url: s.url }) },
+  { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'SD Design', item: abs(home) }, { '@type': 'ListItem', position: 2, name: t.nav.work, item: abs(home) + '#work' }, { '@type': 'ListItem', position: 3, name: s.name, item: here }] },
+];
+---
+<Base t={t} page={page} meta={w.meta[id]} share={`/og/${page}.jpg`} nodes={nodes} sections={5} type={kind.type} label={kind.cta} wear={id}>
+  <section class={`hero shero phero t-${id}`} id="top" aria-labelledby="h1" data-wear={s.tone} data-section="1">
+    <canvas class="tone hero-tone" data-tone="site" data-ink="#f9f4eb" data-video={s.video} data-poster={s.poster} aria-hidden="true"></canvas>
+    <div class="hero-b">
+      <nav class="crumbs" aria-label={t.ui.crumbs}><ol><li><a href={home}>SD Design</a></li><li><a href={`${home}#work`}>{t.nav.work}</a></li><li aria-current="page">{s.name}</li></ol></nav>
+      <h1 id="h1"><span class="tag">{p.what} · {p.place}</span><span class="sr">: </span><span class="display pname">{s.name}</span></h1>
+      <div class="hero-foot">
+        <p class="lead">{p.lede}</p>
+        <dl class="pfacts">
+          <div><dt>{w.kind}</dt><dd>{t.kinds[s.kind]}</dd></div>
+          <div><dt>{w.level}</dt><dd>{level}</dd></div>
+          <div><dt>{t.ui.speaks}</dt><dd>{s.langs.map((l) => t.langNames[l]).join(', ')}</dd></div>
+          <div><dt>{w.state}</dt><dd><i class={`st st-${s.state}`}>{t.states[s.state]}</i>{s.url && <a class="lnk" href={s.url} target="_blank" rel="noopener" aria-label={`${t.ui.open}: ${s.name}`}>{new URL(s.url).host}<Icon name="arrow-up-right" size={12} /></a>}</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class={`get pdoes t-${id}`} id="does" aria-labelledby="does-h" data-wear={s.tone} data-section="2">
+    <h2 class="display split" id="does-h"><Words text={w.doesT} /></h2>
+    <ul class="plain-list">{p.facts.map((f) => <li data-rise>{f}</li>)}</ul>
+  </section>
+
+  <section class={`pview t-${id}`} id="see" aria-labelledby="see-h" data-wear={s.tone} data-section="3">
+    <div class="work-top">
+      <h2 class="display split" id="see-h"><Words text={w.seeT} /></h2>
+      <p class="lead">{w.seeNote}</p>
+    </div>
+    <ol class="pscreens">
+      {screens.map((i) => (
+        <li data-rise>
+          <figure class={`pscreen ps-${i}`}><img src={s.tall} alt={i === 0 ? named(t.ui.tallAlt) : ''} width="585" height="5064" loading="lazy" decoding="async" /></figure>
+          <span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+        </li>
+      ))}
+    </ol>
+    <div class="pdesk" data-rise>
+      <img class="row-shot" src={s.shot} srcset={`${s.shot.replace('.webp', '-720.webp')} 720w, ${s.shot} 1440w`} sizes="(max-width: 760px) 62vw, 68vw" alt={named(t.ui.shotAlt)} width="1440" height="900" loading="lazy" decoding="async" />
+      <figure class="phone" data-video={s.video}><img src={s.poster} alt={named(t.ui.onPhone)} width="390" height="844" loading="lazy" decoding="async" /></figure>
+    </div>
+    <div class="pyours" data-rise>
+      <h3>{w.yoursT}</h3>
+      <p>{w.yoursLead}</p>
+      <a class="cta" {...wa(offerMsg(t, kind.type))}><span><Icon name="whatsapp-logo" size={20} /></span>{kind.cta}</a>
+    </div>
+  </section>
+
+  <section class="more" aria-labelledby="more-h" data-section="4">
+    <h2 class="more-t" id="more-h">{w.othersT}</h2>
+    <ul class="more-list">
+      {others.map((x) => <li><a href={href(`work-${x}`, lang)}><span class="display">{SITES[x].name}</span><Icon name="arrow-up-right" size={28} /></a></li>)}
+    </ul>
+    <p class="levels-other">{w.sameKind} <a class="lnk" href={href(s.kind, lang)}>{t.kindTitles[s.kind]}<Icon name="arrow-up-right" size={12} /></a></p>
+  </section>
+</Base>
