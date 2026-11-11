@@ -1,0 +1,13 @@
+---
+// The promise, kept: how many drafts have been sent and how many of them within the promised hours, counted from
+// the admin's own list (it writes the numbers into src/data/offer.json; see src/data/offer.js). One sentence, shown
+// only once there are enough drafts to say something, and never with a number the file does not hold.
+import '../styles/proof.css';
+import { OFFER, proof } from '../data/offer.js';
+import { FEATURES } from '../data/features.js';
+import { longDate } from '../data/dates.js';
+const { t } = Astro.props;
+const p = FEATURES.proof ? proof() : null;
+const line = p && t.ui.proof.replace('{sent}', p.sent).replace('{onTime}', p.onTime).replace('{h}', OFFER.hours).replace('{date}', longDate(p.since, t.lang));
+---
+{line && <p class="proof" data-proof>{line}</p>}

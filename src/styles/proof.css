@@ -1,0 +1,4 @@
+/* The promise, kept (src/components/Proof.astro; the switch is `proof` in src/data/features.js): one sentence
+   under the three numbers of the offer and beside the button where the conditions are named. */
+.proof { font-size: 14px; line-height: 1.35; color: var(--soft); }
+.poster .proof { max-width: 40em; margin-top: 22px; font-size: clamp(18px, 1.5vw, 23px); font-weight: 500; line-height: 1.32; color: var(--ink); text-wrap: pretty; }

@@ -1,10 +1,12 @@
 ---
 // The one call to action, wherever it appears: the WhatsApp button that starts a request for the free draft, how many
-// drafts are left this week, and who answers. `type` fills in the kind of business on a service page.
+// drafts are left this week, and who answers. `type` fills in the kind of business on a service page; `note` adds
+// the condition (Albania only) and `proof` the line about the drafts sent so far, where there is one.
 import Icon from './Icon.astro';
 import Meter from './Meter.astro';
+import Proof from './Proof.astro';
 import { SITE, wa, offerMsg, S_PATH, BUBBLE } from '../data/site.js';
-const { t, label = t.home.cta, type = '', who = true, note = false } = Astro.props;
+const { t, label = t.home.cta, type = '', who = true, note = false, proof = false } = Astro.props;
 const [before, after] = t.ui.answers.split('{name}');
 ---
 <div class="ask">
@@ -20,5 +22,6 @@ const [before, after] = t.ui.answers.split('{name}');
       <span>{before}<b>{SITE.person.name}</b>{after}</span>
     </p>
   )}
+  {proof && <Proof t={t} />}
   {note && <p class="ask-note">{t.ui.albania}</p>}
 </div>

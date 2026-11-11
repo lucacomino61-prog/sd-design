@@ -12,4 +12,5 @@ export const FEATURES = on({
   grants: true, // the guide about public funds (needs `guides`): its facts carry the day they were checked
   calculator: true, // the commission calculator on the hotel and restaurant pages
   quotes: true, // owners' words, wherever src/data/quotes.json has some (it is empty until there are real ones)
+  proof: true, // "so far: N drafts sent, M within 24 hours", from the admin's list, once there are five (offer.json)
 });

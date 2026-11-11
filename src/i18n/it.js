@@ -17,6 +17,7 @@ export default {
     still: 'Ferma le animazioni', clock: 'Albania', next: 'Sito successivo', open: 'Apri il sito',
     onPhone: '{name}, il sito sul telefono', shotAlt: '{name}, pagina principale', cardAlt: '{name}, un’immagine del progetto', tallAlt: '{name}, il sito dall’inizio alla fine su un telefono',
     count: '{n} siti · {m} online', draft: 'Bozza, non ancora online', speaks: 'Lingue', said: 'Con le loro parole',
+    proof: 'Finora: {sent} bozze inviate, {onTime} delle quali entro {h} ore nei giorni lavorativi. Conteggio iniziato il giorno {date}.',
     left: 'Bozze gratis rimaste questa settimana', none: 'Le bozze di questa settimana sono finite. Scriveteci per la prossima.', answers: 'Vi risponde {name}, entro la giornata lavorativa.', albania: 'Solo per attività in Albania.',
   },
   bar: ['Mirë se erdhe', 'Benvenuti', 'La prima bozza è gratis'],

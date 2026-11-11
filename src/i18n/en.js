@@ -17,6 +17,7 @@ export default {
     still: 'Stop animations', clock: 'Albania', next: 'Next site', open: 'Open the site',
     onPhone: '{name}, the site on a phone', shotAlt: '{name}, home page', cardAlt: '{name}, a view of the project', tallAlt: '{name}, the site from top to bottom on a phone',
     count: '{n} sites · {m} online', draft: 'Draft, not online yet', speaks: 'Languages', said: 'In their words',
+    proof: 'So far: {sent} drafts sent, {onTime} of them within {h} hours on working days. Counted since {date}.',
     left: 'Free drafts left this week', none: 'This week’s drafts are all taken. Write to us for next week.', answers: '{name} answers you, the same working day.', albania: 'Only for businesses in Albania.',
   },
   bar: ['Mirë se erdhe', 'Welcome', 'The first draft is free'],

@@ -14,6 +14,7 @@ import Work from './Work.astro';
 import Faq from './Faq.astro';
 import Reads from './Reads.astro';
 import Quotes from './Quotes.astro';
+import Proof from './Proof.astro';
 import { SERVICES, href, abs, wa, offerMsg } from '../data/site.js';
 import { SITES, ORDER, HERO } from '../data/sites.js';
 import { OFFER } from '../data/offer.js';
@@ -65,6 +66,7 @@ const nodes = [
         </li>
       ))}
     </ul>
+    <Proof t={t} />
   </section>
 
   <section class="story" id="how" aria-labelledby="how-h" data-section="3">

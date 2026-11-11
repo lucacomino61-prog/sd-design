@@ -19,6 +19,7 @@ export default {
     still: 'Ndalo animacionet', clock: 'Shqipëri', next: 'Faqja tjetër', open: 'Hap faqen',
     onPhone: '{name}, faqja në telefon', shotAlt: '{name}, faqja kryesore', cardAlt: '{name}, pamja e projektit', tallAlt: '{name}, faqja nga lart poshtë në telefon',
     count: '{n} faqe · {m} online', draft: 'Draft, jo ende online', speaks: 'Gjuhët', said: 'Me fjalët e tyre',
+    proof: 'Deri tani: {sent} drafte të dërguara, {onTime} prej tyre brenda {h} orëve në ditë pune. Numërohen që nga data {date}.',
     left: 'Drafte të lira këtë javë', none: 'Këtë javë u morën të gjitha. Shkruani për javën tjetër.', answers: 'Ju përgjigjet {name}, brenda ditës së punës.', albania: 'Vetëm për biznese në Shqipëri.',
   },
   bar: ['Mirë se erdhe', 'Pimë një kafe?', 'Drafti i parë është falas'],
